@@ -1,0 +1,6 @@
+C:\Users\alexj_000\Desktop\VeisTest\VeisTest\VeisTest\bin\Debug\VeisTest.exe.config
+C:\Users\alexj_000\Desktop\VeisTest\VeisTest\VeisTest\bin\Debug\VeisTest.exe
+C:\Users\alexj_000\Desktop\VeisTest\VeisTest\VeisTest\bin\Debug\VeisTest.pdb
+C:\Users\alexj_000\Desktop\VeisTest\VeisTest\VeisTest\obj\Debug\VeisTest.csprojResolveAssemblyReference.cache
+C:\Users\alexj_000\Desktop\VeisTest\VeisTest\VeisTest\obj\Debug\VeisTest.exe
+C:\Users\alexj_000\Desktop\VeisTest\VeisTest\VeisTest\obj\Debug\VeisTest.pdb
