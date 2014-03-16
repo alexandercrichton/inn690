@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<aiml>
+<!-- Free software &copy; 2001-2003 ALICE A.I. Foundation. -->
+<!-- This program is open source code released under -->
+<!-- the terms of the GNU General Public License     -->
+<!-- as published by the Free Software Foundation.   -->
+<!-- Complies with AIML 1.01 Tag Set Specification -->
+<!-- as adopted by the ALICE A.I. Foundation.  -->
+<!-- Annotated Version updated September 2003 -->
+
+<category>
+	<pattern>WHO ELSE HAS TASKS</pattern>
+	<template>The following participants have tasks #%YAWL:CURRENTAGENTS%#<think><set name="it"><set name="topic">Current Work</set></set></think></template>
+</category>
+
+<category>
+	<pattern>WHO ELSE WORKS HERE</pattern>
+	<template>The following participants have tasks #%YAWL:ALLAGENTS%#<think><set name="it"><set name="topic">Current Work</set></set></think></template>
+</category>
+
+<category>
+	<pattern>WHAT ARE YOU DOING</pattern>
+	<template>I am currently running these specifications #%YAWL:CURRENTWORK%#<think><set name="it"><set name="topic">Current Work</set></set></think></template>
+</category>
+
+<category>
+	<pattern>HOW BUSY ARE YOU</pattern>
+	<template><srai>WHAT ARE YOU DOING</srai></template>
+</category>
+
+<category>
+	<pattern>WHAT ARE YOU DOING RIGHT NOW</pattern>
+	<template><srai>WHAT ARE YOU DOING</srai></template>
+</category>
+
+<category>
+	<pattern>WHAT HAVE YOU DONE</pattern>
+	<template>I have completed these tasks #%YAWL:COMPLETEDWORK%#<think><set name="it"><set name="topic">Completed Work</set></set></think></template>
+</category>
+
+<category>
+	<pattern>WHAT ARE YOU GOING TO DO</pattern>
+	<template>I have been assigned these tasks: #%YAWL:WORKQUEUE%#<think><set name="it"><set name="topic">Planned Work</set></set></think></template>
+</category>
+
+<category>
+	<pattern>WHAT ARE YOU PLANNING TO DO</pattern>
+	<template><srai>WHAT ARE YOU GOING TO DO</srai></template>
+</category>
+
+<category>
+	<pattern>WHAT ARE YOU DOING NEXT</pattern>
+	<template><srai>WHAT ARE YOU GOING TO DO</srai></template>
+</category>
+
+<category>
+	<pattern>DELEGATE * TO *</pattern>
+	<template>#%YAWL:DELEGATEWORKITEM:<star index="2" />:<star index="1" />%#? Not likely!<think><set name="it"><set name="topic">Location</set></set></think></template>
+</category>
+
+<category>
+	<pattern>WHAT TASKS HAVE YOU BEEN ALLOCATED</pattern>
+	<template>I have been allocated these tasks: #%YAWL:ALLOCATEDWORK%#</template>
+</category>
+
+<category>
+	<pattern>WHAT HAVE YOU BEEN ALLOCATED</pattern>
+	<template><srai>WHAT TASKS HAVE YOU BEEN ALLOCATED</srai></template>
+</category>
+
+<category>
+	<pattern>WHAT HAVE YOU BEEN ALLOCATED TO DO</pattern>
+	<template><srai>WHAT TASKS HAVE YOU BEEN ALLOCATED</srai></template>
+</category>
+
+<category>
+	<pattern>WHAT ARE YOU ALLOCATED TO DO</pattern>
+	<template><srai>WHAT TASKS HAVE YOU BEEN ALLOCATED</srai></template>
+</category>
+
+<category>
+	<pattern>WHAT TASKS HAVE YOU BEEN OFFERRED</pattern>
+	<template>I have been offered these tasks: #%YAWL:OFFEREDWORK%#</template>
+</category>
+
+<category>
+	<pattern>WHAT HAVE YOU BEEN OFFERRED</pattern>
+	<template><srai>WHAT TASKS HAVE YOU BEEN OFFERRED</srai></template>
+</category>
+
+<category>
+	<pattern>WHAT ARE YOU TRAINED TO DO</pattern>
+	<template>My capabilities are: #%YAWL:CAPABILITIES%#</template>
+</category>
+
+<category>
+	<pattern>WHAT ARE YOU CAPABLE OF</pattern>
+	<template><srai>WHAT ARE YOU TRAINED TO DO</srai></template>
+</category>
+
+<category>
+	<pattern>WHAT ARE YOUR ROLES</pattern>
+	<template>My roles are: #%YAWL:ROLES%#</template>
+</category>
+
+<category>
+	<pattern>WHAT DO YOU DO HERE</pattern>
+	<template>My roles are: #%YAWL:ROLES%#</template>
+</category>
+
+<category>
+	<pattern>WHAT POSITIONS DO YOU HOLD AT THIS COMPANY</pattern>
+	<template>My roles are: #%YAWL:ROLES%#</template>
+</category>
+
+</aiml>

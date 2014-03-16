@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WorkflowLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="WorkflowLog.xsd" description="Test log for decision miner">
+	<Source program="name: , desc: , data: {program=none}">
+		<Data>
+			<Attribute name="program">name: , desc: , data: {program=none}</Attribute>
+		</Data>
+	</Source>
+	<Process id="0" description="">
+		<ProcessInstance id="" description="">
+		</ProcessInstance>
+		<ProcessInstance id="" description="">
+		</ProcessInstance>
+	</Process>
+</WorkflowLog>

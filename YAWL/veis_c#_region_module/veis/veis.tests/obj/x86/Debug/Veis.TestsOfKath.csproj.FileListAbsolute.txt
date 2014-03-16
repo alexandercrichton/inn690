@@ -1,0 +1,15 @@
+F:\ICU_from_Kath\Veis\Veis.Tests\bin\Debug\Veis.dll.config
+F:\ICU_from_Kath\Veis\Veis.Tests\bin\Debug\Tests.exe
+F:\ICU_from_Kath\Veis\Veis.Tests\bin\Debug\Tests.pdb
+F:\ICU_from_Kath\Veis\Veis.Tests\bin\Debug\MySql.Data.dll
+F:\ICU_from_Kath\Veis\Veis.Tests\bin\Debug\Veis.Data.dll
+F:\ICU_from_Kath\Veis\Veis.Tests\bin\Debug\Veis.dll
+F:\ICU_from_Kath\Veis\Veis.Tests\bin\Debug\Spark.dll
+F:\ICU_from_Kath\Veis\Veis.Tests\bin\Debug\AIMLbot.dll
+F:\ICU_from_Kath\Veis\Veis.Tests\bin\Debug\OpenMetaverseTypes.dll
+F:\ICU_from_Kath\Veis\Veis.Tests\bin\Debug\Veis.Data.pdb
+F:\ICU_from_Kath\Veis\Veis.Tests\bin\Debug\Veis.pdb
+F:\ICU_from_Kath\Veis\Veis.Tests\bin\Debug\OpenMetaverseTypes.xml
+F:\ICU_from_Kath\Veis\Veis.Tests\obj\x86\Debug\ResolveAssemblyReference.cache
+F:\ICU_from_Kath\Veis\Veis.Tests\obj\x86\Debug\Tests.exe
+F:\ICU_from_Kath\Veis\Veis.Tests\obj\x86\Debug\Tests.pdb

@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<specificationSet xmlns="http://www.yawlfoundation.org/yawlschema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.2" xsi:schemaLocation="http://www.yawlfoundation.org/yawlschema http://www.yawlfoundation.org/yawlschema/YAWL_Schema2.2.xsd">
+  <specification uri="Warehouse">
+    <metaData>
+      <creator>nardellk</creator>
+      <description>No description has been given.</description>
+      <version>0.13</version>
+      <persistent>false</persistent>
+      <identifier>UID_f32151b6-06c9-437f-bcd0-532b6d1bbdb8</identifier>
+    </metaData>
+    <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+    <decomposition id="New_Net_1" isRootNet="true" xsi:type="NetFactsType">
+      <processControlElements>
+        <inputCondition id="InputCondition">
+          <flowsInto>
+            <nextElementRef id="Log_Order" />
+          </flowsInto>
+        </inputCondition>
+        <task id="Log_Order">
+          <name>Log Order</name>
+          <flowsInto>
+            <nextElementRef id="Move_Truck_to_Delivery_Bay" />
+          </flowsInto>
+          <flowsInto>
+            <nextElementRef id="Process_Order" />
+          </flowsInto>
+          <join code="xor" />
+          <split code="and" />
+          <resourcing>
+            <offer initiator="system">
+              <distributionSet>
+                <initialSet>
+                  <participant>PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46</participant>
+                </initialSet>
+              </distributionSet>
+            </offer>
+            <allocate initiator="user" />
+            <start initiator="user" />
+          </resourcing>
+          <decomposesTo id="Log_Order" />
+        </task>
+        <task id="Move_Truck_to_Delivery_Bay">
+          <name>Move Truck to Delivery Bay</name>
+          <flowsInto>
+            <nextElementRef id="Unload_Truck" />
+          </flowsInto>
+          <join code="xor" />
+          <split code="and" />
+          <resourcing>
+            <offer initiator="system">
+              <distributionSet>
+                <initialSet>
+                  <participant>PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46</participant>
+                </initialSet>
+                <constraints>
+                  <constraint>
+                    <name>PiledExecution</name>
+                  </constraint>
+                </constraints>
+              </distributionSet>
+            </offer>
+            <allocate initiator="user" />
+            <start initiator="user" />
+            <privileges>
+              <privilege>
+                <name>canPile</name>
+                <allowall>true</allowall>
+              </privilege>
+            </privileges>
+          </resourcing>
+          <decomposesTo id="Move_Truck_to_Delivery_Bay" />
+        </task>
+        <task id="Process_Order">
+          <name>Process Order</name>
+          <flowsInto>
+            <nextElementRef id="Move_Truck_to_Exit" />
+          </flowsInto>
+          <join code="xor" />
+          <split code="and" />
+          <resourcing>
+            <offer initiator="system">
+              <distributionSet>
+                <initialSet>
+                  <participant>PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46</participant>
+                </initialSet>
+                <constraints>
+                  <constraint>
+                    <name>PiledExecution</name>
+                  </constraint>
+                </constraints>
+              </distributionSet>
+            </offer>
+            <allocate initiator="user" />
+            <start initiator="user" />
+            <privileges>
+              <privilege>
+                <name>canPile</name>
+                <allowall>true</allowall>
+              </privilege>
+            </privileges>
+          </resourcing>
+          <decomposesTo id="Process_Order" />
+        </task>
+        <task id="Unload_Truck">
+          <name>Unload Truck</name>
+          <flowsInto>
+            <nextElementRef id="Move_Truck_to_Exit" />
+          </flowsInto>
+          <join code="xor" />
+          <split code="and" />
+          <resourcing>
+            <offer initiator="system">
+              <distributionSet>
+                <initialSet>
+                  <participant>PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46</participant>
+                </initialSet>
+                <constraints>
+                  <constraint>
+                    <name>PiledExecution</name>
+                  </constraint>
+                </constraints>
+              </distributionSet>
+            </offer>
+            <allocate initiator="user" />
+            <start initiator="user" />
+            <privileges>
+              <privilege>
+                <name>canPile</name>
+                <allowall>true</allowall>
+              </privilege>
+            </privileges>
+          </resourcing>
+          <decomposesTo id="Unload_Truck" />
+        </task>
+        <task id="Move_Truck_to_Exit">
+          <name>Move Truck to Exit</name>
+          <flowsInto>
+            <nextElementRef id="OutputCondition" />
+          </flowsInto>
+          <join code="and" />
+          <split code="and" />
+          <resourcing>
+            <offer initiator="system">
+              <distributionSet>
+                <initialSet>
+                  <participant>PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46</participant>
+                </initialSet>
+              </distributionSet>
+            </offer>
+            <allocate initiator="user" />
+            <start initiator="user" />
+          </resourcing>
+          <decomposesTo id="Move_Truck_to_Exit" />
+        </task>
+        <outputCondition id="OutputCondition" />
+      </processControlElements>
+    </decomposition>
+    <decomposition id="Unload_Truck" xsi:type="WebServiceGatewayFactsType">
+      <outputParam>
+        <index>0</index>
+        <name>Tasks</name>
+        <type>string</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+        <defaultValue>Unload_the_truck</defaultValue>
+      </outputParam>
+      <outputParam>
+        <index>1</index>
+        <name>Goal</name>
+        <type>string</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+        <defaultValue>Truck:truckLoadStatus;Unloaded</defaultValue>
+      </outputParam>
+      <externalInteraction>manual</externalInteraction>
+    </decomposition>
+    <decomposition id="Process_Order" xsi:type="WebServiceGatewayFactsType">
+      <outputParam>
+        <index>0</index>
+        <name>Tasks</name>
+        <type>string</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+        <defaultValue>Use_the_GRO_computer_to_process_order</defaultValue>
+      </outputParam>
+      <outputParam>
+        <index>1</index>
+        <name>Goal</name>
+        <type>string</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+        <defaultValue>GROComputer:orderProcessed;True</defaultValue>
+      </outputParam>
+      <externalInteraction>manual</externalInteraction>
+    </decomposition>
+    <decomposition id="Move_Truck_to_Delivery_Bay" xsi:type="WebServiceGatewayFactsType">
+      <outputParam>
+        <index>0</index>
+        <name>Tasks</name>
+        <type>string</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+        <defaultValue>Move_truck_to_delivery_bay_05</defaultValue>
+      </outputParam>
+      <outputParam>
+        <index>1</index>
+        <name>Goal</name>
+        <type>string</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+        <defaultValue>Truck:truckAt;Bay05</defaultValue>
+      </outputParam>
+      <externalInteraction>manual</externalInteraction>
+    </decomposition>
+    <decomposition id="Move_Truck_to_Exit" xsi:type="WebServiceGatewayFactsType">
+      <outputParam>
+        <index>0</index>
+        <name>Tasks</name>
+        <type>string</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+        <defaultValue>Move_Truck_to_Exit</defaultValue>
+      </outputParam>
+      <outputParam>
+        <index>1</index>
+        <name>Goal</name>
+        <type>string</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+        <defaultValue>Truck:truckAt;Exit</defaultValue>
+      </outputParam>
+      <externalInteraction>manual</externalInteraction>
+    </decomposition>
+    <decomposition id="Log_Order" xsi:type="WebServiceGatewayFactsType">
+      <outputParam>
+        <index>0</index>
+        <name>Tasks</name>
+        <type>string</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+        <defaultValue>Log_order_on_GRO_Computer</defaultValue>
+      </outputParam>
+      <outputParam>
+        <index>1</index>
+        <name>Goal</name>
+        <type>string</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+        <defaultValue>GROComputer:orderLogged;True</defaultValue>
+      </outputParam>
+      <externalInteraction>manual</externalInteraction>
+    </decomposition>
+  </specification>
+  <layout>
+    <locale language="en" country="US" />
+    <specification id="Warehouse">
+      <size w="103" h="28" />
+      <net id="New_Net_1">
+        <bounds x="0" y="-18" w="1195" h="493" />
+        <frame x="2" y="25" w="1213" h="446" />
+        <viewport x="0" y="0" w="1213" h="446" />
+        <vertex id="InputCondition">
+          <attributes>
+            <bounds x="128.0" y="286.0" w="32.0" h="32.0" />
+          </attributes>
+        </vertex>
+        <vertex id="OutputCondition">
+          <attributes>
+            <bounds x="1040.0" y="282.0" w="32.0" h="32.0" />
+          </attributes>
+        </vertex>
+        <container id="Move_Truck_to_Exit">
+          <vertex>
+            <attributes>
+              <bounds x="816.0" y="282.0" w="32.0" h="32.0" />
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="780.0" y="316.0" w="97.0" h="41.0" />
+            </attributes>
+          </label>
+          <decorator type="AND_join">
+            <position>12</position>
+            <attributes>
+              <bounds x="806.0" y="282.0" w="11.0" h="32.0" />
+              <size w="11" h="32" />
+            </attributes>
+          </decorator>
+        </container>
+        <container id="Process_Order">
+          <vertex>
+            <attributes>
+              <bounds x="556.0" y="400.0" w="32.0" h="32.0" />
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="524.0" y="432.0" w="97.0" h="41.0" />
+            </attributes>
+          </label>
+        </container>
+        <container id="Log_Order">
+          <vertex>
+            <attributes>
+              <bounds x="292.0" y="286.0" w="32.0" h="32.0" />
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="264.0" y="320.0" w="96.0" h="20.0" />
+            </attributes>
+          </label>
+          <decorator type="AND_split">
+            <position>13</position>
+            <attributes>
+              <bounds x="323.0" y="286.0" w="11.0" h="32.0" />
+              <size w="11" h="32" />
+            </attributes>
+          </decorator>
+        </container>
+        <container id="Unload_Truck">
+          <vertex>
+            <attributes>
+              <bounds x="660.0" y="212.0" w="32.0" h="32.0" />
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="628.0" y="244.0" w="97.0" h="21.0" />
+            </attributes>
+          </label>
+        </container>
+        <container id="Move_Truck_to_Delivery_Bay">
+          <vertex>
+            <attributes>
+              <bounds x="464.0" y="214.0" w="32.0" h="32.0" />
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="432.0" y="248.0" w="97.0" h="61.0" />
+            </attributes>
+          </label>
+        </container>
+        <flow source="Move_Truck_to_Exit" target="OutputCondition">
+          <ports in="13" out="12" />
+          <attributes>
+            <lineStyle>11</lineStyle>
+            <points>
+              <value x="847.0" y="297.5" />
+              <value x="1040.0" y="297.5" />
+            </points>
+          </attributes>
+        </flow>
+        <flow source="InputCondition" target="Log_Order">
+          <ports in="13" out="12" />
+          <attributes>
+            <lineStyle>11</lineStyle>
+            <points>
+              <value x="159.0" y="301.5" />
+              <value x="292.0" y="301.5" />
+            </points>
+          </attributes>
+        </flow>
+        <flow source="Process_Order" target="Move_Truck_to_Exit">
+          <ports in="13" out="3" />
+          <attributes>
+            <lineStyle>11</lineStyle>
+            <points>
+              <value x="587.0" y="415.5" />
+              <value x="806.0" y="305.3" />
+            </points>
+          </attributes>
+        </flow>
+        <flow source="Log_Order" target="Process_Order">
+          <ports in="3" out="12" />
+          <attributes>
+            <lineStyle>11</lineStyle>
+            <points>
+              <value x="333.0" y="309.3" />
+              <value x="556.0" y="415.5" />
+            </points>
+          </attributes>
+        </flow>
+        <flow source="Unload_Truck" target="Move_Truck_to_Exit">
+          <ports in="13" out="2" />
+          <attributes>
+            <lineStyle>11</lineStyle>
+            <points>
+              <value x="691.0" y="227.5" />
+              <value x="806.0" y="297.5" />
+            </points>
+          </attributes>
+        </flow>
+        <flow source="Log_Order" target="Move_Truck_to_Delivery_Bay">
+          <ports in="1" out="12" />
+          <attributes>
+            <lineStyle>11</lineStyle>
+            <points>
+              <value x="333.0" y="293.8" />
+              <value x="464.0" y="229.5" />
+            </points>
+          </attributes>
+        </flow>
+        <flow source="Move_Truck_to_Delivery_Bay" target="Unload_Truck">
+          <ports in="13" out="12" />
+          <attributes>
+            <lineStyle>11</lineStyle>
+            <points>
+              <value x="495.0" y="229.5" />
+              <value x="660.0" y="227.5" />
+            </points>
+          </attributes>
+        </flow>
+      </net>
+    </specification>
+  </layout>
+</specificationSet>
+
+

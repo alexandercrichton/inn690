@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<aiml>
+<!-- Free software &copy; 2001-2003 ALICE A.I. Foundation. -->
+<!-- This program is open source code released under -->
+<!-- the terms of the GNU General Public License     -->
+<!-- as published by the Free Software Foundation.   -->
+<!-- Complies with AIML 1.01 Tag Set Specification -->
+<!-- as adopted by the ALICE A.I. Foundation.  -->
+<!-- Annotated Version updated September 2003 -->
+
+<category>
+	<pattern>WHERE ARE WE</pattern>
+	<template>We are at #%OPENSIM:LOCATION%#<think><set name="it"><set name="topic">Location</set></set></think>
+	</template>
+</category>
+
+<category>
+	<pattern>WHAT IS NEARBY</pattern>
+	<template>Lets see... #%OPENSIM:NEARBY_PARCEL_AREIS%# nearby in terms of Locations. In the immediate vacinity you'll find #%OPENSIM:PARCEL_OBJECTS%# closeby.<think><set name="it"><set name="topic">Location</set></set></think>
+	</template>
+</category>
+
+<category><pattern>WHATS NEARBY</pattern><template><srai>WHAT IS NEARBY</srai></template></category>
+<category><pattern>WHAT'S NEARBY</pattern><template><srai>WHAT IS NEARBY</srai></template></category>
+
+<category>
+	<pattern>DO YOU LIKE YAWL</pattern>
+	<template>
+		<think><set name="it"><set name="topic">YAWL</set></set></think>
+		<random>
+			<li>I really hate it. Its the worse software ever written. How could 2 comments every 150 lines be good software development? And the interfaces hardly work. It also likes to use 100% of my shared CPU time. I think its a virus but haven't managed to convince the AV yet.</li>
+			<li>*cough* Next topic?</li>
+		</random>
+	</template>
+</category>
+
+<category>
+	<pattern>NLP RELOAD</pattern>
+	<template>Reloading...#%OPENSIM:RELOAD_NLP%#...Done<think><set name="it"><set name="topic">Location</set></set></think>
+	</template>
+</category>
+
+<category><pattern>SIT ON THE *</pattern><template>#%OPENSIM:TASK:SIT:<star />%#</template></category>
+<category><pattern>SIT ON *</pattern><template>#%OPENSIM:TASK:SIT:<star />%#</template></category>
+
+<category><pattern>PLEASE GOTO *</pattern><template>#%OPENSIM:TASK:GOTO:<star />%#</template></category>
+<category><pattern>GOTO * PLEASE</pattern><template>#%OPENSIM:TASK:GOTO:<star />%#</template></category>
+<category><pattern>GOTO *</pattern><template>#%OPENSIM:TASK:GOTO:<star />%#</template></category>
+
+<category><pattern>PLEASE *</pattern><template>Since you asked so nicely, I'll try!#%OPENSIM:TASK:ANIMATE:<star />%#</template></category>
+
+</aiml>

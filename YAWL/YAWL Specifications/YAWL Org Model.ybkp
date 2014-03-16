@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<orgdata>
+  <participants>
+    <participant id="PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4">
+      <userid>edwinfahel</userid>
+      <password>qUqP5cyxm6YcTAhz05Hph5gvu9M=</password>
+      <firstname>Edwin</firstname>
+      <lastname>Fahel</lastname>
+      <description/>
+      <notes/>
+      <isAdministrator>false</isAdministrator>
+      <roles>
+        <role>RO-4a6f1bd8-e2e7-4b50-83d4-1111cfba1f9f</role>
+      </roles>
+      <positions>
+        <position>PO-80e23961-acf0-4e98-b8a7-4b4bc622f15f</position>
+      </positions>
+      <capabilities>
+        <capability>CA-fb975a26-be84-4fd9-850f-171ea35f429c</capability>
+      </capabilities>
+      <privileges>00000000</privileges>
+    </participant>
+    <participant id="PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46">
+      <userid>janiemay</userid>
+      <password>BgjEBUZi3ZAuExT35FDj6qgcEUM=</password>
+      <firstname>Janie</firstname>
+      <lastname>May</lastname>
+      <description/>
+      <notes/>
+      <isAdministrator>false</isAdministrator>
+      <roles>
+        <role>RO-81ddc8cb-74d9-4fc7-af58-2ee56cca79cf</role>
+      </roles>
+      <positions/>
+      <capabilities/>
+      <privileges>00000000</privileges>
+    </participant>
+  </participants>
+  <roles>
+    <role id="RO-4a6f1bd8-e2e7-4b50-83d4-1111cfba1f9f">
+      <name>doctor</name>
+      <description/>
+      <notes/>
+    </role>
+    <role id="RO-81ddc8cb-74d9-4fc7-af58-2ee56cca79cf">
+      <name>nurse</name>
+      <description/>
+      <notes/>
+    </role>
+  </roles>
+  <positions>
+    <position id="PO-0ea0a305-6fab-4a1e-9f34-0e4db2fc9c3a">
+      <title>Blood bank resident</title>
+      <positionid/>
+      <description/>
+      <notes/>
+    </position>
+    <position id="PO-a74143fd-16d4-4a48-8155-719f6f487bee">
+      <title>Interventional radiology fellow</title>
+      <positionid/>
+      <description/>
+      <notes/>
+    </position>
+    <position id="PO-80e23961-acf0-4e98-b8a7-4b4bc622f15f">
+      <title>Orthopaedic surgeon</title>
+      <positionid/>
+      <description/>
+      <notes/>
+    </position>
+  </positions>
+  <capabilities>
+    <capability id="CA-fb975a26-be84-4fd9-850f-171ea35f429c">
+      <name>TestCapability</name>
+      <description/>
+      <notes/>
+    </capability>
+  </capabilities>
+  <orggroups/>
+  <nonhumanresources/>
+  <nonhumancategories/>
+</orgdata>
+

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WorkflowLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="WorkflowLog.xsd" description="Test log for decision miner">
+	<Source program="name: , desc: , data: {program=none}">
+		<Data>
+			<Attribute name="program">name: , desc: , data: {program=none}</Attribute>
+		</Data>
+	</Source>
+	<Process id="0" description="">
+		<ProcessInstance id="" description="">
+			<AuditTrailEntry>
+				<data>
+					<Attribute name="Truck from">Bay 05</Attribute>
+					<Attribute name="Truck to">Entrance</Attribute>
+				</data>
+				<WorkflowModelElement>Move truck</WorkflowModelElement>
+				<EventType>complete</EventType>
+				<Originator>Truck</Originator>
+			</AuditTrailEntry>
+		</ProcessInstance>
+		<ProcessInstance id="" description="">
+			<AuditTrailEntry>
+				<data>
+					<Attribute name="Truck from">Entrance</Attribute>
+					<Attribute name="Truck to">Exit</Attribute>
+				</data>
+				<WorkflowModelElement>Move truck</WorkflowModelElement>
+				<EventType>complete</EventType>
+				<Originator>Truck</Originator>
+			</AuditTrailEntry>
+			<AuditTrailEntry>
+				<data>
+					<Attribute name="Truck from">Exit</Attribute>
+					<Attribute name="Truck to">Bay 05</Attribute>
+				</data>
+				<WorkflowModelElement>Move truck</WorkflowModelElement>
+				<EventType>complete</EventType>
+				<Originator>Truck</Originator>
+			</AuditTrailEntry>
+		</ProcessInstance>
+		<ProcessInstance id="" description="">
+		</ProcessInstance>
+		<ProcessInstance id="" description="">
+			<AuditTrailEntry>
+				<data>
+					<Attribute name="Truck from">Bay 05</Attribute>
+					<Attribute name="Truck to">Entrance</Attribute>
+				</data>
+				<WorkflowModelElement>Move truck</WorkflowModelElement>
+				<EventType>complete</EventType>
+				<Originator>Truck</Originator>
+			</AuditTrailEntry>
+		</ProcessInstance>
+		<ProcessInstance id="" description="">
+		</ProcessInstance>
+	</Process>
+</WorkflowLog>

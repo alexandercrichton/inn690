@@ -1,0 +1,21 @@
+Necessary OpenSim configuration changes in OpenSim.ini
+
+Ensure:
+[NPC]
+    ;# {Enabled} {} {Enable Non Player Character (NPC) facilities} {true false} false
+    Enabled = true
+	
+[XEngine]	
+    ;; Allow the user of mod* functions.  This allows a script to pass messages
+    ;; to a region module via the modSendCommand() function
+    ;; Default is false
+    AllowMODFunctions = true
+
+    ;# {AllowOSFunctions} {Enabled:true} {Allow OSFunctions? (DANGEROUS!)} {true false} false
+    ;; Allow the use of os* functions (some are dangerous)
+    AllowOSFunctions = true
+	
+	;# {OSFunctionThreatLevel} {Enabled:true AllowOSFunctions:true} {OSFunction threat level? (DANGEROUS!)} {None VeryLow Low Moderate High VeryHigh Severe} VeryLow
+    ;; Threat level to allow, one of None, VeryLow, Low, Moderate, High,
+    ;; VeryHigh, Severe
+    OSFunctionThreatLevel = VeryHigh

@@ -1,0 +1,37 @@
+body
+{
+	font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
+	background-color:#ABCFFC;
+}
+
+fieldset
+{
+	border: 2px solid #8080C0;
+	margin: 10px 10px;
+	background-color:#FFF;
+}
+
+legend
+{
+	border: 2px solid #8080C0;
+	padding: 2px 6px;
+	background-color:#FFF;
+	margin-left: 0px;
+	background-color:#DBEFF9
+}
+
+label
+{
+	font-size:0.9em;
+	float: left;
+	text-align: right;
+	padding:inherit;
+	margin-right: 0.5em;
+	margin-left: 0.5em;
+	display: block
+}
+
+input
+{
+	margin:5px 5px;
+}

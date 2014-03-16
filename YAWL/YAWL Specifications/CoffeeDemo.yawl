@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<specificationSet xmlns="http://www.yawlfoundation.org/yawlschema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.2" xsi:schemaLocation="http://www.yawlfoundation.org/yawlschema http://www.yawlfoundation.org/yawlschema/YAWL_Schema2.2.xsd">
+  <specification uri="CoffeeDemo">
+    <metaData>
+      <creator>Fortune</creator>
+      <description>No description has been given.</description>
+      <version>0.12</version>
+      <persistent>false</persistent>
+      <identifier>UID_f42b7886-ab25-4fd3-80d0-e15bce6137bc</identifier>
+    </metaData>
+    <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+    <decomposition id="New_Net_1" isRootNet="true" xsi:type="NetFactsType">
+      <processControlElements>
+        <inputCondition id="InputCondition">
+          <flowsInto>
+            <nextElementRef id="Move_The_Cup" />
+          </flowsInto>
+        </inputCondition>
+        <task id="Move_The_Cup">
+          <name>Move The Cup</name>
+          <flowsInto>
+            <nextElementRef id="Fill_The_Cup" />
+          </flowsInto>
+          <join code="xor" />
+          <split code="and" />
+          <resourcing>
+            <offer initiator="system">
+              <distributionSet>
+                <initialSet>
+                  <role>RO-81ddc8cb-74d9-4fc7-af58-2ee56cca79cf</role>
+                </initialSet>
+              </distributionSet>
+            </offer>
+            <allocate initiator="user" />
+            <start initiator="user" />
+          </resourcing>
+          <decomposesTo id="Move_The_Cup" />
+        </task>
+        <task id="Fill_The_Cup">
+          <name>Fill The Cup</name>
+          <flowsInto>
+            <nextElementRef id="OutputCondition" />
+          </flowsInto>
+          <join code="xor" />
+          <split code="and" />
+          <resourcing>
+            <offer initiator="system">
+              <distributionSet>
+                <initialSet>
+                  <role>RO-81ddc8cb-74d9-4fc7-af58-2ee56cca79cf</role>
+                </initialSet>
+              </distributionSet>
+              <familiarParticipant taskID="Move_The_Cup" />
+            </offer>
+            <allocate initiator="user" />
+            <start initiator="user" />
+          </resourcing>
+          <decomposesTo id="Fill_The_Cup" />
+        </task>
+        <outputCondition id="OutputCondition" />
+      </processControlElements>
+    </decomposition>
+    <decomposition id="Fill_The_Cup" xsi:type="WebServiceGatewayFactsType">
+      <outputParam>
+        <index>0</index>
+        <name>Tasks</name>
+        <type>string</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+        <defaultValue>Fill_cup_from_the_machine</defaultValue>
+      </outputParam>
+      <outputParam>
+        <index>1</index>
+        <name>Goal</name>
+        <type>string</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+        <defaultValue>CoffeeCup:cupContains;Coffee</defaultValue>
+      </outputParam>
+      <externalInteraction>manual</externalInteraction>
+    </decomposition>
+    <decomposition id="Move_The_Cup" xsi:type="WebServiceGatewayFactsType">
+      <outputParam>
+        <index>0</index>
+        <name>Tasks</name>
+        <type>string</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+        <defaultValue>Move_cup_to_machine</defaultValue>
+      </outputParam>
+      <outputParam>
+        <index>1</index>
+        <name>Goal</name>
+        <type>string</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+        <defaultValue>CoffeeCup:cupAt;Machine</defaultValue>
+      </outputParam>
+      <externalInteraction>manual</externalInteraction>
+    </decomposition>
+  </specification>
+  <layout>
+    <locale language="en" country="US" />
+    <specification id="CoffeeDemo">
+      <size w="103" h="28" />
+      <net id="New_Net_1">
+        <bounds x="0" y="0" w="788" h="680" />
+        <frame x="2" y="25" w="791" h="683" />
+        <viewport x="0" y="0" w="791" h="683" />
+        <vertex id="InputCondition">
+          <attributes>
+            <bounds x="340.0" y="252.0" w="32.0" h="32.0" />
+          </attributes>
+        </vertex>
+        <vertex id="OutputCondition">
+          <attributes>
+            <bounds x="716.0" y="252.0" w="32.0" h="32.0" />
+          </attributes>
+        </vertex>
+        <container id="Fill_The_Cup">
+          <vertex>
+            <attributes>
+              <bounds x="600.0" y="252.0" w="32.0" h="32.0" />
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="568.0" y="284.0" w="96.0" h="20.0" />
+            </attributes>
+          </label>
+        </container>
+        <container id="Move_The_Cup">
+          <vertex>
+            <attributes>
+              <bounds x="452.0" y="252.0" w="32.0" h="32.0" />
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="420.0" y="284.0" w="96.0" h="40.0" />
+            </attributes>
+          </label>
+        </container>
+        <flow source="Fill_The_Cup" target="OutputCondition">
+          <ports in="13" out="12" />
+          <attributes>
+            <lineStyle>11</lineStyle>
+            <points>
+              <value x="631.0" y="267.5" />
+              <value x="716.0" y="267.5" />
+            </points>
+          </attributes>
+        </flow>
+        <flow source="InputCondition" target="Move_The_Cup">
+          <ports in="13" out="12" />
+          <attributes>
+            <lineStyle>11</lineStyle>
+            <points>
+              <value x="371.0" y="267.5" />
+              <value x="452.0" y="267.5" />
+            </points>
+          </attributes>
+        </flow>
+        <flow source="Move_The_Cup" target="Fill_The_Cup">
+          <ports in="13" out="12" />
+          <attributes>
+            <lineStyle>11</lineStyle>
+            <points>
+              <value x="483.0" y="267.5" />
+              <value x="600.0" y="267.5" />
+            </points>
+          </attributes>
+        </flow>
+      </net>
+    </specification>
+  </layout>
+</specificationSet>
+
+

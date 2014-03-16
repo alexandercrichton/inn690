@@ -1,0 +1,608 @@
+SEND: Aloha, type HELP for instruction.
+SEND: Aloha, type HELP for instruction.
+SEND: Aloha, type HELP for instruction.
+SEND: Aloha, type HELP for instruction.
+SEND: Aloha, type HELP for instruction.
+SEND: Aloha, type HELP for instruction.
+SEND: Aloha, type HELP for instruction.
+SEND: Aloha, type HELP for instruction.
+SEND: Aloha, type HELP for instruction.
+SEND: Aloha, type HELP for instruction.
+SEND: Aloha, type HELP for instruction.
+SEND: Aloha, type HELP for instruction.
+SEND: Aloha, type HELP for instruction.
+SEND: Aloha, type HELP for instruction.
+SEND: Aloha, type HELP for instruction.
+SEND: Aloha, type HELP for instruction.
+SEND: Aloha, type HELP for instruction.
+SEND: Aloha, type HELP for instruction.
+SEND: Aloha, type HELP for instruction.
+SEND: Aloha, type HELP for instruction.
+SEND: Aloha, type HELP for instruction.
+SEND: Aloha, type HELP for instruction.
+SEND: Aloha, type HELP for instruction.
+SEND: Aloha, type HELP for instruction.
+RECV: Help
+SEND: Veis socket server listen on port 4444
+SEND:    Help
+SEND:    Stat
+SEND:    Quit or Exit
+SEND:    Shutdown
+SEND: 	Close the client connection, then shutdown the server.
+SEND:    LaunchCase {specificationID}
+SEND:    CancelCase {caseID}
+SEND:    CancelAllCases {caseID}
+SEND:    SyncAll
+SEND:    GetAllSpecifications
+SEND:    GetCases
+SEND:    GetActiveAgents
+SEND:    GetAllAgents
+SEND:    GetTaskQueue {queueId} {participant}
+SEND:    WorkItemAction {action} {agentId} {taskId}
+SEND: 	Action: Complete, Suspend, Unsuspend, Delegate, Accept
+SEND: Aloha, type HELP for instruction.
+RECV: Stat
+SEND: Veis interface internal cache: 
+	Active agents:      1(Janie May)
+	Agents:             2(Janie May,Edwin Fahel)
+	Running cases:      1(CarAccident)
+	All specifications: 1(CarAccident)
+	All work items:     1(Receive_Patient)
+	Live connections:   1
+
+SEND: Aloha, type HELP for instruction.
+RECV: Stat
+SEND: Veis interface internal cache: 
+	Active agents:      1(Janie May)
+	Agents:             2(Janie May,Edwin Fahel)
+	Running cases:      1(CarAccident)
+	All specifications: 1(CarAccident)
+	All work items:     1(Receive_Patient)
+	Live connections:   1
+
+SEND: Aloha, type HELP for instruction.
+RECV: help
+SEND: Veis socket server listen on port 4444
+SEND:    Help
+SEND:    Stat
+SEND:    Quit or Exit
+SEND:    Shutdown
+SEND: 	Close the client connection, then shutdown the server.
+SEND:    LaunchCase {specificationID}
+SEND:    CancelCase {caseID}
+SEND:    CancelAllCases {caseID}
+SEND:    SyncAll
+SEND:    GetAllSpecifications
+SEND:    GetCases
+SEND:    GetActiveAgents
+SEND:    GetAllAgents
+SEND:    GetTaskQueue {queueId} {participant}
+SEND:    WorkItemAction {action} {agentId} {taskId}
+SEND: 	Action: Complete, Suspend, Unsuspend, Delegate, Accept
+SEND: Aloha, type HELP for instruction.
+RECV: Shutdown
+SEND: Server is shutting down...
+SEND: Aloha, type HELP for instruction.
+RECV: EndSession
+SEND: Aloha, type HELP for instruction.
+RECV: EndSession
+SEND: Aloha, type HELP for instruction.
+RECV: help
+SEND: Veis socket server listen on port 4444
+SEND:    Help
+SEND:    Stat
+SEND:    Quit or Exit
+SEND:    Shutdown
+SEND: 	Close the client connection, then shutdown the server.
+SEND:    LaunchCase {specificationID}
+SEND:    CancelCase {caseID}
+SEND:    CancelAllCases {caseID}
+SEND:    SyncAll
+SEND:    GetAllSpecifications
+SEND:    GetCases
+SEND:    GetActiveAgents
+SEND:    GetAllAgents
+SEND:    GetTaskQueue {queueId} {participant}
+SEND:    WorkItemAction {action} {agentId} {taskId}
+SEND: 	Action: Complete, Suspend, Unsuspend, Delegate, Accept
+SEND: Aloha, type HELP for instruction.
+RECV: help
+SEND: Veis socket server listen on port 4444
+SEND:    Help
+SEND:    Stat
+SEND:    Quit or Exit
+SEND:    Shutdown
+SEND: 	Close the client connection, then shutdown the server.
+SEND:    LaunchCase {specificationID}
+SEND:    CancelCase {caseID}
+SEND:    CancelAllCases {caseID}
+SEND:    SyncAll
+SEND:    GetAllSpecifications
+SEND:    GetCases
+SEND:    GetActiveAgents
+SEND:    GetAllAgents
+SEND:    GetTaskQueue {queueId} {participant}
+SEND:    WorkItemAction {action} {agentId} {taskId}
+SEND: 	Action: Complete, Suspend, Unsuspend, Delegate, Accept
+SEND: Aloha, type HELP for instruction.
+RECV: help
+SEND: Veis socket server listen on port 4444
+SEND:    Help
+SEND:    Stat
+SEND:    Quit or Exit
+SEND:    Shutdown
+SEND: 	Close the client connection, then shutdown the server.
+SEND:    LaunchCase {specificationID}
+SEND:    CancelCase {caseID}
+SEND:    CancelAllCases {caseID}
+SEND:    SyncAll
+SEND:    GetAllSpecifications
+SEND:    GetCases
+SEND:    GetActiveAgents
+SEND:    GetAllAgents
+SEND:    GetTaskQueue {queueId} {participant}
+SEND:    WorkItemAction {action} {agentId} {taskId}
+SEND: 	Action: Complete, Suspend, Unsuspend, Delegate, Accept
+SEND: Aloha, type HELP for instruction.
+RECV: help
+SEND: Veis socket server listen on port 4444
+SEND:    Help
+SEND:    Stat
+SEND:    Quit or Exit
+SEND:    Shutdown
+SEND: 	Close the client connection, then shutdown the server.
+SEND:    LaunchCase {specificationID}
+SEND:    CancelCase {caseID}
+SEND:    CancelAllCases {caseID}
+SEND:    SyncAll
+SEND:    GetAllSpecifications
+SEND:    GetCases
+SEND:    GetActiveAgents
+SEND:    GetAllAgents
+SEND:    GetTaskQueue {queueId} {participant}
+SEND:    WorkItemAction {action} {agentId} {taskId}
+SEND: 	Action: Complete, Suspend, Unsuspend, Delegate, Accept
+SEND: Aloha, type HELP for instruction.
+RECV: help
+SEND: Veis socket server listen on port 4444
+SEND:    Help
+SEND:    Stat
+SEND:    Quit or Exit
+SEND:    Shutdown
+SEND: 	Close the client connection, then shutdown the server.
+SEND:    LaunchCase {specificationID}
+SEND:    CancelCase {caseID}
+SEND:    CancelAllCases {caseID}
+SEND:    SyncAll
+SEND:    GetAllSpecifications
+SEND:    GetCases
+SEND:    GetActiveAgents
+SEND:    GetAllAgents
+SEND:    GetTaskQueue {queueId} {participant}
+SEND:    WorkItemAction {action} {agentId} {taskId}
+SEND: 	Action: Complete, Suspend, Unsuspend, Delegate, Accept
+SEND: Aloha, type HELP for instruction.
+RECV: help
+SEND: Veis socket server listen on port 4444
+SEND:    Help
+SEND:    Stat
+SEND:    Quit or Exit
+SEND:    Shutdown
+SEND: 	Close the client connection, then shutdown the server.
+SEND:    LaunchCase {specificationID}
+SEND:    CancelCase {caseID}
+SEND:    CancelAllCases {caseID}
+SEND:    SyncAll
+SEND:    GetAllSpecifications
+SEND:    GetCases
+SEND:    GetActiveAgents
+SEND:    GetAllAgents
+SEND:    GetTaskQueue {queueId} {participant}
+SEND:    WorkItemAction {action} {agentId} {taskId}
+SEND: 	Action: Complete, Suspend, Unsuspend, Delegate, Accept
+SEND: Aloha, type HELP for instruction.
+RECV: help
+SEND: Veis socket server listen on port 4444
+SEND:    Help
+SEND:    Stat
+SEND:    Quit or Exit
+SEND:    Shutdown
+SEND: 	Close the client connection, then shutdown the server.
+SEND:    LaunchCase {specificationID}
+SEND:    CancelCase {caseID}
+SEND:    CancelAllCases {caseID}
+SEND:    SyncAll
+SEND:    GetAllSpecifications
+SEND:    GetCases
+SEND:    GetActiveAgents
+SEND:    GetAllAgents
+SEND:    GetTaskQueue {queueId} {participant}
+SEND:    WorkItemAction {action} {agentId} {taskId}
+SEND: 	Action: Complete, Suspend, Unsuspend, Delegate, Accept
+SEND: Aloha, type HELP for instruction.
+RECV: help
+SEND: Veis socket server listen on port 4444
+SEND:    Help
+SEND:    Stat
+SEND:    Quit or Exit
+SEND:    Shutdown
+SEND: 	Close the client connection, then shutdown the server.
+SEND:    LaunchCase {specificationID}
+SEND:    CancelCase {caseID}
+SEND:    CancelAllCases {caseID}
+SEND:    SyncAll
+SEND:    GetAllSpecifications
+SEND:    GetCases
+SEND:    GetActiveAgents
+SEND:    GetAllAgents
+SEND:    GetTaskQueue {queueId} {participant}
+SEND:    WorkItemAction {action} {agentId} {taskId}
+SEND: 	Action: Complete, Suspend, Unsuspend, Delegate, Accept
+SEND: Aloha, type HELP for instruction.
+RECV: help
+SEND: Veis socket server listen on port 4444
+SEND:    Help
+SEND:    Stat
+SEND:    Quit or Exit
+SEND:    Shutdown
+SEND: 	Close the client connection, then shutdown the server.
+SEND:    LaunchCase {specificationID}
+SEND:    CancelCase {caseID}
+SEND:    CancelAllCases {caseID}
+SEND:    SyncAll
+SEND:    GetAllSpecifications
+SEND:    GetCases
+SEND:    GetActiveAgents
+SEND:    GetAllAgents
+SEND:    GetTaskQueue {queueId} {participant}
+SEND:    WorkItemAction {action} {agentId} {taskId}
+SEND: 	Action: Complete, Suspend, Unsuspend, Delegate, Accept
+SEND: Aloha, type HELP for instruction.
+RECV: help
+SEND: Veis socket server listen on port 4444
+SEND:    Help
+SEND:    Stat
+SEND:    Quit or Exit
+SEND:    Shutdown
+SEND: 	Close the client connection, then shutdown the server.
+SEND:    LaunchCase {specificationID}
+SEND:    CancelCase {caseID}
+SEND:    CancelAllCases {caseID}
+SEND:    SyncAll
+SEND:    GetAllSpecifications
+SEND:    GetCases
+SEND:    GetActiveAgents
+SEND:    GetAllAgents
+SEND:    GetTaskQueue {queueId} {participant}
+SEND:    WorkItemAction {action} {agentId} {taskId}
+SEND: 	Action: Complete, Suspend, Unsuspend, Delegate, Accept
+RECV: endsession
+SEND: Aloha, type HELP for instruction.
+RECV: help
+SEND: Veis socket server listen on port 4444
+SEND:    Help
+SEND:    Stat
+SEND:    Quit or Exit
+SEND:    Shutdown
+SEND: 	Close the client connection, then shutdown the server.
+SEND:    LaunchCase {specificationID}
+SEND:    CancelCase {caseID}
+SEND:    CancelAllCases {caseID}
+SEND:    SyncAll
+SEND:    GetAllSpecifications
+SEND:    GetCases
+SEND:    GetActiveAgents
+SEND:    GetAllAgents
+SEND:    GetTaskQueue {queueId} {participant}
+SEND:    WorkItemAction {action} {agentId} {taskId}
+SEND: 	Action: Complete, Suspend, Unsuspend, Delegate, Accept
+RECV: endsession
+SEND: Aloha, type HELP for instruction.
+RECV: help
+SEND: Veis socket server listen on port 4444
+SEND:    Help
+SEND:    Stat
+SEND:    Quit or Exit
+SEND:    Shutdown
+SEND: 	Close the client connection, then shutdown the server.
+SEND:    LaunchCase {specificationID}
+SEND:    CancelCase {caseID}
+SEND:    CancelAllCases {caseID}
+SEND:    SyncAll
+SEND:    GetAllSpecifications
+SEND:    GetCases
+SEND:    GetActiveAgents
+SEND:    GetAllAgents
+SEND:    GetTaskQueue {queueId} {participant}
+SEND:    WorkItemAction {action} {agentId} {taskId}
+SEND: 	Action: Complete, Suspend, Unsuspend, Delegate, Accept
+RECV: endsession
+SEND: Aloha, type HELP for instruction.
+RECV: help
+SEND: Veis socket server listen on port 4444
+SEND:    Help
+SEND:    Stat
+SEND:    Quit or Exit
+SEND:    Shutdown
+SEND: 	Close the client connection, then shutdown the server.
+SEND:    LaunchCase {specificationID}
+SEND:    CancelCase {caseID}
+SEND:    CancelAllCases {caseID}
+SEND:    SyncAll
+SEND:    GetAllSpecifications
+SEND:    GetCases
+SEND:    GetActiveAgents
+SEND:    GetAllAgents
+SEND:    GetTaskQueue {queueId} {participant}
+SEND:    WorkItemAction {action} {agentId} {taskId}
+SEND: 	Action: Complete, Suspend, Unsuspend, Delegate, Accept
+RECV: endsession
+SEND: Aloha, type HELP for instruction.
+RECV: help
+SEND: Veis socket server listen on port 4444
+SEND:    Help
+SEND:    Stat
+SEND:    Quit or Exit
+SEND:    Shutdown
+SEND: 	Close the client connection, then shutdown the server.
+SEND:    LaunchCase {specificationID}
+SEND:    CancelCase {caseID}
+SEND:    CancelAllCases {caseID}
+SEND:    SyncAll
+SEND:    GetAllSpecifications
+SEND:    GetCases
+SEND:    GetActiveAgents
+SEND:    GetAllAgents
+SEND:    GetTaskQueue {queueId} {participant}
+SEND:    WorkItemAction {action} {agentId} {taskId}
+SEND: 	Action: Complete, Suspend, Unsuspend, Delegate, Accept
+RECV: endsession
+SEND: Aloha, type HELP for instruction.
+RECV: help
+SEND: Veis socket server listen on port 4444
+SEND:    Help
+SEND:    Stat
+SEND:    Quit or Exit
+SEND:    Shutdown
+SEND: 	Close the client connection, then shutdown the server.
+SEND:    LaunchCase {specificationID}
+SEND:    CancelCase {caseID}
+SEND:    CancelAllCases {caseID}
+SEND:    SyncAll
+SEND:    GetAllSpecifications
+SEND:    GetCases
+SEND:    GetActiveAgents
+SEND:    GetAllAgents
+SEND:    GetTaskQueue {queueId} {participant}
+SEND:    WorkItemAction {action} {agentId} {taskId}
+SEND: 	Action: Complete, Suspend, Unsuspend, Delegate, Accept
+SEND: Aloha, type HELP for instruction.
+RECV: help
+SEND: Veis socket server listen on port 4444
+SEND:    Help
+SEND:    Stat
+SEND:    Quit or Exit
+SEND:    Shutdown
+SEND: 	Close the client connection, then shutdown the server.
+SEND:    LaunchCase {specificationID}
+SEND:    CancelCase {caseID}
+SEND:    CancelAllCases {caseID}
+SEND:    SyncAll
+SEND:    GetAllSpecifications
+SEND:    GetCases
+SEND:    GetActiveAgents
+SEND:    GetAllAgents
+SEND:    GetTaskQueue {queueId} {participant}
+SEND:    WorkItemAction {action} {agentId} {taskId}
+SEND: 	Action: Complete, Suspend, Unsuspend, Delegate, Accept
+SEND: Aloha, type HELP for instruction.
+RECV: help
+SEND: Veis socket server listen on port 4444
+SEND:    Help
+SEND:    Stat
+SEND:    Quit or Exit
+SEND:    Shutdown
+SEND: 	Close the client connection, then shutdown the server.
+SEND:    LaunchCase {specificationID}
+SEND:    CancelCase {caseID}
+SEND:    CancelAllCases {caseID}
+SEND:    SyncAll
+SEND:    GetAllSpecifications
+SEND:    GetCases
+SEND:    GetActiveAgents
+SEND:    GetAllAgents
+SEND:    GetTaskQueue {queueId} {participant}
+SEND:    WorkItemAction {action} {agentId} {taskId}
+SEND: 	Action: Complete, Suspend, Unsuspend, Delegate, Accept
+SEND: Aloha, type HELP for instruction.
+RECV: help
+SEND: Veis socket server listen on port 4444
+SEND:    Help
+SEND:    Stat
+SEND:    Quit or Exit
+SEND:    Shutdown
+SEND: 	Close the client connection, then shutdown the server.
+SEND:    LaunchCase {specificationID}
+SEND:    CancelCase {caseID}
+SEND:    CancelAllCases {caseID}
+SEND:    SyncAll
+SEND:    GetAllSpecifications
+SEND:    GetCases
+SEND:    GetActiveAgents
+SEND:    GetAllAgents
+SEND:    GetTaskQueue {queueId} {participant}
+SEND:    WorkItemAction {action} {agentId} {taskId}
+SEND: 	Action: Complete, Suspend, Unsuspend, Delegate, Accept
+SEND: Aloha, type HELP for instruction.
+RECV: help
+SEND: Veis socket server listen on port 4444
+SEND:    Help
+SEND:    Stat
+SEND:    Quit or Exit
+SEND:    Shutdown
+SEND: 	Close the client connection, then shutdown the server.
+SEND:    LaunchCase {specificationID}
+SEND:    CancelCase {caseID}
+SEND:    CancelAllCases {caseID}
+SEND:    SyncAll
+SEND:    GetAllSpecifications
+SEND:    GetCases
+SEND:    GetActiveAgents
+SEND:    GetAllAgents
+SEND:    GetTaskQueue {queueId} {participant}
+SEND:    WorkItemAction {action} {agentId} {taskId}
+SEND: 	Action: Complete, Suspend, Unsuspend, Delegate, Accept
+RECV: text
+SEND: 
+Unknown command: text. Type HELP for instruction.
+SEND: Aloha, type HELP for instruction.
+RECV: help
+SEND: Veis socket server listen on port 4444
+SEND:    Help
+SEND:    Stat
+SEND:    Quit or Exit
+SEND:    Shutdown
+SEND: 	Close the client connection, then shutdown the server.
+SEND:    LaunchCase {specificationID}
+SEND:    CancelCase {caseID}
+SEND:    CancelAllCases {caseID}
+SEND:    SyncAll
+SEND:    GetAllSpecifications
+SEND:    GetCases
+SEND:    GetActiveAgents
+SEND:    GetAllAgents
+SEND:    GetTaskQueue {queueId} {participant}
+SEND:    WorkItemAction {action} {agentId} {taskId}
+SEND: 	Action: Complete, Suspend, Unsuspend, Delegate, Accept
+RECV: e
+SEND: 
+Unknown command: e. Type HELP for instruction.
+RECV: exit
+SEND: Aloha, type HELP for instruction.
+RECV: Help
+SEND: Veis socket server listen on port 4444
+SEND:    Help
+SEND:    Stat
+SEND:    Quit or Exit
+SEND:    Shutdown
+SEND: 	Close the client connection, then shutdown the server.
+SEND:    LaunchCase {specificationID}
+SEND:    CancelCase {caseID}
+SEND:    CancelAllCases {caseID}
+SEND:    SyncAll
+SEND:    GetAllSpecifications
+SEND:    GetCases
+SEND:    GetActiveAgents
+SEND:    GetAllAgents
+SEND:    GetTaskQueue {queueId} {participant}
+SEND:    WorkItemAction {action} {agentId} {taskId}
+SEND: 	Action: Complete, Suspend, Unsuspend, Delegate, Accept
+RECV: exit
+SEND: Aloha, type HELP for instruction.
+SEND: Aloha, type HELP for instruction.
+RECV: help
+SEND: Veis socket server listen on port 4444
+SEND:    Help
+SEND:    Stat
+SEND:    Quit or Exit
+SEND:    Shutdown
+SEND: 	Close the client connection, then shutdown the server.
+SEND:    LaunchCase {specificationID}
+SEND:    CancelCase {caseID}
+SEND:    CancelAllCases {caseID}
+SEND:    SyncAll
+SEND:    GetAllSpecifications
+SEND:    GetCases
+SEND:    GetActiveAgents
+SEND:    GetAllAgents
+SEND:    GetTaskQueue {queueId} {participant}
+SEND:    WorkItemAction {action} {agentId} {taskId}
+SEND: 	Action: Complete, Suspend, Unsuspend, Delegate, Accept
+RECV: stat
+SEND: Veis interface internal cache: 
+	Active agents:      1(Janie May)
+	Agents:             2(Janie May,Edwin Fahel)
+	Running cases:      1(CarAccident)
+	All specifications: 1(CarAccident)
+	All work items:     1(Receive_Patient)
+	Live connections:   2
+
+RECV: exit
+SEND: Aloha, type HELP for instruction.
+RECV: exit
+SEND: Aloha, type HELP for instruction.
+RECV: exit
+SEND: Aloha, type HELP for instruction.
+SEND: Aloha, type HELP for instruction.
+RECV: exit
+SEND: Aloha, type HELP for instruction.
+RECV: exit
+SEND: Aloha, type HELP for instruction.
+SEND: Aloha, type HELP for instruction.
+RECV: exit
+SEND: Aloha, type HELP for instruction.
+RECV: help
+SEND: Veis socket server listen on port 4444
+SEND:    Help
+SEND:    Stat
+SEND:    Quit or Exit
+SEND:    Shutdown
+SEND: 	Close the client connection, then shutdown the server.
+SEND:    LaunchCase {specificationID}
+SEND:    CancelCase {caseID}
+SEND:    CancelAllCases {caseID}
+SEND:    SyncAll
+SEND:    GetAllSpecifications
+SEND:    GetCases
+SEND:    GetActiveAgents
+SEND:    GetAllAgents
+SEND:    GetTaskQueue {queueId} {participant}
+SEND:    WorkItemAction {action} {agentId} {taskId}
+SEND: 	Action: Complete, Suspend, Unsuspend, Delegate, Accept
+RECV: stat
+SEND: Veis interface internal cache: 
+	Active agents:      1(Janie May)
+	Agents:             2(Janie May,Edwin Fahel)
+	Running cases:      1(CarAccident)
+	All specifications: 1(CarAccident)
+	All work items:     1(Receive_Patient)
+	Live connections:   1
+
+RECV: gettaskqueue
+RECV: Stat
+SEND: Veis interface internal cache: 
+	Active agents:      1(Janie May)
+	Agents:             2(Janie May,Edwin Fahel)
+	Running cases:      1(CarAccident)
+	All specifications: 1(CarAccident)
+	All work items:     1(Receive_Patient)
+	Live connections:   1
+
+RECV: getactiveagents
+SEND: ACTIVEAGENT Janie May PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+SEND: ACTIVEAGENT Edwin Fahel PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+RECV: getallagents
+SEND: AGENT Janie May PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+SEND: AGENTROLE PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46 nurse
+SEND: AGENT Edwin Fahel PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+SEND: AGENTCAPABILITY PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4 TestCapability
+SEND: AGENTROLE PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4 doctor
+RECV: workitemaction
+RECV: getcases
+SEND: RUNNINGCASE 6 CarAccident
+RECV: getallspecifications
+SEND: SPECIFICATION UID_142f2e5a-7c7c-4d2e-a684-02c230e3689d CarAccident
+RECV: getallworkitems
+SEND: 
+Unknown command: getallworkitems. Type HELP for instruction.
+RECV: cancelcase
+RECV: getcases
+SEND: RUNNINGCASE 6 CarAccident
+RECV: cancelallcases
+RECV: cancelallcases
+SEND: NO_CASE_FOUND
+RECV: getcases
+SEND: NO_CASE_FOUND
+RECV: getcases
+SEND: RUNNINGCASE 7 CarAccident
+RECV: cancelallcases

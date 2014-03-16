@@ -1,0 +1,120 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Worklist Simulation</title>
+<style type="text/css" >
+h1, h2, h3, h4, a
+{
+	font-family:"Palatino Linotype", "Book Antiqua", Palatino, serif
+}
+
+.workitem-container
+{
+	width:auto;
+	border:medium solid #69F;
+	padding:0.5em;
+	float:left;
+	margin:0.5em;
+}
+
+.workitem-title
+{
+	font-family:Verdana, Geneva, sans-serif;
+	font-size:12px;
+	font-weight:bold;
+}
+
+.workitem-table
+{
+	font-family:Verdana, Geneva, sans-serif;
+	font-size:12px;
+	width:auto;
+	margin-left:1em
+}
+
+.navigation
+{
+	background:#09C;
+	height:35px;
+	margin:none;
+	font-color:white;
+	padding-left:10px;
+	padding-top:10px;
+}
+
+.navigation ul
+{
+	margin:0;
+	padding:0;
+	list-style:none;
+}
+
+.navigation li
+{
+	display:inline;
+	margin:0;
+	padding:0;
+}
+
+.navigation a
+{
+	color:#FFF;
+	margin-left:0.5em;
+	text-decoration:none
+}
+
+p
+{
+	margin:0.3em;
+}
+</style>
+</head>
+
+<body>
+<s:viewdata 
+	uuid="string"
+	ProcessingWorkItems="System.Collections.Generic.IEnumerable<Veis.WebInterface.Models.WorkListItemModel>"
+	UserName="string"
+/>
+<div class="navigation">
+	<ul>
+    	<li><a href="/Simulation/Manage/?uuid=${uuid}">Simulation</a></li>
+        <!--<li><a href="#">Asset Method Summary</a></li>-->
+    </ul>
+</div>
+<div id="header">
+<h2>${UserName}'s Worklist</h2>
+<hr />
+</div>
+
+<div id="processing-tasks">
+<h4>Current Workitems</h4>
+
+<s:for each='var line in ProcessingWorkItems'>
+<div class="workitem-container">
+<p class="workitem-title">Workitem - <span style="font-weight:normal; font-style:italic">${line.Name}</span></p>
+<p class="workitem-title">Tasks</p>
+<table class="workitem-table">
+	<tbody>
+		<s:for each='var task in (System.Collections.Generic.IEnumerable<string>)line.Tasks'>
+		<tr><td>${task}</td></tr>
+		</s:for>
+	</tbody>
+</table>
+<p class="workitem-title">Goals</p>
+<table class="workitem-table">
+	<tbody>
+		<s:for each='var goal in (System.Collections.Generic.IEnumerable<string>)line.Goals'>
+		<tr><td>${goal}</td></tr>
+		</s:for>
+	</tbody>
+</table>
+</div>
+</s:for>
+
+</div>
+</body>
+
+</html>
+

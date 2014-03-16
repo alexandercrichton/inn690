@@ -1,0 +1,4 @@
+Those files is used for demostrating YAWL specifications by YAWL engine (yawlfoundation.org).
+
+Dont forget to import the organization model (YAWL Org Model.ybkp) via yawl control center before running the simulation, otherwise it will fail silently.
+

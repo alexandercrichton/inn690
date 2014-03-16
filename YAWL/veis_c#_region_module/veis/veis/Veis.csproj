@@ -1,0 +1,193 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{6C393CB2-D02F-48C2-96DC-801900A68DFD}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Veis</RootNamespace>
+    <AssemblyName>Veis</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AIMLbot">
+      <HintPath>lib\AIMLbot.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>lib\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Addins">
+      <HintPath>lib\Mono.Addins.dll</HintPath>
+    </Reference>
+    <Reference Include="MySql.Data">
+      <HintPath>lib\MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Nini">
+      <HintPath>lib\Nini.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenMetaverse, Version=0.9.1.29841, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Veis.OpenSim\bin\Debug\OpenMetaverse.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenMetaverse.StructuredData, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Veis.OpenSim\bin\Debug\OpenMetaverse.StructuredData.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenMetaverseTypes, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Veis.OpenSim\bin\Debug\OpenMetaverseTypes.dll</HintPath>
+    </Reference>
+    <Reference Include="Spark">
+      <HintPath>lib\Spark.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web.Mvc, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>lib\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="XMLRPC">
+      <HintPath>lib\XMLRPC.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Bots\Avatar.cs" />
+    <Compile Include="Bots\ExecutableAction.cs" />
+    <Compile Include="Bots\HumanAvatar.cs" />
+    <Compile Include="Bots\HumanWorkProvider.cs" />
+    <Compile Include="Bots\BotAvatar.cs" />
+    <Compile Include="Bots\NPCToHumanMapping.cs" />
+    <Compile Include="Bots\WorkProvider.cs" />
+    <Compile Include="Chat\AimlChatProvider.cs" />
+    <Compile Include="Chat\ChatHandler.cs" />
+    <Compile Include="Chat\ChatProvider.cs" />
+    <Compile Include="Chat\ChatMessage.cs" />
+    <Compile Include="Chat\SimulationChatHandler.cs" />
+    <Compile Include="Chat\WorkflowChatHandler.cs" />
+    <Compile Include="Chat\YAWLChatHandler.cs" />
+    <Compile Include="Common\ExecutableAction.cs" />
+    <Compile Include="Common\ILoggable.cs" />
+    <Compile Include="Common\Math\Vector3.cs" />
+    <Compile Include="Bots\AvailableActions.cs" />
+    <Compile Include="Common\StringFormattingExtensions.cs" />
+    <Compile Include="Planning\BasicWorkItemPlanner.cs" />
+    <Compile Include="Planning\GoalBasedWorkItemPlanner.cs" />
+    <Compile Include="Planning\HTN\ComplexHTNPlanner.cs" />
+    <Compile Include="Planning\HTN\HTNEffect.cs" />
+    <Compile Include="Planning\HTN\HTNMethod.cs" />
+    <Compile Include="Planning\HTN\HTNOperator.cs" />
+    <Compile Include="Planning\HTN\HTNPlanner.cs" />
+    <Compile Include="Planning\HTN\HTNState.cs" />
+    <Compile Include="Planning\HTN\HTNTask.cs" />
+    <Compile Include="Planning\HTN\HTNTaskNetwork.cs" />
+    <Compile Include="Planning\HTN\HTNTaskNetworkConstraints.cs" />
+    <Compile Include="Planning\HTN\HTNTaskSet.cs" />
+    <Compile Include="Planning\HTN\HTNWorkItemPlanner.cs" />
+    <Compile Include="Planning\HTN\SimpleHTNPlanner.cs" />
+    <Compile Include="Planning\IDecompositionService.cs" />
+    <Compile Include="Planning\Knowledge\SpecificationKnowledge.cs" />
+    <Compile Include="Planning\Knowledge\WorkflowKnowledgeBase.cs" />
+    <Compile Include="Planning\Knowledge\WorkitemKnowledge.cs" />
+    <Compile Include="Planning\Knowledge\WorkItemStateTransition.cs" />
+    <Compile Include="Planning\Planner.cs" />
+    <Compile Include="Planning\PlanResult.cs" />
+    <Compile Include="Planning\Resourcing\ResourceProfile.cs" />
+    <Compile Include="Planning\Resourcing\ResourceProfileSet.cs" />
+    <Compile Include="Planning\SimpleWorkItemDecomposition.cs" />
+    <Compile Include="Planning\SmartWorkItemPlanner.cs" />
+    <Compile Include="Planning\WorkItemPlanner.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\Interfaces\IParallelisationService.cs" />
+    <Compile Include="Services\ParallelisationService.cs" />
+    <Compile Include="Simulation\ISimulation.cs" />
+    <Compile Include="Simulation\SimulationActions.cs" />
+    <Compile Include="Services\Interfaces\ISceneService.cs" />
+    <Compile Include="Simulation\AvatarManagement\AvatarManager.cs" />
+    <Compile Include="Simulation\Simulation.cs" />
+    <Compile Include="Simulation\UserArgs.cs" />
+    <Compile Include="Simulation\WorldState\Goal.cs" />
+    <Compile Include="Simulation\WorldState\GoalService.cs" />
+    <Compile Include="Simulation\WorldState\IServiceInvocationHandler.cs" />
+    <Compile Include="Simulation\WorldState\IStateSource.cs" />
+    <Compile Include="Simulation\WorldState\ServiceInvocationHandlers\AbortHandler.cs" />
+    <Compile Include="Simulation\WorldState\ServiceInvocationHandlers\MoveObjectHandler.cs" />
+    <Compile Include="Simulation\WorldState\ServiceRoutineService.cs" />
+    <Compile Include="Simulation\WorldState\State.cs" />
+    <Compile Include="Simulation\WorldState\StateSources\PolledDatabaseStateSource.cs" />
+    <Compile Include="Simulation\WorldState\WorldStateService.cs" />
+    <Compile Include="WebInterface\Controllers\Controller.cs" />
+    <Compile Include="WebInterface\Controllers\SimulationController.cs" />
+    <Compile Include="WebInterface\Controllers\WorkController.cs" />
+    <Compile Include="WebInterface\Infrastructure\DefaultPageBuilder.cs" />
+    <Compile Include="WebInterface\Infrastructure\PageBuilder.cs" />
+    <Compile Include="WebInterface\Infrastructure\TempateBase.cs" />
+    <Compile Include="WebInterface\Models\SimulationModel.cs" />
+    <Compile Include="WebInterface\Models\WorklistPersonalModel.cs" />
+    <Compile Include="Workflow\Case.cs" />
+    <Compile Include="Workflow\CaseStateEventArgs.cs" />
+    <Compile Include="Workflow\IWorkEnactor.cs" />
+    <Compile Include="Workflow\ParticipantEventArgs.cs" />
+    <Compile Include="Workflow\WorkAgent.cs" />
+    <Compile Include="Workflow\WorkflowProvider.cs" />
+    <Compile Include="Workflow\WorkItem.cs" />
+    <Compile Include="Workflow\YAWL\YAWLAgent.cs" />
+    <Compile Include="Workflow\YAWL\YAWLFormattingExtensions.cs" />
+    <Compile Include="Workflow\YAWL\YAWLWorkflowProvider.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Veis.dll.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="WebInterface\Views\simulationmanagement.spark" />
+    <None Include="WebInterface\Views\worklistpersonal.spark" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Veis.Data\Veis.Data.csproj">
+      <Project>{FC0408DF-4791-46A8-9BD7-8BE8FD4C151C}</Project>
+      <Name>Veis.Data</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="WebInterface\Content\style.css" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>COPY $(TargetFileName) $(SolutionDir)Dependencies 
+COPY Veis.dll.config $(SolutionDir)Dependencies
+COPY $(ProjectDir)WebInterface\Views\* $(SolutionDir)Dependencies\Veis\Views
+COPY $(ProjectDir)WebInterface\Content\* $(SolutionDir)Dependencies\Veis\Content</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
