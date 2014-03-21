@@ -100,7 +100,6 @@
     <Compile Include="Simulation\OpenSimYAWLSimulation.cs" />
     <Compile Include="WebInterface\WebInterfaceModule.cs" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Veis.Data\Veis.Data.csproj">
       <Project>{FC0408DF-4791-46A8-9BD7-8BE8FD4C151C}</Project>
