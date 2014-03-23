@@ -1,0 +1,59 @@
+// This script retrieves data from the hospital db
+// abd presents data in hover test
+// Author: Rune Rasmussen
+// Date: 26/10/2010
+
+// the ip listen channel
+integer ip_channel = -54321;
+integer device_channel = 1002;
+
+// global web address
+string addr = "http://129.78.180.51:80";
+
+// the device id
+integer device_id = 24;
+
+// the list of device information items
+list infoAddr;
+
+default
+{
+    state_entry()
+    {
+        llSay(0, "Script running");
+        // listen for ip adress
+        llListen(ip_channel, "", NULL_KEY, "");
+        // listen for new device value
+        llListen(device_channel, "", NULL_KEY, "");
+    }
+    
+    touch_start(integer i){
+        // request images
+        string xml_data = osRESTfulHTTPRequest(addr + "/simulation/htdocs/xml_device_service.php", "?device_id="+(string)device_id);
+        // get the info
+        infoAddr = osGetElementsByTagFragXML("info", xml_data);
+        // set a timer to stop displaying data
+        llSetTimerEvent(20);
+        // set the text
+        llSetText((string)infoAddr, <0.0,0.0,1.0>, 1.0); 
+    }
+    
+    listen (integer channel, string name, key id, string message)
+    {
+         if (channel == ip_channel)
+        {
+            addr = "http://" + message;
+        }
+        else if (channel == device_channel)
+        {         
+            device_id = (integer)message * 10 + 4;
+        } 
+    }
+    
+    timer() {
+        // set the text
+        llSetText((string)infoAddr, <0.0,0.0,1.0>, 0.0);
+        // set a timer to stop displaying data
+        llSetTimerEvent(0);
+    }
+}

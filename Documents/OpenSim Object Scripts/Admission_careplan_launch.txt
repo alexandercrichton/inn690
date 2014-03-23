@@ -1,0 +1,41 @@
+// This script launches the admission data
+// and plan of care data sheets
+// Author: Rune Rasmussen
+
+integer icu_number = 1;
+
+string ip_address = "129.78.180.51:80";
+// the ip address listen channel
+integer ip_channel = -54321;
+
+// the device listen channel
+integer device_channel = 1002;
+
+default
+{
+    state_entry()
+    {
+        llSay(0, "Script running");
+        // listen for ip adress
+        llListen(ip_channel, "", NULL_KEY, "");
+        // listen for new device value
+        llListen(device_channel, "", NULL_KEY, "");
+    }
+    
+    touch_start(integer x){
+        // load the admission details for this ICU
+        llLoadURL(llDetectedKey(0), "Click \"Go to page\" to see the admission data and plan of care for this patient", "http://" + ip_address + "/simulation/htdocs/icu_admission_sheet.php?ICU_Number=" + icu_number);
+    }
+    
+    listen (integer channel, string name, key id, string message)
+    {
+        if (channel == ip_channel)
+        {
+            ip_address = message; 
+        }
+        else if (channel == device_channel)
+        {         
+            icu_number = (integer)message;
+        }  
+    }
+}
