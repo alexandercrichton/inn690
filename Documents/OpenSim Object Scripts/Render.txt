@@ -1,0 +1,78 @@
+/***
+This script will render the label for the button by its Name
+*/ 
+
+integer channel = -999997445;
+integer channelCase = -999997445 + 2;
+
+bakeText(string CommandList, string str)
+{
+    //llOwnerSay("Goal: " + str);
+    // Place some text
+    string cmd = CommandList + "Text " + str + ";";
+    //cmd = osDrawText( cmd, str ); 
+   
+    // Now draw the image
+    string pos = "width:1024,height:64";
+    osSetDynamicTextureData( "", "vector", cmd, pos, 0 );
+}
+
+string replace(string source, string from, string to)
+{
+    //llOwnerSay("Before " + source);
+    integer index = llSubStringIndex(source, from);
+    //If no semicolon found, then return the original
+    if(index == -1) return source;
+    
+    string output1 = llGetSubString(source, 0, index - 1) ;
+    string output2 = llGetSubString(source, index + 1, llStringLength(source)) ;
+    //llOwnerSay("After " + index + " " + output1 + "?" + output2);
+    return output1 + " " +output2;
+}
+
+integer channelGoal = -689999;
+string goal;
+string case;
+string CommandList = "";
+
+default
+{
+    state_entry()
+    {
+        llSay(0, "Script running");
+        llListen(channel + 1, "", NULL_KEY, "");
+        llListen(channelGoal, "", NULL_KEY, "");
+        llListen(channelCase, "", NULL_KEY, "");
+        case = "Not running any case.";
+        goal = "No goal found.";
+    }
+    
+    touch(integer i)
+    {
+        //Ask the global font style
+        llRegionSay(channel, "CommandList");
+    }
+    
+    listen(integer chan, string a, key b, string msg)
+    {
+        if(chan == channelGoal) 
+        {            
+            //Need to get rid of ";", since it will conflict with Drawing commandList            
+            goal = replace(msg, ";", " ");
+            if(goal != "No goal found.") goal = "Task: " + goal;
+        }
+        else if(chan == channel)
+        {
+            CommandList = msg;
+        }
+        else if(chan == channelCase)
+        {
+            //llOwnerSay(msg);
+            if(msg != "Not running any case.") case = "Current Case: " + msg;
+            else case = msg;
+        }
+        
+//        goal = replace(goal, ";", " ");
+        bakeText(CommandList, case + "\n" + goal);
+    }
+}

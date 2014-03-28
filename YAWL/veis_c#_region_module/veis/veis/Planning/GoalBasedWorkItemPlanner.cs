@@ -153,7 +153,7 @@ namespace Veis.Planning
             if (chairLocation != null)
             {
                 // Sit if exists
-                tasks.Add(AvailableActions.SIT + ":" + chairName);
+                tasks.Add(AvailableActions.SIT + ":" + chairName);             
             }
 
             // TODO: When animation reference system is in place, perform any necessary animations

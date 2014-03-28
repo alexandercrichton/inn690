@@ -47,6 +47,42 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Scripts\UserInteraction.cs" />
+     <None Include="Assets\lib\veis\OpenMetaverse.xml" />
+     <None Include="Assets\lib\veis\OpenMetaverseTypes.xml" />
+     <None Include="Assets\lib\veis\OpenMetaverse.StructuredData.xml" />
+ <Reference Include="Veis">
+ <HintPath>Assets\lib\veis\Veis.dll</HintPath>
+ </Reference>
+ <Reference Include="Veis.Data">
+ <HintPath>Assets\lib\veis\Veis.Data.dll</HintPath>
+ </Reference>
+ <Reference Include="XMLRPC">
+ <HintPath>Assets\lib\veis\XMLRPC.dll</HintPath>
+ </Reference>
+ <Reference Include="Nini">
+ <HintPath>Assets\lib\veis\Nini.dll</HintPath>
+ </Reference>
+ <Reference Include="Mono.Addins">
+ <HintPath>Assets\lib\veis\Mono.Addins.dll</HintPath>
+ </Reference>
+ <Reference Include="OpenMetaverseTypes">
+ <HintPath>Assets\lib\veis\OpenMetaverseTypes.dll</HintPath>
+ </Reference>
+ <Reference Include="OpenMetaverse">
+ <HintPath>Assets\lib\veis\OpenMetaverse.dll</HintPath>
+ </Reference>
+ <Reference Include="OpenMetaverse.StructuredData">
+ <HintPath>Assets\lib\veis\OpenMetaverse.StructuredData.dll</HintPath>
+ </Reference>
+ <Reference Include="MySql.Data">
+ <HintPath>Assets\lib\veis\MySql.Data.dll</HintPath>
+ </Reference>
+ <Reference Include="log4net">
+ <HintPath>Assets\lib\veis\log4net.dll</HintPath>
+ </Reference>
+ <Reference Include="AIMLbot">
+ <HintPath>Assets\lib\veis\AIMLbot.dll</HintPath>
+ </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

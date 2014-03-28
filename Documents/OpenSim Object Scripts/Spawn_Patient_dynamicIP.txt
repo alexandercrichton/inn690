@@ -1,0 +1,101 @@
+// When touched, query php-server while opening webpage.
+// Data to be sent is this objects Name
+integer changeIPAddrChannel = -20987;
+string changeIPAddrName = "change_address_notifier";
+string hostUrl = "http://localhost/";
+string page = "forms/launch_asset.php";
+string executeMethodPage = "forms/process_method_call.php";
+string getMethodCommand = "Get|methodsToExecute";
+string moduleName = "CRCMOD";
+
+
+key http_request_id;
+ 
+post_request(string url, list l)
+{
+    integer i;
+    string body;
+    integer len=llGetListLength(l) & 0xFFFE; // make it even
+    for (i=0;i<len;i+=2)
+    {
+        string varname=llList2String(l,i);
+        string varvalue=llList2String(l,i + 1);
+        if (i>0) body+="&";
+        body+=llEscapeURL(varname)+"="+llEscapeURL(varvalue);
+    }
+
+    llSay(0, url);
+    http_request_id = llHTTPRequest(url,[HTTP_METHOD,"POST",HTTP_MIMETYPE,"application/x-www-form-urlencoded"],body);
+}
+
+default
+{
+    state_entry()
+    {
+        llSay(0, "Script running");
+        
+        // Used to make world-wide change to ip address easily
+        llListen(changeIPAddrChannel, changeIPAddrName, NULL_KEY, "");
+    }
+    
+    touch_start(integer num_detected)
+    {
+        // If the toucher is a HUMAN, send them to the input page
+        if (!osIsNpc(llDetectedKey(0)))
+        {  
+            // Send off asset name and user key to the UI setup page       
+            string user_key = (string)llDetectedKey(0);
+            string asset_name = llGetObjectName();
+            string asset_key = (string)llGetKey();
+            string user_name = llDetectedName(0);
+            
+            // osRESTfulHTTPRequest("http://" + ip_addr + ":" + ip_port + asset_event, "?user_key="+ user_key + "&asset_name=" + asset_name + "&asset_key=" + asset_key)
+            
+            llLoadURL(user_key, "Select the action to complete on the following webpage",
+                hostUrl + page +
+                "?user_key=" + user_key +
+                "&asset_name=" + llEscapeURL(asset_name) +
+                "&asset_key=" + asset_key +
+                "&user_name=" + llEscapeURL(user_name));
+        }
+        // If the toucher is an NPC, find out the methods and parameters they intended to input
+        // then send them via HTTPRequest
+        else
+        {
+            // npc:<npc UUID>+asset:<asset Name>
+            modSendCommand(moduleName, getMethodCommand + "|npc:"+llDetectedKey(0)+"+asset:"+llGetObjectName(), "");
+            llOwnerSay("NPC Touched Me");
+        }      
+    }
+    
+    link_message(integer sender_num, integer num, string message, key id)
+    {   
+        llSay(0, message);            
+        // SHORT|user_key|<user_key>|method_name|<method_name>|<param name>|<param value|...   
+        if (sender_num == -1)
+        {
+            list parameters = llParseString2List( message, ["|"], [] );
+            parameters = llList2List(parameters, 1, -1);
+            parameters += ["asset_name", llGetObjectName()];
+            parameters += ["asset_key", llGetKey()];
+            parameters += ["user_name", llKey2Name(llList2String(parameters, 1))];
+            llSay(0, llDumpList2String(parameters, " "));
+            post_request(hostUrl + executeMethodPage, parameters);
+        }
+        
+    }
+    
+    listen(integer channel, string name, key id, string message)
+    {
+        hostUrl = message;
+    }
+    
+    http_response(key request_id, integer status, list metadata, string body)
+    {
+        if (request_id == http_request_id)
+        {
+            llSay(0,body);
+        }
+    }
+    
+}
