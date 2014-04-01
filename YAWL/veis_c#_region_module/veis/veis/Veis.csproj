@@ -40,9 +40,7 @@
     <Reference Include="Mono.Addins">
       <HintPath>lib\Mono.Addins.dll</HintPath>
     </Reference>
-    <Reference Include="MySql.Data">
-      <HintPath>lib\MySql.Data.dll</HintPath>
-    </Reference>
+    <Reference Include="MySql.Data, Version=6.8.3.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
     <Reference Include="Nini">
       <HintPath>lib\Nini.dll</HintPath>
     </Reference>
