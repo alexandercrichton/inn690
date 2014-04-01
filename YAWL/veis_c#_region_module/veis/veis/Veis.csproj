@@ -177,7 +177,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>COPY $(TargetFileName) $(SolutionDir)Dependencies 
-COPY Veis.dll.config $(SolutionDir)Dependencies
+COPY $(ProjectDir)Veis.dll.config $(ProjectDir)\bin\Debug
 COPY $(ProjectDir)WebInterface\Views\* $(SolutionDir)Dependencies\Veis\Views
 COPY $(ProjectDir)WebInterface\Content\* $(SolutionDir)Dependencies\Veis\Content</PostBuildEvent>
   </PropertyGroup>

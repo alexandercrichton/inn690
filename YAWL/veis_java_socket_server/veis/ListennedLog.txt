@@ -619,3 +619,126 @@ SEND: ACTIVEAGENT Edwin Fahel PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
 RECV: GetAllSpecifications
 SEND: SPECIFICATION UID_142f2e5a-7c7c-4d2e-a684-02c230e3689d CarAccident
 RECV: GetTaskQueue 0 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+SEND: Aloha, type HELP for instruction.
+RECV: GetAllAgents
+SEND: AGENT Janie May PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+SEND: AGENTROLE PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46 nurse
+SEND: AGENT Edwin Fahel PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+SEND: AGENTCAPABILITY PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4 TestCapability
+SEND: AGENTROLE PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4 doctor
+RECV: GetActiveAgents
+SEND: ACTIVEAGENT Janie May PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+SEND: ACTIVEAGENT Edwin Fahel PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+RECV: GetAllSpecifications
+SEND: SPECIFICATION UID_142f2e5a-7c7c-4d2e-a684-02c230e3689d CarAccident
+SEND: Aloha, type HELP for instruction.
+RECV: GetAllAgents
+SEND: AGENT Janie May PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+SEND: AGENTROLE PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46 nurse
+SEND: AGENT Edwin Fahel PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+SEND: AGENTCAPABILITY PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4 TestCapability
+SEND: AGENTROLE PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4 doctor
+RECV: GetActiveAgents
+SEND: ACTIVEAGENT Janie May PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+SEND: ACTIVEAGENT Edwin Fahel PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+RECV: GetAllSpecifications
+SEND: SPECIFICATION UID_142f2e5a-7c7c-4d2e-a684-02c230e3689d CarAccident
+SEND: Aloha, type HELP for instruction.
+RECV: GetAllAgents
+SEND: AGENT Janie May PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+SEND: AGENTROLE PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46 nurse
+SEND: AGENT Edwin Fahel PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+SEND: AGENTCAPABILITY PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4 TestCapability
+SEND: AGENTROLE PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4 doctor
+RECV: GetActiveAgents
+SEND: ACTIVEAGENT Janie May PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+SEND: ACTIVEAGENT Edwin Fahel PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+RECV: GetAllSpecifications
+SEND: SPECIFICATION UID_142f2e5a-7c7c-4d2e-a684-02c230e3689d CarAccident
+SEND: Aloha, type HELP for instruction.
+RECV: GetAllAgents
+SEND: AGENT Janie May PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+SEND: AGENTROLE PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46 nurse
+SEND: AGENT Edwin Fahel PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+SEND: AGENTCAPABILITY PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4 TestCapability
+SEND: AGENTROLE PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4 doctor
+RECV: GetActiveAgents
+SEND: ACTIVEAGENT Janie May PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+SEND: ACTIVEAGENT Edwin Fahel PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+RECV: GetAllSpecifications
+SEND: SPECIFICATION UID_142f2e5a-7c7c-4d2e-a684-02c230e3689d CarAccident
+SEND: Aloha, type HELP for instruction.
+RECV: GetAllAgents
+SEND: AGENT Janie May PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+SEND: AGENTROLE PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46 nurse
+SEND: AGENT Edwin Fahel PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+SEND: AGENTCAPABILITY PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4 TestCapability
+SEND: AGENTROLE PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4 doctor
+RECV: GetActiveAgents
+SEND: ACTIVEAGENT Janie May PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+SEND: ACTIVEAGENT Edwin Fahel PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+RECV: GetAllSpecifications
+SEND: SPECIFICATION UID_142f2e5a-7c7c-4d2e-a684-02c230e3689d CarAccident
+SEND: Aloha, type HELP for instruction.
+RECV: GetAllAgents
+SEND: AGENT Janie May PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+SEND: AGENTROLE PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46 nurse
+SEND: AGENT Edwin Fahel PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+SEND: AGENTCAPABILITY PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4 TestCapability
+SEND: AGENTROLE PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4 doctor
+RECV: GetActiveAgents
+SEND: ACTIVEAGENT Janie May PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+SEND: ACTIVEAGENT Edwin Fahel PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+RECV: GetAllSpecifications
+SEND: SPECIFICATION UID_142f2e5a-7c7c-4d2e-a684-02c230e3689d CarAccident
+SEND: Aloha, type HELP for instruction.
+RECV: GetAllAgents
+SEND: AGENT Janie May PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+SEND: AGENTROLE PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46 nurse
+SEND: AGENT Edwin Fahel PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+SEND: AGENTCAPABILITY PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4 TestCapability
+SEND: AGENTROLE PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4 doctor
+RECV: GetActiveAgents
+SEND: ACTIVEAGENT Janie May PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+SEND: ACTIVEAGENT Edwin Fahel PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+RECV: GetAllSpecifications
+SEND: SPECIFICATION UID_142f2e5a-7c7c-4d2e-a684-02c230e3689d CarAccident
+SEND: Aloha, type HELP for instruction.
+RECV: GetAllAgents
+SEND: AGENT Janie May PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+SEND: AGENTROLE PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46 nurse
+SEND: AGENT Edwin Fahel PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+SEND: AGENTCAPABILITY PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4 TestCapability
+SEND: AGENTROLE PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4 doctor
+RECV: GetActiveAgents
+SEND: ACTIVEAGENT Janie May PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+SEND: ACTIVEAGENT Edwin Fahel PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+RECV: GetAllSpecifications
+SEND: SPECIFICATION UID_142f2e5a-7c7c-4d2e-a684-02c230e3689d CarAccident
+RECV: exit
+SEND: Aloha, type HELP for instruction.
+RECV: GetAllAgents
+SEND: AGENT Janie May PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+SEND: AGENTROLE PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46 nurse
+SEND: AGENT Edwin Fahel PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+SEND: AGENTCAPABILITY PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4 TestCapability
+SEND: AGENTROLE PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4 doctor
+RECV: GetActiveAgents
+SEND: ACTIVEAGENT Janie May PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+SEND: ACTIVEAGENT Edwin Fahel PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+RECV: GetAllSpecifications
+SEND: SPECIFICATION UID_142f2e5a-7c7c-4d2e-a684-02c230e3689d CarAccident
+RECV: exit
+SEND: Aloha, type HELP for instruction.
+RECV: GetAllAgents
+SEND: AGENT Janie May PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+SEND: AGENTROLE PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46 nurse
+SEND: AGENT Edwin Fahel PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+SEND: AGENTCAPABILITY PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4 TestCapability
+SEND: AGENTROLE PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4 doctor
+RECV: GetActiveAgents
+SEND: ACTIVEAGENT Janie May PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+SEND: ACTIVEAGENT Edwin Fahel PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+RECV: GetAllSpecifications
+SEND: SPECIFICATION UID_142f2e5a-7c7c-4d2e-a684-02c230e3689d CarAccident
+RECV: exit

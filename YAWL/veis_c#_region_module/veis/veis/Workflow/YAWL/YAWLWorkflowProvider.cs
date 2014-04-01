@@ -56,11 +56,12 @@ namespace Veis.Workflow.YAWL
 
         public YAWLWorkflowProvider()
         {
+            Console.WriteLine("yest");
             _externalProcessor = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             YawlToWorker = new Dictionary<string, string>();
             WorkerToYawl = new Dictionary<string, string>();
             Workers = new Dictionary<string, IWorkEnactor>();
-            _oThread = new Thread(ReadMessages); 
+            _oThread = new Thread(ReadMessages);
         }
 
         public void ResetAll()
@@ -164,6 +165,7 @@ namespace Veis.Workflow.YAWL
             {
                 _externalProcessor.Connect(WorkflowConnectionUrl, WorkflowConnectionPort);              
                 _oThread.Start();
+                Console.WriteLine("connected");
             }
             catch (Exception e)
             {
