@@ -1,5 +1,0 @@
-C:\Dev\inn690\YAWL\veis_c#_region_module\veis\Veis.Unity\bin\Debug\VeisConsole.exe.config
-C:\Dev\inn690\YAWL\veis_c#_region_module\veis\Veis.Unity\bin\Debug\VeisConsole.exe
-C:\Dev\inn690\YAWL\veis_c#_region_module\veis\Veis.Unity\bin\Debug\VeisConsole.pdb
-C:\Dev\inn690\YAWL\veis_c#_region_module\veis\Veis.Unity\obj\Debug\VeisConsole.exe
-C:\Dev\inn690\YAWL\veis_c#_region_module\veis\Veis.Unity\obj\Debug\VeisConsole.pdb

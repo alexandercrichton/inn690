@@ -6,7 +6,7 @@ using System.Timers;
 using Veis.Common.Math;
 using Veis.Chat;
 using Veis.Common;
-using OpenMetaverse;
+//using OpenMetaverse;
 using Vector3 = Veis.Common.Math.Vector3;
 
 
@@ -34,7 +34,7 @@ namespace Veis.Bots
 
         public abstract void Say(string message);
 
-        public abstract void SendTextBox(string message, int chatChannel, string objectname, UUID ownerID, string ownerFirstName, string ownerLastName, UUID objectId);
+        //public abstract void SendTextBox(string message, int chatChannel, string objectname, UUID ownerID, string ownerFirstName, string ownerLastName, UUID objectId);
 
         public abstract void FlyToLocation(Vector3 position);
 
