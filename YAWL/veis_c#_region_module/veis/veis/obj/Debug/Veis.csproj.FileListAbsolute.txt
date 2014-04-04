@@ -74,7 +74,6 @@ C:\Dev\inn690\YAWL\veis_c#_region_module\veis\Veis\bin\Debug\Veis.pdb
 C:\Dev\inn690\YAWL\veis_c#_region_module\veis\Veis\bin\Debug\AIMLbot.dll
 C:\Dev\inn690\YAWL\veis_c#_region_module\veis\Veis\bin\Debug\log4net.dll
 C:\Dev\inn690\YAWL\veis_c#_region_module\veis\Veis\bin\Debug\Mono.Addins.dll
-C:\Dev\inn690\YAWL\veis_c#_region_module\veis\Veis\bin\Debug\MySql.Data.dll
 C:\Dev\inn690\YAWL\veis_c#_region_module\veis\Veis\bin\Debug\Nini.dll
 C:\Dev\inn690\YAWL\veis_c#_region_module\veis\Veis\bin\Debug\OpenMetaverse.dll
 C:\Dev\inn690\YAWL\veis_c#_region_module\veis\Veis\bin\Debug\OpenMetaverse.StructuredData.dll
