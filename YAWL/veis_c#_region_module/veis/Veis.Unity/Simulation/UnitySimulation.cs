@@ -33,13 +33,13 @@ namespace Veis.Unity.Simulation
     {
         private YAWLWorkflowProvider workflowProvider;
         protected List<UnityHumanAvatar> humans;
-        protected List<UnityNPCAvatar> npcs;
+        //protected List<UnityNPCAvatar> npcs;
 
         public UnitySimulation() : base()
         {
             workflowProvider = new YAWLWorkflowProvider();
             humans = new List<UnityHumanAvatar>();
-            npcs = new List<UnityNPCAvatar>();
+            //npcs = new List<UnityNPCAvatar>();
 
             Initialise();
         }

@@ -256,7 +256,8 @@ namespace Veis.Unity.Bots
             Buffer.BlockCopy(first.GetBytes(), 0, input, 0, 16);
             Buffer.BlockCopy(second.GetBytes(), 0, input, 16, 16);
 
-            return new UUID(Utils.MD5(input), 0);
+            //return new UUID(Utils.MD5(input), 0);
+            return new UUID();
         }
 
         /// <summary>
