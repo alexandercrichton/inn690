@@ -1,0 +1,11 @@
+C:\Dev\inn690\YAWL\veis_c#_region_module\veis\Veis.Console\VeisConsole\bin\Debug\VeisConsole.exe.config
+C:\Dev\inn690\YAWL\veis_c#_region_module\veis\Veis.Console\VeisConsole\bin\Debug\VeisConsole.exe
+C:\Dev\inn690\YAWL\veis_c#_region_module\veis\Veis.Console\VeisConsole\bin\Debug\VeisConsole.pdb
+C:\Dev\inn690\YAWL\veis_c#_region_module\veis\Veis.Console\VeisConsole\bin\Debug\Veis.Data.dll
+C:\Dev\inn690\YAWL\veis_c#_region_module\veis\Veis.Console\VeisConsole\bin\Debug\Veis.dll
+C:\Dev\inn690\YAWL\veis_c#_region_module\veis\Veis.Console\VeisConsole\bin\Debug\Veis.OpenSim.dll
+C:\Dev\inn690\YAWL\veis_c#_region_module\veis\Veis.Console\VeisConsole\bin\Debug\Spark.dll
+C:\Dev\inn690\YAWL\veis_c#_region_module\veis\Veis.Console\VeisConsole\bin\Debug\AIMLbot.dll
+C:\Dev\inn690\YAWL\veis_c#_region_module\veis\Veis.Console\VeisConsole\obj\Debug\Veis.Console.csprojResolveAssemblyReference.cache
+C:\Dev\inn690\YAWL\veis_c#_region_module\veis\Veis.Console\VeisConsole\obj\Debug\VeisConsole.exe
+C:\Dev\inn690\YAWL\veis_c#_region_module\veis\Veis.Console\VeisConsole\obj\Debug\VeisConsole.pdb
