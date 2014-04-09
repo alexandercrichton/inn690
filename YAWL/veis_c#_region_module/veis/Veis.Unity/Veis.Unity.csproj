@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{E08F1690-42DF-467F-80ED-39D47CF01AEF}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Veis.Unity</RootNamespace>
     <AssemblyName>Veis.Unity</AssemblyName>
@@ -43,15 +43,6 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Veis">
-      <HintPath>..\..\Dependencies\Veis.dll</HintPath>
-    </Reference>
-    <Reference Include="Veis.Data">
-      <HintPath>..\..\Dependencies\Veis.Data.dll</HintPath>
-    </Reference>
-    <Reference Include="Veis.OpenSim">
-      <HintPath>..\..\Dependencies\Veis.OpenSim.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bots\UnityHumanAvatar.cs" />
@@ -63,6 +54,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Veis.Data\Veis.Data.csproj">
+      <Project>{fc0408df-4791-46a8-9bd7-8be8fd4c151c}</Project>
+      <Name>Veis.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Veis\Veis.csproj">
+      <Project>{6c393cb2-d02f-48c2-96dc-801900a68dfd}</Project>
+      <Name>Veis</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

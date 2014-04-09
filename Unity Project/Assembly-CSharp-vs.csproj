@@ -83,6 +83,12 @@
  <Reference Include="Spark35">
  <HintPath>Assets\Plugins\Spark35.dll</HintPath>
  </Reference>
+ <Reference Include="Veis.Unity">
+ <HintPath>Assets\Plugins\Veis.Unity.dll</HintPath>
+ </Reference>
+ <Reference Include="MySql.Data">
+ <HintPath>Assets\Plugins\MySql.Data.dll</HintPath>
+ </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,13 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
 //using DLLTestNamespace;
-using Veis;
+using Veis.Unity.Simulation;
 
 public class UserInteraction : MonoBehaviour
 {
+    protected UnitySimulation simulation;
+
     private void Start()
     {
         //DLLTestClass.DLLTestMethod();
+        simulation = new UnitySimulation();
     }
 
     private void Update()
@@ -25,7 +28,8 @@ public class UserInteraction : MonoBehaviour
         if (Physics.Raycast(ray, out hit))
         {
             Debug.Log("Clicked on " + hit.collider.name);
-            Application.OpenURL("http://localhost/forms/kill_asset_work.php?user_key=9fa79ecf-40da-40d3-9b4c-cb8451efd90e&asset=f5637d0b-8904-4741-a16b-553965423b92");
+            //Application.OpenURL("http://localhost/forms/kill_asset_work.php?user_key=9fa79ecf-40da-40d3-9b4c-cb8451efd90e&asset=f5637d0b-8904-4741-a16b-553965423b92");
+            simulation.Send("help");
         }
     }
 }
