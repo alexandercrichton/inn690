@@ -29,14 +29,10 @@ namespace Veis.Workflow
             CompletedCases = new List<Case>();
         }
 
-        public WorkItem GetWorkItemByName(string name, WorkAgent a = null) {
+        public WorkItem GetWorkItemByName(string name) {
             foreach (KeyValuePair<string, WorkItem> workKVP in AllWorkItems) {
                 if (workKVP.Value.taskName == name) {
-                    if (a == null) {
                         return workKVP.Value;
-                    } else if (workKVP.Value.participant == a.AgentId) {
-                        return workKVP.Value;
-                    }
                 }
             }
 

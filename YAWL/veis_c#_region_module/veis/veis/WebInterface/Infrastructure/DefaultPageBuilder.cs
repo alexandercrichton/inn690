@@ -5,7 +5,7 @@ using System.Text;
 using Spark;
 using Spark.FileSystem;
 using System.IO;
-using System.Web.Mvc;
+//using System.Web.Mvc;
 
 namespace Veis.WebInterface.Infrastructure
 {
@@ -45,16 +45,16 @@ namespace Veis.WebInterface.Infrastructure
             var descriptor = new SparkViewDescriptor().AddTemplate(templateName + ".spark");
 
             // The view that will contain view data
-            var view = (TemplateBase)_engine.CreateInstance(descriptor);
-            try
-            {
-                view.ViewData = new ViewDataDictionary(data);
-                view.RenderView(output);
-            }
-            finally
-            {
-                _engine.ReleaseInstance(view);
-            }
+            //var view = (TemplateBase)_engine.CreateInstance(descriptor);
+            //try
+            //{
+            //    view.ViewData = new ViewDataDictionary(data);
+            //    view.RenderView(output);
+            //}
+            //finally
+            //{
+            //    _engine.ReleaseInstance(view);
+            //}
         }
     }
 }

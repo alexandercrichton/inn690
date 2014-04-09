@@ -44,7 +44,7 @@ namespace Veis.Bots
 
         public abstract void WalkTo(string areaName);
 
-        public abstract void PickUp(string objectName, int attachPoint = 0);
+        public abstract void PickUp(string objectName);
 
         public abstract void Drop();
 

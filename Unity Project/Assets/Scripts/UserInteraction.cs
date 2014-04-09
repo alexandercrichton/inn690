@@ -1,11 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
+//using DLLTestNamespace;
+using Veis;
 
 public class UserInteraction : MonoBehaviour
 {
     private void Start()
     {
-
+        //DLLTestClass.DLLTestMethod();
     }
 
     private void Update()

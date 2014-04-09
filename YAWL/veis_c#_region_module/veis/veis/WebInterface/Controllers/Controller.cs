@@ -11,7 +11,7 @@ namespace Veis.WebInterface.Controllers
     {
         private const string ErrorPage = "errorpage";
 
-        protected Hashtable FormulateResponse(string strOut, int responseCode = 404)
+        protected Hashtable FormulateResponse(string strOut, int responseCode)
         {
             var responsedata = new Hashtable();
             responsedata["int_response_code"] = responseCode;
