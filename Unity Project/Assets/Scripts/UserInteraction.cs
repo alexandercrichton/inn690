@@ -2,6 +2,7 @@
 using System.Collections;
 //using DLLTestNamespace;
 using Veis.Unity.Simulation;
+using Veis.Unity.Logging;
 
 public class UserInteraction : MonoBehaviour
 {
@@ -9,8 +10,15 @@ public class UserInteraction : MonoBehaviour
 
     private void Start()
     {
+        UnityEngine.Debug.Log("test");
         //DLLTestClass.DLLTestMethod();
+        Logger.LogMessage += Logger_LogMessage;
         simulation = new UnitySimulation();
+    }
+
+    void Logger_LogMessage(object sender, LogEventArgs e)
+    {
+        Debug.Log(e.Message);
     }
 
     private void Update()

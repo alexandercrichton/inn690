@@ -26,6 +26,8 @@ using Veis.Data.Repositories;
 using Veis.Simulation.AvatarManagement;
 using Veis.Data.Services;
 using Veis.Unity.Bots;
+using Veis.Unity.Logging;
+using UnityEngine;
 
 namespace Veis.Unity.Simulation
 {
@@ -35,10 +37,12 @@ namespace Veis.Unity.Simulation
         protected List<UnityHumanAvatar> humans;
         //protected List<UnityNPCAvatar> npcs;
 
-        public UnitySimulation() : base()
+        public UnitySimulation()
         {
-            workflowProvider = new YAWLWorkflowProvider();
-            humans = new List<UnityHumanAvatar>();
+            UnityEngine.Debug.Log("test");
+            Log("Trying to connect to workflow provider");
+            //workflowProvider = new YAWLWorkflowProvider();
+            //humans = new List<UnityHumanAvatar>();
             //npcs = new List<UnityNPCAvatar>();
             Log("Trying to connect to workflow provider");
 
@@ -82,7 +86,10 @@ namespace Veis.Unity.Simulation
             //}
         }
         
-        public override void Log(string message) { }
+        public override void Log(string message) 
+        {
+            Logger.OnLogMessage(this, new LogEventArgs(message));
+        }
 
         public override void ResetAll() { }
 
@@ -100,9 +107,9 @@ namespace Veis.Unity.Simulation
 
         public override void RegisterUser(UserArgs user) { }
 
-        public override Avatar GetParticipantById(string id) 
+        public override Veis.Bots.Avatar GetParticipantById(string id) 
         {
-            return new Avatar();
+            return new Veis.Bots.Avatar();
         }
 
         /// <summary>
