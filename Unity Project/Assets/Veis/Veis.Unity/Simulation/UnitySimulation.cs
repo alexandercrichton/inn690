@@ -36,10 +36,10 @@ namespace Veis.Unity.Simulation
     public class UnitySimulation : Veis.Simulation.Simulation
     {
         public YAWLWorkflowProvider _workflowProvider;
-        protected List<UnityHumanAvatar> _humans;
-        protected List<UnityNPCAvatar> _npcs;
-        protected SceneService _sceneService;
-        protected Planner<WorkItem> _npcWorkPlanner;
+        public List<UnityHumanAvatar> _humans;
+        public List<UnityNPCAvatar> _npcs;
+        public SceneService _sceneService;
+        public Planner<WorkItem> _npcWorkPlanner;
 
         public UnitySimulation()
         {
@@ -94,10 +94,31 @@ namespace Veis.Unity.Simulation
 
         public override void ResetAll()
         {
-            throw new NotImplementedException();
+            Log("Resetting simulation state");
+            _npcs.Clear();
+            _humans.Clear();
+            if (_workflowProvider != null && _workflowProvider.IsConnected)
+            {
+                _workflowProvider.ResetAll();
+            }
+            if (_polledWorldState != null)
+            {
+                _polledWorldState.Stop();
+                _polledWorldState = null;
+                _worldStateService.ClearStateSources();
+                _goalService.ClearGoals();
+            }
         }
 
-        public override void End() { }
+        public override void End() 
+        {
+            Log("\nLogging out all bots...");
+            _npcs.Clear();
+            _humans.Clear();
+
+            Log("\nClosing connection to YAWL...");
+            _workflowProvider.Close();
+        }
 
         #endregion
 
@@ -176,7 +197,8 @@ namespace Veis.Unity.Simulation
                 case "RegisterUser": // Involves the given user in the simulation
                     if (tokens.Length > 2)
                     {
-                        RegisterUser(new UserArgs { RoleName = tokens[1], UserId = tokens[2] });
+                        RegisterUser(new UserArgs { 
+                            UserName = tokens[1], RoleName = tokens[1], UserId = tokens[2] });
                     }
                     break;
             }
@@ -222,7 +244,7 @@ namespace Veis.Unity.Simulation
                 return false; 
             }
 
-            //Initialise(); // Set up the simulation inititially
+            Initialise(); // Set up the simulation inititially
 
             if (_workflowProvider != null)
             {
@@ -305,9 +327,11 @@ namespace Veis.Unity.Simulation
 
         public override void RegisterUser(UserArgs e)
         {
+            Log("Registering user: " + e.UserName);
             // If there is no UserName, find it using UUID
             if (String.IsNullOrEmpty(e.UserName))
             {
+                Log("User name is empty");
                 e.UserName = _sceneService.GetUserNameById(e.UserId);
             }
 
@@ -330,12 +354,15 @@ namespace Veis.Unity.Simulation
             if (oldNpc != null)
             {
                 // Replace work enactor for this participant with the new work provider (if npc != null)
+                Log("Human: " + human.RoleName + ", " + human.WorkId + ", " + human.UUID.Guid.ToString() 
+                    + " replacing NPC: " + oldNpc.FirstName);
                 ReplaceNpc(oldNpc, human);
             }
             else if (!String.IsNullOrEmpty(yawlId))
             {
                 // If this human can be a YAWL participant, add them to the workflow provider
                 AddHuman(yawlId, human);
+                Log("AddHuman");
             }
         }
 
@@ -355,6 +382,12 @@ namespace Veis.Unity.Simulation
 
         private void ReplaceNpc(UnityNPCAvatar oldNpc, UnityHumanAvatar newHuman)
         {
+            //Log(oldNpc.WorkProvider.GetWorkAgent().ToString());
+            //foreach (var workItem in oldNpc.WorkProvider.GetWorkAgent().ToString())
+            //{
+            //    Log(workItem.ToString());
+            //}
+            
             HumanWorkProvider workProvider = NPCToHumanMapping.MapWorkProviderFromNPC(oldNpc, newHuman, _goalService, _workItemDecomp);
             newHuman.WorkProvider = workProvider;
             newHuman.WorkId = oldNpc.Id;

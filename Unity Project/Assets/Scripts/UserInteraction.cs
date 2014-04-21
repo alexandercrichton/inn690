@@ -1,57 +1,193 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using Veis.Unity.Simulation;
 using Veis.Unity.Logging;
 
 public class UserInteraction : MonoBehaviour
 {
-    protected UnitySimulation simulation;
+    protected UnitySimulation _simulation;
     //protected const string CASE_ID = "UID_142f2e5a-7c7c-4d2e-a684-02c230e3689d CarAccident";
     protected const string CASE_ID = "CarAccident";
+    protected string _userKey = "";
+    protected string _assetName = "";
+    protected string _assetKey = "";
+    protected string _userName = "";
+
+    protected string _yawlInfo = "";
+    protected string _simulationInfo = "";
+    protected string _caseInfo = "";
 
     private void Start()
     {
         Logger.LogMessage += Logger_LogMessage;
-        simulation = new UnitySimulation();
+        _simulation = new UnitySimulation();
     }
 
     void Logger_LogMessage(object sender, LogEventArgs e)
     {
-        Debug.Log(e.Message);
+        string logMessage = e.Message;
+        if (sender != _simulation)
+        {
+            logMessage += ", from " + sender.ToString();
+        }
+        Debug.Log(logMessage);
     }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            if (userClickedOnObject("StartCase"))
+            if (userClickedOnObject("LaunchCase"))
             {
-                simulation.ProcessScriptCommand("LaunchCase|" + CASE_ID);
-                //print(simulation._workflowProvider.StartedCases.ToString());
-
+                launchCase();
+            }
+            if (userClickedOnObject("UpdateGUI"))
+            {
+                updateGUI();
             }
             if (userClickedOnObject("EndAllCases"))
             {
-                foreach (var startedCase in simulation._workflowProvider.StartedCases)
-                {
-                    print(startedCase.CaseId);
-                }
-                foreach (var workItem in simulation._workflowProvider.AllWorkItems)
-                {
-                    print(workItem.Value);
-                }
-                foreach (var workItem in simulation._workflowProvider.AllParticipants)
-                {
-                    print(workItem.Value);
-                }
-                foreach (var workItem in simulation._workflowProvider.AllSpecifications)
-                {
-                    print(workItem.Value);
-                }
-                simulation.ProcessScriptCommand("EndAllCases");
+                endAllCases();
             }
-
+            if (userClickedOnObject("RegisterUser"))
+            {
+                registerUser();
+            }
+            if (userClickedOnObject("VitalSignsMonitor"))
+            {
+                launchAsset("VitalSignsMonitor");
+            }
         }
+    }
+
+    private void launchCase()
+    {
+        _simulation.ProcessScriptCommand("LaunchCase|" + CASE_ID);
+        //print(simulation._workflowProvider.StartedCases.ToString());
+    }
+
+    private void updateGUI()
+    {
+        _yawlInfo = "YAWL INFO ---\n";
+
+        foreach (var workItem in _simulation._workflowProvider.AllSpecifications)
+        {
+            _yawlInfo += "\nSpecifications: " + workItem.Value;
+        }
+        foreach (var workItem in _simulation._workflowProvider.AllParticipants)
+        {
+            _yawlInfo += "\nParticipants: " + workItem.Value.FirstName + " "
+                + workItem.Value.LastName + " " + workItem.Value.AgentId;
+        }
+        foreach (var startedCase in _simulation._workflowProvider.StartedCases)
+        {
+            _yawlInfo += "\nStarted Case: " + startedCase.SpecificationName + " "
+                + startedCase.SpecificationId;
+        }
+
+        _simulationInfo = "SIMULATION INFO ---\n";
+
+        foreach (var npc in _simulation._npcs)
+        {
+            _simulationInfo += "\nNPCs: " + npc.FirstName + " "
+                + npc.LastName + " " + npc.Id;
+        }
+        foreach (var human in _simulation._humans)
+        {
+            _simulationInfo += "\nHumans: " + human.Name + " "
+                + human.RoleName + " " + human.UUID;
+        }
+
+        _caseInfo = "CASE INFO ---\n";
+
+        foreach (var workItem in _simulation._workflowProvider.AllWorkItems)
+        {
+            _caseInfo += "\nWork Items: " + workItem.Value.taskName + " "
+                + workItem.Value.taskID + " " + workItem.Value.participant;
+        }
+        foreach (var npc in _simulation._npcs)
+        {
+            foreach (var goal in npc.WorkProvider.GetWorkAgent().started)
+            {
+                _caseInfo += "\nGoals: " + goal.taskName;
+            }
+            foreach (var goal in npc.WorkProvider.GetWorkAgent().offered)
+            {
+                _caseInfo += "\nGoals: " + goal.taskName;
+            }
+            foreach (var goal in npc.WorkProvider.GetWorkAgent().delegated)
+            {
+                _caseInfo += "\nGoals: " + goal.taskName;
+            }
+            foreach (var goal in npc.WorkProvider.GetWorkAgent().processing)
+            {
+                _caseInfo += "\nGoals: " + goal.taskName;
+            }
+            foreach (var goal in npc.WorkProvider.GetWorkAgent().suspended)
+            {
+                _caseInfo += "\nGoals: " + goal.taskName;
+            }
+        }
+        foreach (var human in _simulation._humans)
+        {
+            foreach (var goal in human.WorkProvider.WorkAgent.started)
+            {
+                _caseInfo += "\nGoals: " + goal.taskName;
+            }
+            foreach (var goal in human.WorkProvider.WorkAgent.offered)
+            {
+                _caseInfo += "\nGoals: " + goal.taskName;
+            }
+            foreach (var goal in human.WorkProvider.WorkAgent.delegated)
+            {
+                _caseInfo += "\nGoals: " + goal.taskName;
+            }
+            foreach (var goal in human.WorkProvider.WorkAgent.processing)
+            {
+                _caseInfo += "\nGoals: " + goal.taskName;
+            }
+            foreach (var goal in human.WorkProvider.WorkAgent.suspended)
+            {
+                _caseInfo += "\nGoals: " + goal.taskName;
+            }
+        }
+    }
+
+    private void endAllCases()
+    {
+        _simulation.ProcessScriptCommand("EndAllCases");
+    }
+
+    private void registerUser()
+    {
+        string key = "";
+        foreach (var entry in _simulation._workflowProvider.AllParticipants)
+        {
+            if (entry.Value.FirstName == "Janie")
+            {
+                key = entry.Key;
+            }
+        }
+        string uuid = _simulation._workflowProvider.AllParticipants[key].AgentId;
+        if (uuid.Length > 36)
+        {
+            uuid = uuid.Substring(uuid.Length - 36, 36);
+        }
+        _simulation.ProcessScriptCommand("RegisterUser|Janie May|" + uuid);
+        _userKey = _assetKey = uuid;
+        _userName = "Janie May";
+    }
+
+    private void launchAsset(string assetName)
+    {
+        Application.OpenURL(
+            "http://localhost/forms/launch_asset.php"
+            + "?user_key=" + _userKey
+            + "&asset_name=" + WWW.EscapeURL(assetName)
+            + "&asset_key=" + _assetKey
+            + "&user_name=" + WWW.EscapeURL(_userName)
+            );
     }
 
     private bool userClickedOnObject(string objectName)
@@ -60,20 +196,36 @@ public class UserInteraction : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit))
         {
-            Debug.Log("Clicked on " + hit.collider.name);
             //Application.OpenURL("http://localhost/forms/kill_asset_work.php?user_key=9fa79ecf-40da-40d3-9b4c-cb8451efd90e&asset=f5637d0b-8904-4741-a16b-553965423b92");
             //simulation.Send("help");
 
             if (hit.collider.name == objectName)
             {
+                //Debug.Log("Clicked on " + hit.collider.name);
                 return true;
             }
         }
         return false;
     }
 
+    private void OnGUI()
+    {
+        Rect workItemsRect = new Rect(0f, 0f, Screen.width, Screen.height);
+        GUI.BeginGroup(workItemsRect);
+        {
+            GUILayout.BeginVertical();
+            {
+                GUILayout.Label(_yawlInfo);
+                GUILayout.Label(_simulationInfo);
+                GUILayout.Label(_caseInfo);
+            }
+            GUILayout.EndVertical();
+        }
+        GUI.EndGroup();            
+    }
+
     private void OnApplicationQuit()
     {
-        simulation.Send("endsession");
+        _simulation.Send("endsession");
     }
 }

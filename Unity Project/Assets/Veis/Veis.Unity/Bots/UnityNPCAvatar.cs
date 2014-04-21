@@ -16,12 +16,12 @@ namespace Veis.Unity.Bots
         public string LastName { get; set; }
         private SceneService _sceneService;
 
-        public UnityNPCAvatar(UUID newNPCUUID, string p1, string p2, SceneService _sceneService)
+        public UnityNPCAvatar(UUID uuid, string firstName, string lastName, SceneService sceneService)
         {
-            this.UUID = newNPCUUID;
-            this.FirstName = p1;
-            this.LastName = p2;
-            this._sceneService = _sceneService;
+            this.UUID = uuid;
+            this.FirstName = firstName;
+            this.LastName = lastName;
+            this._sceneService = sceneService;
         }
 
         #region Agent Control Functions

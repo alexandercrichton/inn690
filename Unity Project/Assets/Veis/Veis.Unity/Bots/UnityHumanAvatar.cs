@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Veis.Bots;
+using Veis.Unity.Logging;
 
 namespace Veis.Unity.Bots
 {
@@ -12,14 +13,16 @@ namespace Veis.Unity.Bots
         public string UserName { get; set; }
         public string RoleName { get; set; }
 
-        public UnityHumanAvatar(UUID userId, string userName, string roleName)
+        public UnityHumanAvatar(UUID uuid, string userName, string roleName)
         {
-
+            this.UUID = uuid;
+            this.UserName = userName;
+            this.RoleName = roleName;
         }
 
         public override void NotifyUser(string message)
         {
-            throw new NotImplementedException();
+            Logger.OnLogMessage(this, new LogEventArgs(message));
         }
     }
 }
