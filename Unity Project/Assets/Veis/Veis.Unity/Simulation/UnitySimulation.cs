@@ -388,7 +388,8 @@ namespace Veis.Unity.Simulation
             //    Log(workItem.ToString());
             //}
             
-            HumanWorkProvider workProvider = NPCToHumanMapping.MapWorkProviderFromNPC(oldNpc, newHuman, _goalService, _workItemDecomp);
+            HumanWorkProvider workProvider = NPCToHumanMapping.MapWorkProviderFromNPC(
+                oldNpc, newHuman, _goalService, _workItemDecomp);
             newHuman.WorkProvider = workProvider;
             newHuman.WorkId = oldNpc.Id;
             bool successful = _workflowProvider.ReplaceWorker(newHuman.WorkId, workProvider);

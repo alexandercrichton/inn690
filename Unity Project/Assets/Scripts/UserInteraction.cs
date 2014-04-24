@@ -18,10 +18,13 @@ public class UserInteraction : MonoBehaviour
     protected string _simulationInfo = "";
     protected string _caseInfo = "";
 
+    protected List<GameObject> clickableObjects;
+
     private void Start()
     {
         Logger.LogMessage += Logger_LogMessage;
         _simulation = new UnitySimulation();
+        clickableObjects = new List<GameObject>(GameObject.FindGameObjectsWithTag("Clickable"));
     }
 
     void Logger_LogMessage(object sender, LogEventArgs e)
@@ -221,7 +224,30 @@ public class UserInteraction : MonoBehaviour
             }
             GUILayout.EndVertical();
         }
-        GUI.EndGroup();            
+        GUI.EndGroup();
+
+        drawClickableObjectLabels();
+    }
+
+    private void drawClickableObjectLabels()
+    {
+        GUIStyle labelStyle = new GUIStyle();
+        labelStyle.alignment = TextAnchor.MiddleCenter;
+        labelStyle.normal.textColor = Color.white;
+        labelStyle.fontSize = 20;
+
+        foreach (GameObject clickableObject in clickableObjects)
+        {
+            Vector3 objectScreenPosition = Camera.main.WorldToScreenPoint(clickableObject.transform.position);
+            string objectLabel = clickableObject.name;
+            float objectLabelSize = 200f;
+            Rect objectLabelRect = new Rect(
+                objectScreenPosition.x - objectLabelSize / 2,
+                Screen.height - objectScreenPosition.y - objectLabelSize / 2,
+                objectLabelSize,
+                objectLabelSize);
+            GUI.Label(objectLabelRect, objectLabel, labelStyle);
+        }
     }
 
     private void OnApplicationQuit()
