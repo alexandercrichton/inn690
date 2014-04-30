@@ -22,7 +22,7 @@ namespace Veis.Unity.Bots
 
         public override void NotifyUser(string message)
         {
-            Logger.OnLogMessage(this, new LogEventArgs(message));
+            UnityLogger.BroadcastMesage(this, message);
         }
     }
 }

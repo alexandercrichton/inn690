@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Veis.Unity.Simulation;
@@ -24,7 +25,7 @@ public class UserInteraction : MonoBehaviour
 
     private void Start()
     {
-        Logger.LogMessage += Logger_LogMessage;
+        UnityLogger.LogMessage += Logger_LogMessage;
         _simulation = new UnitySimulation();
         clickableObjects = new List<GameObject>();
         clickableObjects.AddRange(new List<GameObject>(GameObject.FindGameObjectsWithTag("Clickable")));
@@ -288,14 +289,15 @@ public class UserInteraction : MonoBehaviour
 
     #endregion
 
-    void Logger_LogMessage(object sender, LogEventArgs e)
+    void Logger_LogMessage(object sender, Veis.Data. Logging.LogEventArgs e)
     {
-        string logMessage = e.Message;
-        if (sender != _simulation)
-        {
-            logMessage += ", from " + sender.ToString();
-        }
-        Debug.Log(logMessage);
+        Debug.Log("[" + e.EventInitiator.ToString() + "]: " + e.Message);
+
+        //if (sender != _simulation)
+        //{
+        //    logMessage += ", from " + sender.ToString();
+        //}
+        //Debug.Log(logMessage);
     }
 
     private void OnApplicationQuit()

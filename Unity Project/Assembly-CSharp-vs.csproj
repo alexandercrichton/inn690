@@ -50,12 +50,12 @@
      <Compile Include="Assets\Veis\Veis.Unity\Bots\UUID.cs" />
      <Compile Include="Assets\Veis\Veis.Unity\Bots\UnityHumanAvatar.cs" />
      <Compile Include="Assets\Veis\Veis.Unity\Bots\UnityNPCAvatar.cs" />
-     <Compile Include="Assets\Veis\Veis.Unity\Logging\LogEventArgs.cs" />
-     <Compile Include="Assets\Veis\Veis.Unity\Logging\Logger.cs" />
+     <Compile Include="Assets\Veis\Veis.Unity\Logging\UnityLogger.cs" />
      <Compile Include="Assets\Veis\Veis.Unity\Scene\SceneService.cs" />
      <Compile Include="Assets\Veis\Veis.Unity\Simulation\RequestDataEventArgs.cs" />
      <Compile Include="Assets\Veis\Veis.Unity\Simulation\SimulationActions.cs" />
      <Compile Include="Assets\Veis\Veis.Unity\Simulation\UnitySimulation.cs" />
+     <None Include="Assets\Veis\Veis\Veis.xml" />
  <Reference Include="AIMLbot">
  <HintPath>Assets\Veis\Veis\AIMLbot.dll</HintPath>
  </Reference>

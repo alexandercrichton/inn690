@@ -40,6 +40,7 @@ namespace Veis.Data
 
         public IList<T> Read<T>(DbCommand command, Func<IDataReader, T> transformRowToEntity)
         {
+            Logging.Logger.BroadcastMessage(this, "Read<T>()");
             using (var dbc = GetDbConnection(GetDbConfig()))
             {
                 return Read(dbc, command, transformRowToEntity);

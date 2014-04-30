@@ -534,7 +534,7 @@ namespace Veis.Unity.Simulation
 
         public override void Log(string message)
         {
-            Logger.OnLogMessage(this, new LogEventArgs(message));
+            UnityLogger.BroadcastMesage(this, message);
         }
 
         /// <summary>

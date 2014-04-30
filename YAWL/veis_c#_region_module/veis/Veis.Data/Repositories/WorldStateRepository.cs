@@ -20,6 +20,7 @@ namespace Veis.Data.Repositories
 
         private WorldState Convert(IDataReader reader)
         {
+            Logging.Logger.BroadcastMessage(this, "Convert()");
             return new WorldState
             {
                 AssetName = reader.GetString(0),

@@ -39,15 +39,26 @@ namespace Veis.Simulation.WorldState.StateSources
 
         private void CheckForUpdates(object sender, ElapsedEventArgs e)
         {
-            AccessRecord lastAccess = _accessRecordRepository.Find().FirstOrDefault();
-
-            // If changes were made since the last time
-            if (lastAccess != null && lastAccess.LastUpdated > _lastChecked)
+            try
             {
-                OnStateUpdated();
+                Veis.Data.Logging.Logger.BroadcastMessage(this, ", _accessRecordRepository.Find()" + _accessRecordRepository.Find().FirstOrDefault());
+                AccessRecord lastAccess = _accessRecordRepository.Find().FirstOrDefault();
+                Veis.Data.Logging.Logger.BroadcastMessage(this, "lastAccess.WorldKey: " + lastAccess.WorldKey + ", lastAccess.LastUpdated" + lastAccess.LastUpdated);
+
+                // If changes were made since the last time
+                if (lastAccess != null && lastAccess.LastUpdated > _lastChecked)
+                {
+                    OnStateUpdated();
+                }
+                // Update the time the database was last checked
+                _lastChecked = DateTime.Now;
+                Veis.Data.Logging.Logger.BroadcastMessage(this, "CheckForUpdates()");
             }
-            // Update the time the database was last checked
-            _lastChecked = DateTime.Now;
+            catch (Exception exception)
+            {
+                Veis.Data.Logging.Logger.BroadcastMessage(this, exception.Message);
+            }
+            
         }
 
         public List<State> GetAll()
@@ -69,6 +80,7 @@ namespace Veis.Simulation.WorldState.StateSources
         {
             if (StateUpdated != null)
                 StateUpdated();
+            Veis.Data.Logging.Logger.BroadcastMessage(this, "StateUpdated()");
         }
 
         public event StateUpdatedHandler StateUpdated;
