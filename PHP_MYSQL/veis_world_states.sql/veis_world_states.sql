@@ -19,6 +19,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `veis_world_states`
 --
+
+DROP DATABASE IF EXISTS `veis_world_states`;
 CREATE DATABASE IF NOT EXISTS `veis_world_states` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
 USE `veis_world_states`;
 

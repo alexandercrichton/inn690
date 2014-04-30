@@ -147,7 +147,6 @@ if (isset($asset_key) && isset($asset_name) && isset($user_key) && isset($method
 			if ($result != -1){
 				// define an index
 				$predicate = $variable = $state = "";
-				
 				// for each row
 				for ($i = 0; $i < sizeof($result); $i++) {
 					$predicate = $result[$i]["predicate"];	// 0
@@ -307,6 +306,7 @@ if (isset($asset_key) && isset($asset_name) && isset($user_key) && isset($method
 		
 		message("Precondition validation:", $precon_msg);
 		echo "<div align=center>";
+		echo "<p>test</p>";
 		button("OK");
 		echo "</div>";
 		endForm();

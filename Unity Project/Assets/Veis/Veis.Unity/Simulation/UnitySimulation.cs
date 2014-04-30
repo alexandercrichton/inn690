@@ -100,6 +100,8 @@ namespace Veis.Unity.Simulation
             if (_workflowProvider != null && _workflowProvider.IsConnected)
             {
                 _workflowProvider.ResetAll();
+                _workflowProvider.AllWorkItems.Clear();
+                _workflowProvider.AllParticipants.Clear();
             }
             if (_polledWorldState != null)
             {

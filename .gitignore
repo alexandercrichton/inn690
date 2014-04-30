@@ -2,9 +2,6 @@
 OpenSim 2013-12-15
 PHP_MYSQL
 YAWL
-/1 YAWL startup.bat - Shortcut.lnk
-/2 veis Run.bat - Shortcut.lnk
-/3 OpenSim.32BitLaunch.exe - Shortcut.lnk
 /*.gitignore
 Library
 obj

@@ -18,6 +18,8 @@ public class UserInteraction : MonoBehaviour
     protected string _simulationInfo = "";
     protected string _caseInfo = "";
 
+    protected string userTextInput = "";
+
     protected List<GameObject> clickableObjects;
 
     private void Start()
@@ -32,12 +34,12 @@ public class UserInteraction : MonoBehaviour
     private void Update()
     {
         updateGUI();
-        handleUserClick();
+        handleUserInteraction();
     }
 
     #region User Click
 
-    private void handleUserClick()
+    private void handleUserInteraction()
     {
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
@@ -185,52 +187,54 @@ public class UserInteraction : MonoBehaviour
         {
             foreach (var goal in npc.WorkProvider.GetWorkAgent().started)
             {
-                _caseInfo += "\nGoals: " + goal.taskName;
+                _caseInfo += "\nGoals [NPC] [Started]: " + goal.taskName;
             }
             foreach (var goal in npc.WorkProvider.GetWorkAgent().offered)
             {
-                _caseInfo += "\nGoals: " + goal.taskName;
+                _caseInfo += "\nGoals [NPC] [Offered]: " + goal.taskName;
             }
             foreach (var goal in npc.WorkProvider.GetWorkAgent().delegated)
             {
-                _caseInfo += "\nGoals: " + goal.taskName;
+                _caseInfo += "\nGoals [NPC] [Delegated]: " + goal.taskName;
             }
             foreach (var goal in npc.WorkProvider.GetWorkAgent().processing)
             {
-                _caseInfo += "\nGoals: " + goal.taskName;
+                _caseInfo += "\nGoals [NPC] [Processing]: " + goal.taskName;
             }
             foreach (var goal in npc.WorkProvider.GetWorkAgent().suspended)
             {
-                _caseInfo += "\nGoals: " + goal.taskName;
+                _caseInfo += "\nGoals [NPC] [Suspended]: " + goal.taskName;
             }
         }
         foreach (var human in _simulation._humans)
         {
             foreach (var goal in human.WorkProvider.WorkAgent.started)
             {
-                _caseInfo += "\nGoals: " + goal.taskName;
+                _caseInfo += "\nGoals [Human] [Started]: " + goal.taskName;
             }
             foreach (var goal in human.WorkProvider.WorkAgent.offered)
             {
-                _caseInfo += "\nGoals: " + goal.taskName;
+                _caseInfo += "\nGoals [Human] [Offered]: " + goal.taskName;
             }
             foreach (var goal in human.WorkProvider.WorkAgent.delegated)
             {
-                _caseInfo += "\nGoals: " + goal.taskName;
+                _caseInfo += "\nGoals [Human] [Delegated]: " + goal.taskName;
             }
             foreach (var goal in human.WorkProvider.WorkAgent.processing)
             {
-                _caseInfo += "\nGoals: " + goal.taskName;
+                _caseInfo += "\nGoals [Human] [Processing]: " + goal.taskName;
             }
             foreach (var goal in human.WorkProvider.WorkAgent.suspended)
             {
-                _caseInfo += "\nGoals: " + goal.taskName;
+                _caseInfo += "\nGoals [Human] [Suspended]: " + goal.taskName;
             }
         }
     }
 
     private void OnGUI()
     {
+        drawClickableObjectLabels();
+
         Rect workItemsRect = new Rect(0f, 0f, Screen.width, Screen.height);
         GUI.BeginGroup(workItemsRect);
         {
@@ -244,7 +248,15 @@ public class UserInteraction : MonoBehaviour
         }
         GUI.EndGroup();
 
-        drawClickableObjectLabels();
+        Rect userInputRect = new Rect(0f, Screen.height - 50f, Screen.width, 50f);
+        if (Event.current.type == EventType.keyDown && Event.current.keyCode == KeyCode.Return)
+        {
+            handleUserTextInput();
+        }
+        else if (Event.current.keyCode != KeyCode.Return)
+        {
+            userTextInput = GUI.TextArea(userInputRect, userTextInput.Replace("\n", ""));
+        }
     }
 
     private void drawClickableObjectLabels()
@@ -266,6 +278,12 @@ public class UserInteraction : MonoBehaviour
                 objectLabelSize);
             GUI.Label(objectLabelRect, objectLabel, labelStyle);
         }
+    }
+
+    private void handleUserTextInput()
+    {
+        print(userTextInput);
+        _simulation.Send(userTextInput);
     }
 
     #endregion
