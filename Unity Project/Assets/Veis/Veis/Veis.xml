@@ -9,7 +9,7 @@
     <!-- World State database configuration -->
     <StateHost>localhost</StateHost>
     <StatePort>3306</StatePort>
-    <StateDatabase>veis_knowledge_base</StateDatabase>
+    <StateDatabase>veis_world_states</StateDatabase>
     <StateUser>root</StateUser>
     <StatePass></StatePass>
 </Root>

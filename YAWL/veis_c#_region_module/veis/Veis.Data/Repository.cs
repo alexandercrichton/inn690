@@ -18,7 +18,6 @@ namespace Veis.Data
 
         private DbCommand CreateSelectCommand(string query, params Specification<T>[] specifications)
         {
-            Logging.Logger.BroadcastMessage(this, "CreateSelectCommand()");
             var joinString = query.Contains("WHERE") ? "AND" : "WHERE";
             foreach (var spec in specifications)
             {
@@ -54,7 +53,6 @@ namespace Veis.Data
         protected IEnumerable<T> Select(string query, Func<IEnumerable<T>, IEnumerable<T>> orderAndPage,
                                                 Func<IDataReader, T> converter, params Specification<T>[] specifications)
         {
-            Logging.Logger.BroadcastMessage(this, "Select()");
             var cmd = CreateSelectCommand(query, specifications);
             var results = DataAccess.Read(cmd, converter);
 

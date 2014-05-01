@@ -41,9 +41,7 @@ namespace Veis.Simulation.WorldState.StateSources
         {
             try
             {
-                Veis.Data.Logging.Logger.BroadcastMessage(this, ", _accessRecordRepository.Find()" + _accessRecordRepository.Find().FirstOrDefault());
                 AccessRecord lastAccess = _accessRecordRepository.Find().FirstOrDefault();
-                Veis.Data.Logging.Logger.BroadcastMessage(this, "lastAccess.WorldKey: " + lastAccess.WorldKey + ", lastAccess.LastUpdated" + lastAccess.LastUpdated);
 
                 // If changes were made since the last time
                 if (lastAccess != null && lastAccess.LastUpdated > _lastChecked)
@@ -52,7 +50,6 @@ namespace Veis.Simulation.WorldState.StateSources
                 }
                 // Update the time the database was last checked
                 _lastChecked = DateTime.Now;
-                Veis.Data.Logging.Logger.BroadcastMessage(this, "CheckForUpdates()");
             }
             catch (Exception exception)
             {
@@ -80,7 +77,7 @@ namespace Veis.Simulation.WorldState.StateSources
         {
             if (StateUpdated != null)
                 StateUpdated();
-            Veis.Data.Logging.Logger.BroadcastMessage(this, "StateUpdated()");
+            Veis.Data.Logging.Logger.BroadcastMessage(this, "World State Updated");
         }
 
         public event StateUpdatedHandler StateUpdated;
