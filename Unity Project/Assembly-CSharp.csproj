@@ -53,7 +53,6 @@
      <Compile Include="Assets\Veis\Veis.Unity\Logging\UnityLogger.cs" />
      <Compile Include="Assets\Veis\Veis.Unity\Scene\SceneService.cs" />
      <Compile Include="Assets\Veis\Veis.Unity\Simulation\RequestDataEventArgs.cs" />
-     <Compile Include="Assets\Veis\Veis.Unity\Simulation\SimulationActions.cs" />
      <Compile Include="Assets\Veis\Veis.Unity\Simulation\UnitySimulation.cs" />
      <None Include="Assets\Veis\Veis\Veis.xml" />
  <Reference Include="AIMLbot">

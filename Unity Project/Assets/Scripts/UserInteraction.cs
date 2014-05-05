@@ -147,89 +147,27 @@ public class UserInteraction : MonoBehaviour
 
     private void updateGUI()
     {
-        _yawlInfo = "YAWL INFO ---\n";
+        _caseInfo = "No case";
 
-        foreach (var workItem in _simulation._workflowProvider.AllSpecifications)
-        {
-            _yawlInfo += "\nSpecifications: " + workItem.Value;
-        }
-        foreach (var workItem in _simulation._workflowProvider.AllParticipants)
-        {
-            _yawlInfo += "\nParticipants: " + workItem.Value.FirstName + " "
-                + workItem.Value.LastName + " " + workItem.Value.AgentId;
-        }
         foreach (var startedCase in _simulation._workflowProvider.StartedCases)
         {
-            _yawlInfo += "\nStarted Case: " + startedCase.SpecificationName + " "
+            _caseInfo = "Current Case: " + startedCase.SpecificationName + " "
                 + startedCase.SpecificationId;
-        }
-
-        _simulationInfo = "SIMULATION INFO ---\n";
-
-        foreach (var npc in _simulation._npcs)
-        {
-            _simulationInfo += "\nNPCs: " + npc.FirstName + " "
-                + npc.LastName + " " + npc.Id;
-        }
-        foreach (var human in _simulation._humans)
-        {
-            _simulationInfo += "\nHumans: " + human.Name + " "
-                + human.RoleName + " " + human.UUID;
-        }
-
-        _caseInfo = "CASE INFO ---\n";
-
-        foreach (var workItem in _simulation._workflowProvider.AllWorkItems)
-        {
-            _caseInfo += "\nWork Items: " + workItem.Value.taskName + " "
-                + workItem.Value.taskID + " " + workItem.Value.participant;
-        }
-        foreach (var npc in _simulation._npcs)
-        {
-            foreach (var goal in npc.WorkProvider.GetWorkAgent().started)
+            foreach (var human in _simulation._humans)
             {
-                _caseInfo += "\nGoals [NPC] [Started]: " + goal.taskName;
-            }
-            foreach (var goal in npc.WorkProvider.GetWorkAgent().offered)
-            {
-                _caseInfo += "\nGoals [NPC] [Offered]: " + goal.taskName;
-            }
-            foreach (var goal in npc.WorkProvider.GetWorkAgent().delegated)
-            {
-                _caseInfo += "\nGoals [NPC] [Delegated]: " + goal.taskName;
-            }
-            foreach (var goal in npc.WorkProvider.GetWorkAgent().processing)
-            {
-                _caseInfo += "\nGoals [NPC] [Processing]: " + goal.taskName;
-            }
-            foreach (var goal in npc.WorkProvider.GetWorkAgent().suspended)
-            {
-                _caseInfo += "\nGoals [NPC] [Suspended]: " + goal.taskName;
-            }
-        }
-        foreach (var human in _simulation._humans)
-        {
-            foreach (var goal in human.WorkProvider.WorkAgent.started)
-            {
-                _caseInfo += "\nGoals [Human] [Started]: " + goal.taskName;
-            }
-            foreach (var goal in human.WorkProvider.WorkAgent.offered)
-            {
-                _caseInfo += "\nGoals [Human] [Offered]: " + goal.taskName;
-            }
-            foreach (var goal in human.WorkProvider.WorkAgent.delegated)
-            {
-                _caseInfo += "\nGoals [Human] [Delegated]: " + goal.taskName;
-            }
-            foreach (var goal in human.WorkProvider.WorkAgent.processing)
-            {
-                _caseInfo += "\nGoals [Human] [Processing]: " + goal.taskName;
-            }
-            foreach (var goal in human.WorkProvider.WorkAgent.suspended)
-            {
-                _caseInfo += "\nGoals [Human] [Suspended]: " + goal.taskName;
-            }
-        }
+                if (human.WorkProvider.GetGoals().Count > 0)
+                {
+                    foreach (var workItem in human.WorkProvider.GetGoals())
+                    {
+                        _caseInfo += "\nCurrent Task: " + workItem.Key.taskName;
+                        foreach (var goal in workItem.Value)
+                        {
+                            _caseInfo += "\n" + goal.ToString();
+                        }
+                    }
+                }
+            }  
+        }      
     }
 
     private void OnGUI()
