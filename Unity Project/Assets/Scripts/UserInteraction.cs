@@ -34,7 +34,7 @@ public class UserInteraction : MonoBehaviour
 
     private void Update()
     {
-        updateGUI();
+        updateGUIText();
         handleUserInteraction();
     }
 
@@ -50,27 +50,6 @@ public class UserInteraction : MonoBehaviour
             {
                 launchAsset(clickedObject.name);
             }
-
-            else if (clickedObject.name == "SimulationReset")
-            {
-                _simulation.PerformSimulationAction(Veis.Simulation.SimulationActions.Reset);
-            }
-            else if (clickedObject.name == "SimulationStart")
-            {
-                _simulation.PerformSimulationAction(Veis.Simulation.SimulationActions.Start);
-            }
-            else if (clickedObject.name == "LaunchCase")
-            {
-                launchCase();
-            }
-            else if (clickedObject.name == "EndAllCases")
-            {
-                endAllCases();
-            }
-            else if (clickedObject.name == "RegisterUser")
-            {
-                registerUser();
-            }
         }
     }
 
@@ -80,14 +59,7 @@ public class UserInteraction : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit))
         {
-            //Application.OpenURL("http://localhost/forms/kill_asset_work.php?user_key=9fa79ecf-40da-40d3-9b4c-cb8451efd90e&asset=f5637d0b-8904-4741-a16b-553965423b92");
-            //simulation.Send("help");
             return hit.collider.gameObject;
-            //if (hit.collider.name == objectName)
-            //{
-            //    //Debug.Log("Clicked on " + hit.collider.name);
-            //    return true;
-            //}
         }
         return null;
     }
@@ -95,7 +67,6 @@ public class UserInteraction : MonoBehaviour
     private void launchCase()
     {
         _simulation.ProcessScriptCommand("LaunchCase|" + CASE_ID);
-        //print(simulation._workflowProvider.StartedCases.ToString());
     }
 
     private void endAllCases()
@@ -145,7 +116,7 @@ public class UserInteraction : MonoBehaviour
 
     #region GUI
 
-    private void updateGUI()
+    private void updateGUIText()
     {
         _caseInfo = "No case";
 
@@ -173,7 +144,54 @@ public class UserInteraction : MonoBehaviour
     private void OnGUI()
     {
         drawClickableObjectLabels();
+        drawCaseInfo();
+        //drawUserTextInputArea();
+        drawSimulationControlButtons();
+    }
 
+    private void drawClickableObjectLabels()
+    {
+        GUIStyle labelStyle = new GUIStyle();
+        labelStyle.alignment = TextAnchor.MiddleCenter;
+        labelStyle.normal.textColor = Color.red;
+        labelStyle.fontSize = 20;
+
+        foreach (GameObject clickableObject in clickableObjects)
+        {
+            if (checkIsObjectInCameraView(clickableObject))
+            {
+                Vector3 origin = Camera.main.transform.position;
+                Vector3 direction = clickableObject.transform.position - origin;
+                RaycastHit hit;
+                if (Physics.Raycast(origin, direction, out hit))
+                {
+                    if (hit.collider.name == clickableObject.name)
+                    {
+                        Vector3 objectScreenPosition = Camera.main.WorldToScreenPoint(clickableObject.transform.position);
+                        string objectLabel = clickableObject.name;
+                        float objectLabelSize = 200f;
+                        Rect objectLabelRect = new Rect(
+                            objectScreenPosition.x - objectLabelSize / 2,
+                            Screen.height - objectScreenPosition.y - objectLabelSize / 2,
+                            objectLabelSize,
+                            objectLabelSize);
+                        GUI.Label(objectLabelRect, objectLabel, labelStyle);
+                    }
+                }
+            }            
+        }
+    }
+
+    private bool checkIsObjectInCameraView(GameObject gmObject)
+    {
+        Vector3 viewportPoint = Camera.main.WorldToViewportPoint(gmObject.transform.position);
+        return (viewportPoint.x > 0 && viewportPoint.x < 1) 
+            && (viewportPoint.y > 0 && viewportPoint.y < 1) 
+            && (viewportPoint.z > 0);
+    }
+
+    private void drawCaseInfo()
+    {
         Rect workItemsRect = new Rect(0f, 0f, Screen.width, Screen.height);
         GUI.BeginGroup(workItemsRect);
         {
@@ -186,7 +204,10 @@ public class UserInteraction : MonoBehaviour
             GUILayout.EndVertical();
         }
         GUI.EndGroup();
+    }
 
+    private void drawUserTextInputArea()
+    {
         Rect userInputRect = new Rect(0f, Screen.height - 50f, Screen.width, 50f);
         if (Event.current.type == EventType.keyDown && Event.current.keyCode == KeyCode.Return)
         {
@@ -198,31 +219,41 @@ public class UserInteraction : MonoBehaviour
         }
     }
 
-    private void drawClickableObjectLabels()
-    {
-        GUIStyle labelStyle = new GUIStyle();
-        labelStyle.alignment = TextAnchor.MiddleCenter;
-        labelStyle.normal.textColor = Color.white;
-        labelStyle.fontSize = 20;
-
-        foreach (GameObject clickableObject in clickableObjects)
-        {
-            Vector3 objectScreenPosition = Camera.main.WorldToScreenPoint(clickableObject.transform.position);
-            string objectLabel = clickableObject.name;
-            float objectLabelSize = 200f;
-            Rect objectLabelRect = new Rect(
-                objectScreenPosition.x - objectLabelSize / 2,
-                Screen.height - objectScreenPosition.y - objectLabelSize / 2,
-                objectLabelSize,
-                objectLabelSize);
-            GUI.Label(objectLabelRect, objectLabel, labelStyle);
-        }
-    }
-
     private void handleUserTextInput()
     {
         print(userTextInput);
         _simulation.Send(userTextInput);
+    }
+
+    private void drawSimulationControlButtons()
+    {
+        float buttonContainerSize = Screen.height / 6;
+        Rect buttonContainerRect = new Rect(0f, Screen.height - buttonContainerSize, buttonContainerSize, buttonContainerSize);
+        GUI.BeginGroup(buttonContainerRect);
+        {
+            Rect button = new Rect(0f, 0f, buttonContainerRect.width, buttonContainerRect.height / 5);
+            if (GUI.Button(new Rect(button.xMin, button.height * 0, button.width, button.height), "Reset Simulation"))
+            {
+                _simulation.PerformSimulationAction(Veis.Simulation.SimulationActions.Reset);
+            }
+            if (GUI.Button(new Rect(button.xMin, button.height * 1, button.width, button.height), "Start Simulation"))
+            {
+                _simulation.PerformSimulationAction(Veis.Simulation.SimulationActions.Start);
+            }
+            if (GUI.Button(new Rect(button.xMin, button.height * 2, button.width, button.height), "Register as Participant"))
+            {
+                registerUser();
+            }
+            if (GUI.Button(new Rect(button.xMin, button.height * 3, button.width, button.height), "Launch Case"))
+            {
+                launchCase();
+            }
+            if (GUI.Button(new Rect(button.xMin, button.height * 4, button.width, button.height), "End All Cases"))
+            {
+                endAllCases();
+            }
+        }
+        GUI.EndGroup();
     }
 
     #endregion
@@ -230,12 +261,6 @@ public class UserInteraction : MonoBehaviour
     void Logger_LogMessage(object sender, Veis.Data. Logging.LogEventArgs e)
     {
         Debug.Log("[" + e.EventInitiator.ToString() + "]: " + e.Message);
-
-        //if (sender != _simulation)
-        //{
-        //    logMessage += ", from " + sender.ToString();
-        //}
-        //Debug.Log(logMessage);
     }
 
     private void OnApplicationQuit()

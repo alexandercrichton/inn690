@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Scripts\UserInteraction.cs" />
+     <Compile Include="Assets\Scripts\WowCamera.cs" />
      <Compile Include="Assets\Veis\Veis.Unity\Bots\UUID.cs" />
      <Compile Include="Assets\Veis\Veis.Unity\Bots\UnityHumanAvatar.cs" />
      <Compile Include="Assets\Veis\Veis.Unity\Bots\UnityNPCAvatar.cs" />
