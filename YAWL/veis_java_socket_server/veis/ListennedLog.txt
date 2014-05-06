@@ -12792,3 +12792,250 @@ SEND: WORKITEM 2 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46 00000000000000000000000
 RECV: GetTaskQueue 0 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
 RECV: CancelCase 130
 RECV: endsession
+SEND: Aloha, type HELP for instruction.
+RECV: GetAllAgents
+SEND: AGENT Janie May PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+SEND: AGENTROLE PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46 nurse
+SEND: AGENT Edwin Fahel PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+SEND: AGENTCAPABILITY PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4 TestCapability
+SEND: AGENTROLE PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4 doctor
+RECV: GetActiveAgents
+SEND: ACTIVEAGENT Janie May PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+SEND: ACTIVEAGENT Edwin Fahel PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+RECV: GetAllSpecifications
+SEND: SPECIFICATION UID_142f2e5a-7c7c-4d2e-a684-02c230e3689d CarAccident
+RECV: GetTaskQueue 0 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+RECV: GetTaskQueue 1 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+RECV: GetTaskQueue 2 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+RECV: GetTaskQueue 3 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+RECV: GetTaskQueue 0 PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+RECV: GetTaskQueue 1 PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+RECV: GetTaskQueue 2 PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+RECV: GetTaskQueue 3 PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+RECV: GetTaskQueue 0 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+RECV: GetTaskQueue 1 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+RECV: GetTaskQueue 2 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+RECV: GetTaskQueue 3 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+RECV: GetAllAgents
+SEND: AGENT Janie May PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+SEND: AGENTROLE PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46 nurse
+SEND: AGENT Edwin Fahel PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+SEND: AGENTCAPABILITY PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4 TestCapability
+SEND: AGENTROLE PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4 doctor
+RECV: GetActiveAgents
+SEND: ACTIVEAGENT Janie May PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+SEND: ACTIVEAGENT Edwin Fahel PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+RECV: GetAllSpecifications
+SEND: SPECIFICATION UID_142f2e5a-7c7c-4d2e-a684-02c230e3689d CarAccident
+RECV: GetTaskQueue 0 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+RECV: GetTaskQueue 1 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+RECV: GetTaskQueue 2 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+RECV: GetTaskQueue 3 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+RECV: GetTaskQueue 0 PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+RECV: GetTaskQueue 1 PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+RECV: GetTaskQueue 2 PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+RECV: GetTaskQueue 3 PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+RECV: LaunchCase CarAccident
+SEND: CASE 131 CarAccident
+RECV: GetAllAgents
+SEND: AGENT Janie May PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+SEND: AGENTROLE PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46 nurse
+SEND: AGENT Edwin Fahel PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+SEND: AGENTCAPABILITY PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4 TestCapability
+SEND: AGENTROLE PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4 doctor
+RECV: GetActiveAgents
+SEND: ACTIVEAGENT Janie May PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+SEND: ACTIVEAGENT Edwin Fahel PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+RECV: GetAllSpecifications
+SEND: SPECIFICATION UID_142f2e5a-7c7c-4d2e-a684-02c230e3689d CarAccident
+RECV: GetTaskQueue 0 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+SEND: WORKITEM 2 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46 0000000000000000000000001 Receive_Patient Receive_Patient
+RECV: GetTaskQueue 1 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+RECV: GetTaskQueue 2 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+SEND: WORKITEM 2 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46 0000000000000000000000001 Receive_Patient Receive_Patient PatientBill:bedAt;ExaminationRoom
+RECV: GetTaskQueue 3 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+RECV: GetTaskQueue 0 PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+RECV: GetTaskQueue 1 PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+RECV: GetTaskQueue 2 PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+RECV: GetTaskQueue 3 PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+RECV: GetAllAgents
+SEND: AGENT Janie May PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+SEND: AGENTROLE PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46 nurse
+SEND: AGENT Edwin Fahel PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+SEND: AGENTCAPABILITY PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4 TestCapability
+SEND: AGENTROLE PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4 doctor
+RECV: GetActiveAgents
+SEND: ACTIVEAGENT Janie May PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+SEND: ACTIVEAGENT Edwin Fahel PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+RECV: GetAllSpecifications
+SEND: SPECIFICATION UID_142f2e5a-7c7c-4d2e-a684-02c230e3689d CarAccident
+RECV: GetTaskQueue 0 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+RECV: GetTaskQueue 1 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+RECV: GetTaskQueue 2 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+SEND: WORKITEM 2 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46 0000000000000000000000001 Receive_Patient Receive_Patient PatientBill:bedAt;ExaminationRoom
+RECV: GetTaskQueue 3 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+RECV: GetTaskQueue 0 PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+RECV: GetTaskQueue 1 PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+RECV: GetTaskQueue 2 PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+RECV: GetTaskQueue 3 PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+RECV: WorkItemAction Complete PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46 0000000000000000000000001
+SEND: TASKEND PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46 0000000000000000000000001
+RECV: GetTaskQueue 2 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+SEND: Aloha, type HELP for instruction.
+RECV: GetAllAgents
+SEND: AGENT Janie May PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+SEND: AGENTROLE PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46 nurse
+SEND: AGENT Edwin Fahel PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+SEND: AGENTCAPABILITY PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4 TestCapability
+SEND: AGENTROLE PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4 doctor
+RECV: GetActiveAgents
+SEND: ACTIVEAGENT Janie May PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+SEND: ACTIVEAGENT Edwin Fahel PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+RECV: GetAllSpecifications
+SEND: SPECIFICATION UID_142f2e5a-7c7c-4d2e-a684-02c230e3689d CarAccident
+RECV: GetTaskQueue 0 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+SEND: WORKITEM 0 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46 0000000000000000000000002 Visual_Examination Visual_Examination PatientBill:isVisuallyExamined;True
+RECV: GetTaskQueue 1 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+RECV: GetTaskQueue 2 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+SEND: WORKITEM 2 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46 0000000000000000000000004 Cheeck_Breathing Check_Breathing VitalSignsMonitor:mouthpieceAt;VitalSignsMonitor
+RECV: GetTaskQueue 3 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+RECV: GetTaskQueue 0 PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+RECV: GetTaskQueue 1 PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+RECV: GetTaskQueue 2 PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+RECV: GetTaskQueue 3 PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+RECV: GetAllAgents
+SEND: AGENT Janie May PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+SEND: AGENTROLE PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46 nurse
+SEND: AGENT Edwin Fahel PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+SEND: AGENTCAPABILITY PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4 TestCapability
+SEND: AGENTROLE PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4 doctor
+RECV: GetActiveAgents
+SEND: ACTIVEAGENT Janie May PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+SEND: ACTIVEAGENT Edwin Fahel PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+RECV: GetAllSpecifications
+SEND: SPECIFICATION UID_142f2e5a-7c7c-4d2e-a684-02c230e3689d CarAccident
+RECV: GetTaskQueue 0 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+SEND: WORKITEM 0 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46 0000000000000000000000002 Visual_Examination Visual_Examination PatientBill:isVisuallyExamined;True
+RECV: GetTaskQueue 1 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+RECV: GetTaskQueue 2 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+SEND: WORKITEM 2 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46 0000000000000000000000004 Cheeck_Breathing Check_Breathing VitalSignsMonitor:mouthpieceAt;VitalSignsMonitor
+RECV: GetTaskQueue 3 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+RECV: GetTaskQueue 0 PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+RECV: GetTaskQueue 1 PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+RECV: GetTaskQueue 2 PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+RECV: GetTaskQueue 3 PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+RECV: LaunchCase CarAccident
+SEND: Aloha, type HELP for instruction.
+RECV: GetAllAgents
+SEND: AGENT Janie May PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+SEND: AGENTROLE PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46 nurse
+SEND: AGENT Edwin Fahel PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+SEND: AGENTCAPABILITY PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4 TestCapability
+SEND: AGENTROLE PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4 doctor
+RECV: GetActiveAgents
+SEND: ACTIVEAGENT Janie May PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+SEND: ACTIVEAGENT Edwin Fahel PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+RECV: GetAllSpecifications
+SEND: SPECIFICATION UID_142f2e5a-7c7c-4d2e-a684-02c230e3689d CarAccident
+RECV: GetTaskQueue 0 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+RECV: GetTaskQueue 1 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+RECV: GetTaskQueue 2 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+RECV: GetTaskQueue 3 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+RECV: GetTaskQueue 0 PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+RECV: GetTaskQueue 1 PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+RECV: GetTaskQueue 2 PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+RECV: GetTaskQueue 3 PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+RECV: GetAllAgents
+SEND: AGENT Janie May PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+SEND: AGENTROLE PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46 nurse
+SEND: AGENT Edwin Fahel PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+SEND: AGENTCAPABILITY PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4 TestCapability
+SEND: AGENTROLE PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4 doctor
+RECV: GetActiveAgents
+SEND: ACTIVEAGENT Janie May PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+SEND: ACTIVEAGENT Edwin Fahel PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+RECV: GetAllSpecifications
+SEND: SPECIFICATION UID_142f2e5a-7c7c-4d2e-a684-02c230e3689d CarAccident
+RECV: GetTaskQueue 0 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+RECV: GetTaskQueue 1 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+RECV: GetTaskQueue 2 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+RECV: GetTaskQueue 3 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+RECV: GetTaskQueue 0 PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+RECV: GetTaskQueue 1 PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+RECV: GetTaskQueue 2 PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+RECV: GetTaskQueue 3 PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+RECV: GetTaskQueue 0 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+RECV: GetTaskQueue 1 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+RECV: GetTaskQueue 2 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+RECV: GetTaskQueue 3 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+RECV: GetAllAgents
+SEND: AGENT Janie May PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+SEND: AGENTROLE PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46 nurse
+SEND: AGENT Edwin Fahel PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+SEND: AGENTCAPABILITY PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4 TestCapability
+SEND: AGENTROLE PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4 doctor
+RECV: GetActiveAgents
+SEND: ACTIVEAGENT Janie May PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+SEND: ACTIVEAGENT Edwin Fahel PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+RECV: GetAllSpecifications
+SEND: SPECIFICATION UID_142f2e5a-7c7c-4d2e-a684-02c230e3689d CarAccident
+RECV: GetTaskQueue 0 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+RECV: GetTaskQueue 1 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+RECV: GetTaskQueue 2 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+RECV: GetTaskQueue 3 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+RECV: GetTaskQueue 0 PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+RECV: GetTaskQueue 1 PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+RECV: GetTaskQueue 2 PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+RECV: GetTaskQueue 3 PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+RECV: LaunchCase CarAccident
+SEND: WORKITEM 2 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46 0000000000000000000000008 Receive_Patient Receive_Patient
+SEND: CASE 133 CarAccident
+RECV: GetAllAgents
+SEND: AGENT Janie May PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+SEND: AGENTROLE PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46 nurse
+SEND: AGENT Edwin Fahel PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+SEND: AGENTCAPABILITY PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4 TestCapability
+SEND: AGENTROLE PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4 doctor
+RECV: GetActiveAgents
+SEND: ACTIVEAGENT Janie May PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+SEND: ACTIVEAGENT Edwin Fahel PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+RECV: GetAllSpecifications
+SEND: SPECIFICATION UID_142f2e5a-7c7c-4d2e-a684-02c230e3689d CarAccident
+RECV: GetTaskQueue 0 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+RECV: GetTaskQueue 1 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+RECV: GetTaskQueue 2 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+SEND: WORKITEM 2 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46 0000000000000000000000008 Receive_Patient Receive_Patient PatientBill:bedAt;ExaminationRoom
+RECV: GetTaskQueue 3 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+RECV: GetTaskQueue 0 PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+RECV: GetTaskQueue 1 PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+RECV: GetTaskQueue 2 PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+RECV: GetTaskQueue 3 PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+RECV: GetAllAgents
+SEND: AGENT Janie May PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+SEND: AGENTROLE PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46 nurse
+SEND: AGENT Edwin Fahel PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+SEND: AGENTCAPABILITY PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4 TestCapability
+SEND: AGENTROLE PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4 doctor
+RECV: GetActiveAgents
+SEND: ACTIVEAGENT Janie May PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+SEND: ACTIVEAGENT Edwin Fahel PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+RECV: GetAllSpecifications
+SEND: SPECIFICATION UID_142f2e5a-7c7c-4d2e-a684-02c230e3689d CarAccident
+RECV: GetTaskQueue 0 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+RECV: GetTaskQueue 1 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+RECV: GetTaskQueue 2 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+SEND: WORKITEM 2 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46 0000000000000000000000008 Receive_Patient Receive_Patient PatientBill:bedAt;ExaminationRoom
+RECV: GetTaskQueue 3 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+RECV: GetTaskQueue 0 PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+RECV: GetTaskQueue 1 PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+RECV: GetTaskQueue 2 PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+RECV: GetTaskQueue 3 PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+RECV: WorkItemAction Complete PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46 0000000000000000000000008
+SEND: TASKEND PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46 0000000000000000000000008
+SEND: WORKITEM 2 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46 000000000000000000000000B Visual_Examination Visual_Examination
+RECV: GetTaskQueue 2 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+SEND: WORKITEM 2 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46 000000000000000000000000B Visual_Examination Visual_Examination PatientBill:isVisuallyExamined;True
+RECV: GetTaskQueue 0 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+SEND: WORKITEM 0 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46 000000000000000000000000A Cheeck_Breathing Check_Breathing VitalSignsMonitor:mouthpieceAt;VitalSignsMonitor
+RECV: CancelCase 133
+RECV: endsession
