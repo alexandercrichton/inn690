@@ -204,6 +204,9 @@ namespace Veis.Unity.Simulation
                             UserName = tokens[1], RoleName = tokens[1], UserId = tokens[2] });
                     }
                     break;
+            }
+        }
+
         public event WorldStateUpdatedHandler WorldStateUpdated;
         protected void OnWorldStateUpdated()
         {
