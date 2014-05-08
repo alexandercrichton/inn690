@@ -82,6 +82,7 @@ namespace Veis.Unity.Simulation
                 _polledWorldState = new PolledDatabaseStateSource(2000, _worldStateRepos, _accessRecordRepos);
                 _worldStateService.AddStateSource(_polledWorldState);
                 _polledWorldState.Start(); // TODO: put this back in StartCase
+                _worldStateService.WorldStateUpdated += OnWorldStateUpdated;
             }
 
             if (_workflowProvider != null && _workflowProvider.IsConnected)
@@ -122,87 +123,12 @@ namespace Veis.Unity.Simulation
             _workflowProvider.Close();
         }
 
-        #endregion
-
-        #region Process Script Commands
-
-        public void ProcessScriptCommand(string command)
+        public event WorldStateUpdatedHandler WorldStateUpdated;
+        protected void OnWorldStateUpdated()
         {
-            string[] tokens = command.Split(new char[] { '|' }, StringSplitOptions.None);
-            string function = tokens[0];
-            switch (function)
+            if (WorldStateUpdated != null)
             {
-
-                case "LaunchCase":
-                    //CRCMOD|LaunchCase|SpecificationName
-                    string name = tokens[1];
-                    if (RequestLaunchCase(name))
-                    {
-                        //_commsMod.DispatchReply(script, 1, "Launched case successfully. [" + name + "]", "");
-                        Log("Launched case successfully. [" + name + "]");
-                    }
-                    else
-                    {
-                        //_commsMod.DispatchReply(script, 1, "Launch case failed. [" + name + "]", "");
-                        Log("Launch case failed. [" + name + "]");
-                    }
-                    break;
-
-                case "EndAllCases":
-                    //CRCMOD|EndAllCases
-
-                    RequestCancelAllCases();
-                    //_commsMod.DispatchReply(script, 1, "Attempting to cancel all running cases", "");
-                    break;
-
-                case "Simulation": // Performs the given simulation action on listening simulators
-                    if (tokens.Length > 1)
-                    {
-                        if (tokens[1] == "Reset")
-                        {
-                            PerformSimulationAction(SimulationActions.Reset);
-                            //_commsMod.DispatchReply(script, 1, "Attempting to reset simulation", "");
-                        }
-                        else if (tokens[1] == "Start")
-                        {
-                            PerformSimulationAction(SimulationActions.Start);
-                            //_commsMod.DispatchReply(script, 1, "Initialising simulation", "");
-                        }
-                    }
-                    else
-                    {
-                        //_commsMod.DispatchReply(script, 1, "Missing argument for Simulation modCommand", "");
-                    }
-                    break;
-
-                case "GetAll": // Gets all information of a given type string
-                    if (tokens.Length > 1)
-                    {
-                        //GetDataRequested(new RequestDataEventArgs { DataType = tokens[1], DataFilter = new Dictionary<string, object>(), Destination = script.ToString() });
-                    }
-                    break;
-
-                case "Get": // Gets specific information of a given type, with a filter. Filter string is of format <Field>:<Value>+<Field>:<Value>+ ..etc
-                    if (tokens.Length > 2)
-                    {
-                        var dataFilter = new Dictionary<string, object>();
-                        string[] filterTokens = tokens[2].Split(new char[] { ':', '+' }, StringSplitOptions.None);
-                        for (int i = 0; i < filterTokens.Length; i += 2)
-                        {
-                            dataFilter.Add(filterTokens[i], filterTokens[i + 1]);
-                        }
-
-                        //GetDataRequested(new RequestDataEventArgs { DataType = tokens[1], DataFilter = dataFilter, Destination = script.ToString() });
-                    }
-                    break;
-
-                case "RegisterUser": // Involves the given user in the simulation
-                    if (tokens.Length > 2)
-                    {
-                        RegisterUser(new UserArgs { 
-                            UserName = tokens[1], RoleName = tokens[1], UserId = tokens[2] });
-                    }
-                    break;
+                WorldStateUpdated();
             }
         }
 

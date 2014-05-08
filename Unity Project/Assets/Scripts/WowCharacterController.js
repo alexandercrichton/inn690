@@ -2,7 +2,7 @@
 
 private var gravity:float = 20.0; 
 
-private var runSpeed:float = 50.0; 
+private var runSpeed:float = 30.0; 
 
 private var walkSpeed:float = 15.0; 
 

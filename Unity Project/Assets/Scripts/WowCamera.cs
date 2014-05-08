@@ -107,7 +107,7 @@ public class WowCamera : MonoBehaviour
 
         // If either mouse buttons are down, let the mouse govern camera position
 
-        if (Input.GetMouseButton(0) || Input.GetMouseButton(1))
+        if (/*Input.GetMouseButton(0) ||*/ Input.GetMouseButton(1))
         {
 
             x += Input.GetAxis("Mouse X") * xSpeed * 0.02f;

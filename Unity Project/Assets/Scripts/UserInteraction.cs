@@ -27,9 +27,8 @@ public class UserInteraction : MonoBehaviour
     {
         UnityLogger.LogMessage += Logger_LogMessage;
         _simulation = new UnitySimulation();
-        clickableObjects = new List<GameObject>();
-        clickableObjects.AddRange(new List<GameObject>(GameObject.FindGameObjectsWithTag("Clickable")));
-        clickableObjects.AddRange(new List<GameObject>(GameObject.FindGameObjectsWithTag("Asset")));
+        _simulation.WorldStateUpdated += OnWorldStateUpdated;
+        clickableObjects = new List<GameObject>(GameObject.FindGameObjectsWithTag("Asset"));
     }
 
     private void Update()
@@ -46,7 +45,7 @@ public class UserInteraction : MonoBehaviour
         {
             GameObject clickedObject = getObjectUserClickedOn();
 
-            if (clickedObject.tag == "Asset")
+            if (clickedObject != null && clickedObject.tag == "Asset")
             {
                 launchAsset(clickedObject.name);
             }
@@ -62,54 +61,6 @@ public class UserInteraction : MonoBehaviour
             return hit.collider.gameObject;
         }
         return null;
-    }
-
-    private void launchCase()
-    {
-        _simulation.ProcessScriptCommand("LaunchCase|" + CASE_ID);
-    }
-
-    private void endAllCases()
-    {
-        _simulation.ProcessScriptCommand("EndAllCases");
-    }
-
-    private void registerUser()
-    {
-        string key = "";
-        foreach (var entry in _simulation._workflowProvider.AllParticipants)
-        {
-            if (entry.Value.FirstName == "Janie")
-            {
-                key = entry.Key;
-            }
-        }
-        string uuid = _simulation._workflowProvider.AllParticipants[key].AgentId;
-        if (uuid.Length > 36)
-        {
-            uuid = uuid.Substring(uuid.Length - 36, 36);
-        }
-        _simulation.ProcessScriptCommand("RegisterUser|Janie May|" + uuid);
-        _userKey = _assetKey = uuid;
-        _userName = "Janie May";
-    }
-
-    private void launchAsset(string assetName)
-    {
-        Application.OpenURL(
-            "http://localhost/forms/launch_asset.php"
-            + "?user_key=" + _userKey
-            + "&asset_name=" + WWW.EscapeURL(assetName)
-            + "&asset_key=" + _assetKey
-            + "&user_name=" + WWW.EscapeURL(_userName)
-            );
-        Debug.Log(
-            "http://localhost/forms/launch_asset.php"
-            + "?user_key=" + _userKey
-            + "&asset_name=" + WWW.EscapeURL(assetName)
-            + "&asset_key=" + _assetKey
-            + "&user_name=" + WWW.EscapeURL(_userName)
-            );
     }
 
     #endregion
@@ -228,17 +179,17 @@ public class UserInteraction : MonoBehaviour
     private void drawSimulationControlButtons()
     {
         float buttonContainerSize = Screen.height / 6;
-        Rect buttonContainerRect = new Rect(0f, Screen.height - buttonContainerSize, buttonContainerSize, buttonContainerSize);
+        Rect buttonContainerRect = new Rect(0f, Screen.height - buttonContainerSize, buttonContainerSize * 1.5f, buttonContainerSize);
         GUI.BeginGroup(buttonContainerRect);
         {
             Rect button = new Rect(0f, 0f, buttonContainerRect.width, buttonContainerRect.height / 5);
             if (GUI.Button(new Rect(button.xMin, button.height * 0, button.width, button.height), "Reset Simulation"))
             {
-                _simulation.PerformSimulationAction(Veis.Simulation.SimulationActions.Reset);
+                resetSimulation();
             }
             if (GUI.Button(new Rect(button.xMin, button.height * 1, button.width, button.height), "Start Simulation"))
             {
-                _simulation.PerformSimulationAction(Veis.Simulation.SimulationActions.Start);
+                startSimulation();
             }
             if (GUI.Button(new Rect(button.xMin, button.height * 2, button.width, button.height), "Register as Participant"))
             {
@@ -258,13 +209,79 @@ public class UserInteraction : MonoBehaviour
 
     #endregion
 
+    #region Simulation Methods
+
     void Logger_LogMessage(object sender, Veis.Data. Logging.LogEventArgs e)
     {
         Debug.Log("[" + e.EventInitiator.ToString() + "]: " + e.Message);
+    }
+
+    private void resetSimulation()
+    {
+        _simulation.PerformSimulationAction(Veis.Simulation.SimulationActions.Start);
+    }
+
+    private void startSimulation()
+    {
+        _simulation.PerformSimulationAction(Veis.Simulation.SimulationActions.Reset);
+    }
+
+    private void OnWorldStateUpdated()
+    {
+        print("World state updated");
+    }
+
+    private void launchCase()
+    {
+        print("launch");
+        _simulation.RequestLaunchCase(CASE_ID);
+    }
+
+    private void endAllCases()
+    {
+        _simulation.RequestCancelAllCases();
+    }
+
+    private void registerUser()
+    {
+        string key = "";
+        foreach (var entry in _simulation._workflowProvider.AllParticipants)
+        {
+            if (entry.Value.FirstName == "Janie")
+            {
+                key = entry.Key;
+            }
+        }
+        string uuid = _simulation._workflowProvider.AllParticipants[key].AgentId;
+        if (uuid.Length > 36)
+        {
+            uuid = uuid.Substring(uuid.Length - 36, 36);
+        }
+        _simulation.RegisterUser(new Veis.Simulation.UserArgs
+        {
+            UserName = "Janie May",
+            RoleName = "Janie May",
+            UserId = uuid
+        });
+        _userKey = _assetKey = uuid;
+        _userName = "Janie May";
+    }
+
+    private void launchAsset(string assetName)
+    {
+        Application.OpenURL(
+            "http://localhost/forms/launch_asset.php"
+            + "?user_key=" + _userKey
+            + "&asset_name=" + WWW.EscapeURL(assetName)
+            + "&asset_key=" + _assetKey
+            + "&user_name=" + WWW.EscapeURL(_userName)
+            );
     }
 
     private void OnApplicationQuit()
     {
         _simulation.Send("endsession");
     }
+
+    #endregion
 }
