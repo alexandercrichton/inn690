@@ -104,7 +104,7 @@ public class UserInteraction : MonoBehaviour
     {
         GUIStyle labelStyle = new GUIStyle();
         labelStyle.alignment = TextAnchor.MiddleCenter;
-        labelStyle.normal.textColor = Color.red;
+        labelStyle.normal.textColor = Color.white;
         labelStyle.fontSize = 20;
 
         foreach (GameObject clickableObject in clickableObjects)
