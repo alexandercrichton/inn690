@@ -50,8 +50,9 @@ namespace Veis.Unity.Simulation
             _npcWorkPlanner = new SmartWorkItemPlanner(
                 new BasicWorkItemPlanner(_sceneService),
                 new GoalBasedWorkItemPlanner(_workItemDecomp, _activityMethodService, _worldStateRepos, _sceneService));
-
+            _serviceRoutineService.AddServiceInvocationHandler(new MoveObjectHandler(_sceneService));
             Initialise();
+            _sceneService.PlaceObjectAt("s", "s");
         }
 
         #region Simulation Actions

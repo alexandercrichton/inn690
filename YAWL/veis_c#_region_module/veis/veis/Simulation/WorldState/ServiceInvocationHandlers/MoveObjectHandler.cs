@@ -16,7 +16,7 @@ namespace Veis.Simulation.WorldState.ServiceInvocationHandlers
     /// </summary>
     public class MoveObjectHandler : IServiceInvocationHandler
     {
-        private readonly ISceneService _sceneService;
+        protected readonly ISceneService _sceneService;
         
         public MoveObjectHandler(ISceneService sceneService)
         {
@@ -71,7 +71,7 @@ namespace Veis.Simulation.WorldState.ServiceInvocationHandlers
         //  The location object in the virtual world should have one of these formatted
         //  name strings. 
         /// </summary>
-        private static List<string> GetLocationSearchStrings(string assetName, string locationName)
+        protected static List<string> GetLocationSearchStrings(string assetName, string locationName)
         {
             // Check for the location in this order: 
             // "Location <asset name> <location name>"

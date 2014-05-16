@@ -5,7 +5,7 @@
 	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 	<ProductVersion>10.0.20506</ProductVersion>
 	<SchemaVersion>2.0</SchemaVersion>
-	<ProjectGuid>{9491BDCF-4D89-D960-DBBD-3FF3FFD444BA}</ProjectGuid>
+	<ProjectGuid>{BDBCE7D3-139D-3EDB-816D-FB1D73476D25}</ProjectGuid>
 	<OutputType>Library</OutputType>
 	<AppDesignerFolder>Properties</AppDesignerFolder>
 	<RootNamespace></RootNamespace>
@@ -46,27 +46,26 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\Asset.cs" />
+     <Compile Include="Assets\Scripts\PlaceMarker.cs" />
      <Compile Include="Assets\Scripts\UserInteraction.cs" />
      <Compile Include="Assets\Scripts\WowCamera.cs" />
      <Compile Include="Assets\Veis\Veis.Unity\Bots\UUID.cs" />
      <Compile Include="Assets\Veis\Veis.Unity\Bots\UnityHumanAvatar.cs" />
      <Compile Include="Assets\Veis\Veis.Unity\Bots\UnityNPCAvatar.cs" />
      <Compile Include="Assets\Veis\Veis.Unity\Logging\UnityLogger.cs" />
-     <Compile Include="Assets\Veis\Veis.Unity\Scene\SceneService.cs" />
-     <Compile Include="Assets\Veis\Veis.Unity\Siulation\RequestDataEventArgs.cs" />
-     <Compile Include="Assets\Veis\Veis.Unity\Siulation\UnitySimulation.cs" />
+     <Compile Include="Assets\Veis\Veis.Unity\Services\SceneService.cs" />
+     <Compile Include="Assets\Veis\Veis.Unity\Simulation\RequestDataEventArgs.cs" />
+     <Compile Include="Assets\Veis\Veis.Unity\Simulation\UnitySimulation.cs" />
      <None Include="Assets\Veis\Veis\Veis.xml" />
- <Reference Include="System.Configuration">
- <HintPath>Assets\Veis\Veis\System.Configuration.dll</HintPath>
+ <Reference Include="AIMLbot">
+ <HintPath>Assets\Veis\Veis\AIMLbot.dll</HintPath>
  </Reference>
- <Reference Include="System.Web">
- <HintPath>Assets\Veis\Veis\System.Web.dll</HintPath>
+ <Reference Include="log4net">
+ <HintPath>Assets\Veis\Veis\log4net.dll</HintPath>
  </Reference>
- <Reference Include="System">
- <HintPath>Assets\Veis\Veis\System.dll</HintPath>
- </Reference>
- <Reference Include="XMLRPC">
- <HintPath>Assets\Veis\Veis\XMLRPC.dll</HintPath>
+ <Reference Include="Mono.Addins">
+ <HintPath>Assets\Veis\Veis\Mono.Addins.dll</HintPath>
  </Reference>
  <Reference Include="MySql.Data">
  <HintPath>Assets\Veis\Veis\MySql.Data.dll</HintPath>
@@ -77,23 +76,26 @@
  <Reference Include="Spark35">
  <HintPath>Assets\Veis\Veis\Spark35.dll</HintPath>
  </Reference>
- <Reference Include="log4net">
- <HintPath>Assets\Veis\Veis\log4net.dll</HintPath>
- </Reference>
- <Reference Include="AIMLbot">
- <HintPath>Assets\Veis\Veis\AIMLbot.dll</HintPath>
- </Reference>
- <Reference Include="Veis.Data">
- <HintPath>Assets\Veis\Veis\Veis.Data.dll</HintPath>
- </Reference>
- <Reference Include="Mono.Addins">
- <HintPath>Assets\Veis\Veis\Mono.Addins.dll</HintPath>
+ <Reference Include="System.Configuration">
+ <HintPath>Assets\Veis\Veis\System.Configuration.dll</HintPath>
  </Reference>
  <Reference Include="System.Data">
  <HintPath>Assets\Veis\Veis\System.Data.dll</HintPath>
  </Reference>
+ <Reference Include="System">
+ <HintPath>Assets\Veis\Veis\System.dll</HintPath>
+ </Reference>
+ <Reference Include="System.Web">
+ <HintPath>Assets\Veis\Veis\System.Web.dll</HintPath>
+ </Reference>
+ <Reference Include="Veis.Data">
+ <HintPath>Assets\Veis\Veis\Veis.Data.dll</HintPath>
+ </Reference>
  <Reference Include="Veis">
  <HintPath>Assets\Veis\Veis\Veis.dll</HintPath>
+ </Reference>
+ <Reference Include="XMLRPC">
+ <HintPath>Assets\Veis\Veis\XMLRPC.dll</HintPath>
  </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
