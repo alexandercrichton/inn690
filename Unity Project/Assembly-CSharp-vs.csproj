@@ -35,7 +35,6 @@
     <NoWarn>0169</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
     <Reference Include="System.XML" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -58,6 +57,7 @@
     <Compile Include="Assets\Veis\Veis.Unity\Services\SceneService.cs" />
     <Compile Include="Assets\Veis\Veis.Unity\Simulation\RequestDataEventArgs.cs" />
     <Compile Include="Assets\Veis\Veis.Unity\Simulation\UnitySimulation.cs" />
+    <Compile Include="Assets\Veis\Veis.Unity\SynchronizeInvoke.cs" />
     <None Include="Assets\Veis\Veis\Veis.xml" />
     <Reference Include="AIMLbot">
       <HintPath>Assets\Veis\Veis\AIMLbot.dll</HintPath>

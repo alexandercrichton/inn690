@@ -16,13 +16,13 @@ namespace Veis.Simulation.WorldState.ServiceInvocationHandlers
     /// </summary>
     public class MoveObjectHandler : IServiceInvocationHandler
     {
-        protected readonly ISceneService _sceneService;
-        
+        private readonly ISceneService _sceneService;
+
         public MoveObjectHandler(ISceneService sceneService)
         {
             _sceneService = sceneService;
         }
-        
+
         /// <summary>
         /// Service invocation is in the form "Move:<variable>=<location>"
         /// </summary>
@@ -32,6 +32,12 @@ namespace Veis.Simulation.WorldState.ServiceInvocationHandlers
         }
 
         public bool Handle(AssetServiceRoutine assetServiceRoutine)
+        {
+            _sceneService.AddServiceToHandle(assetServiceRoutine);
+            return true;
+        }
+
+        /*public bool Handle(AssetServiceRoutine assetServiceRoutine)
         {
             // first check if its something other than the asset that needs to be moved. Will be after "Move", before ":", eg. Move goods:Truck to=Bay 05
             var movepart = assetServiceRoutine.ServiceRoutine.Split(':')[0];
@@ -64,14 +70,14 @@ namespace Veis.Simulation.WorldState.ServiceInvocationHandlers
             }
 
             return false;
-        }
+        }*/
 
         /// <summary>
         /// Other formatted location search strings can be added in this function.
         //  The location object in the virtual world should have one of these formatted
         //  name strings. 
         /// </summary>
-        protected static List<string> GetLocationSearchStrings(string assetName, string locationName)
+        private static List<string> GetLocationSearchStrings(string assetName, string locationName)
         {
             // Check for the location in this order: 
             // "Location <asset name> <location name>"

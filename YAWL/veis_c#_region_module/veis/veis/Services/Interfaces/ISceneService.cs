@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Veis.Common.Math;
+using Veis.Data.Entities;
 
 namespace Veis.Services.Interfaces
 {
     public interface ISceneService
     {
+        void AddServiceToHandle(AssetServiceRoutine assetServiceRoutine);
+
         Vector3 GetPositionOfObject(string name);
 
         bool PlaceObjectAt(string assetKey, string placemarkerName);

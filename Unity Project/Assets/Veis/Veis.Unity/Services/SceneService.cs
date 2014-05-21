@@ -5,27 +5,77 @@ using System.Text;
 using Veis.Services.Interfaces;
 using Veis.Unity.Bots;
 using UnityEngine;
+using Veis.Data.Entities;
+using System.ComponentModel;
 
 namespace Veis.Unity.Scene
 {
     public class SceneService : ISceneService
     {
+        protected List<AssetServiceRoutine> assetServiceRoutinesToHandle;
+
         public SceneService()
         {
-
+            assetServiceRoutinesToHandle = new List<AssetServiceRoutine>();
         }
 
-        //private Scene _scene;
+        public void AddAssetServiceRoutineToHandle(AssetServiceRoutine assetServiceRoutine)
+        {
+            assetServiceRoutinesToHandle.Add(assetServiceRoutine);
+        }
 
-        //public SceneService(Scene scene)
-        //{
-        //    _scene = scene;
-        //}
+        public void HandleAssetServiceRoutines()
+        {
+            foreach (AssetServiceRoutine assetServiceRoutine in assetServiceRoutinesToHandle)
+            {
+                HandleMoveAsset(assetServiceRoutine);
+                Veis.Unity.Logging.UnityLogger.BroadcastMesage(this, "Handled routine");
+            }
+        }
 
-        //public void SetScene(Scene scene)
-        //{
-        //    _scene = scene;
-        //}
+        protected bool HandleMoveAsset(AssetServiceRoutine assetServiceRoutine)
+        {
+            // first check if its something other than the asset that needs to be moved. Will be after "Move", before ":", eg. Move goods:Truck to=Bay 05
+            var movepart = assetServiceRoutine.ServiceRoutine.Split(':')[0];
+            var assetKey = string.Empty;
+            var assetName = string.Empty;
+            if (movepart.Length > "Move".Length)
+            {
+                assetName = movepart.Substring("Move".Length + 1);
+                assetKey = GetAssetKey(assetName);
+            }
+            if (string.IsNullOrEmpty(assetKey))
+            {
+                assetKey = assetServiceRoutine.AssetKey;
+                assetName = GetAssetName(assetKey);
+            }
+
+            // Now process the location, including sub-location based on name. no underscores
+
+            // Move:Bed to=Bay 1
+            // Get the basic location. We want everything after the = sign
+            var locationName = assetServiceRoutine.ServiceRoutine.Split('=').Last();
+
+            // Check for the location in this order: 
+            // "Location <asset name> <location name>"
+            // "Location <location name>"
+            // "<location name>"
+            var locationStrings = new List<string> 
+            {
+                string.Format("Location {0} {1}", assetName, locationName),
+                string.Format("Location {0}", locationName),
+                locationName
+            };
+            bool success = false;
+
+            foreach (var locationString in locationStrings)
+            {
+                success = PlaceObjectAt(assetKey, locationString);
+                if (success) return true;
+            }
+
+            return false;
+        }
 
         public Veis.Common.Math.Vector3 GetPositionOfObject(string name)
         {

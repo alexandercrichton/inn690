@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Timers;
 using System.Diagnostics;
 using System.Data.Common;
 
@@ -29,7 +28,7 @@ using Veis.Data.Services;
 using Veis.Unity.Bots;
 using Veis.Unity.Logging;
 using Veis.Unity.Scene;
-using UnityEngine;
+//using UnityEngine;
 
 namespace Veis.Unity.Simulation
 {
@@ -40,6 +39,8 @@ namespace Veis.Unity.Simulation
         public List<UnityNPCAvatar> _npcs;
         public SceneService _sceneService;
         public Planner<WorkItem> _npcWorkPlanner;
+
+        protected System.Timers.Timer assetServiceRoutinesTimer;
 
         public UnitySimulation()
         {
@@ -52,7 +53,6 @@ namespace Veis.Unity.Simulation
                 new GoalBasedWorkItemPlanner(_workItemDecomp, _activityMethodService, _worldStateRepos, _sceneService));
             _serviceRoutineService.AddServiceInvocationHandler(new MoveObjectHandler(_sceneService));
             Initialise();
-            _sceneService.PlaceObjectAt("s", "s");
         }
 
         #region Simulation Actions
@@ -84,12 +84,29 @@ namespace Veis.Unity.Simulation
                 _worldStateService.AddStateSource(_polledWorldState);
                 _polledWorldState.Start(); // TODO: put this back in StartCase
                 _worldStateService.WorldStateUpdated += OnWorldStateUpdated;
+                assetServiceRoutinesTimer = new Timer(1000);
+                assetServiceRoutinesTimer.AutoReset = true;
+                assetServiceRoutinesTimer.Elapsed += OnAssetServiceRoutinesTimerElapsed;
             }
 
             if (_workflowProvider != null && _workflowProvider.IsConnected)
             {
                 _workflowProvider.SyncAll();
             }
+        }
+
+        public event WorldStateUpdatedHandler WorldStateUpdated;
+        protected void OnWorldStateUpdated()
+        {
+            if (WorldStateUpdated != null)
+            {
+                WorldStateUpdated();
+            }
+        }
+
+        protected void OnAssetServiceRoutinesTimerElapsed(object sender, ElapsedEventArgs e)
+        {
+            _sceneService.HandleAssetServiceRoutines();
         }
 
         public override void Run() { }
@@ -208,14 +225,7 @@ namespace Veis.Unity.Simulation
             }
         }
 
-        public event WorldStateUpdatedHandler WorldStateUpdated;
-        protected void OnWorldStateUpdated()
-        {
-            if (WorldStateUpdated != null)
-            {
-                WorldStateUpdated();
-            }
-        }
+
 
         #endregion
 
