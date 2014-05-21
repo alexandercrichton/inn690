@@ -274,8 +274,8 @@ public class UserInteraction : MonoBehaviour
             "http://localhost/forms/launch_asset.php"
             + "?user_key=" + _userKey
             + "&asset_name=" + WWW.EscapeURL(asset.AssetName)
-            + "&asset_key=" + _assetKey
-            + "&user_name=" + WWW.EscapeURL(asset.AssetKey)
+            + "&asset_key=" + asset.AssetKey
+            + "&user_name=" + WWW.EscapeURL(_userName)
             );
     }
 

@@ -123,7 +123,6 @@ namespace Veis.Unity.Scene
 
         public bool PlaceObjectAt(string assetKey, string placemarkerName)
         {
-            Logging.UnityLogger.BroadcastMesage(this, "PlaceObjectAt placeMarker: " + placemarkerName);
             PlaceMarker[] placeMarkers = GameObject.FindObjectsOfType<PlaceMarker>();
             foreach (PlaceMarker placeMarker in placeMarkers)
             {
@@ -138,7 +137,6 @@ namespace Veis.Unity.Scene
 
         public bool PlaceObjectAt(string assetKey, Common.Math.Vector3 pos)
         {
-            Logging.UnityLogger.BroadcastMesage(this, "PlaceObjectAt position: " + pos.ToString());
             Asset[] assets = GameObject.FindObjectsOfType<Asset>();
             foreach (Asset asset in assets)
             {
