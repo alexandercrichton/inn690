@@ -17,4 +17,3 @@ C:\Dev\inn690\YAWL\veis_c#_region_module\veis\Veis.Data\bin\Debug\Veis.Data.dll
 C:\Dev\inn690\YAWL\veis_c#_region_module\veis\Veis.Data\bin\Debug\Veis.Data.pdb
 C:\Dev\inn690\YAWL\veis_c#_region_module\veis\Veis.Data\obj\Debug\Veis.Data.dll
 C:\Dev\inn690\YAWL\veis_c#_region_module\veis\Veis.Data\obj\Debug\Veis.Data.pdb
-C:\Dev\inn690\YAWL\veis_c#_region_module\veis\Veis.Data\obj\Debug\Veis.Data.csprojResolveAssemblyReference.cache

@@ -33,7 +33,7 @@ namespace Veis.Simulation.WorldState.ServiceInvocationHandlers
 
         public bool Handle(AssetServiceRoutine assetServiceRoutine)
         {
-            _sceneService.AddServiceToHandle(assetServiceRoutine);
+            _sceneService.AddAssetServiceRoutineToHandle(assetServiceRoutine);
             return true;
         }
 

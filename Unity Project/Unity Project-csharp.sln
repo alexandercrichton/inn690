@@ -1,7 +1,8 @@
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2008
-
-Project("{119CA404-496F-F90D-35F7-7F17F14BC50B}") = "Unity Project", "Assembly-CSharp-vs.csproj", "{BDBCE7D3-139D-3EDB-816D-FB1D73476D25}"
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30110.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp", "Assembly-CSharp.csproj", "{033F7174-2BE1-4166-91A7-E7D2800C4DBC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -9,25 +10,24 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{BDBCE7D3-139D-3EDB-816D-FB1D73476D25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BDBCE7D3-139D-3EDB-816D-FB1D73476D25}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BDBCE7D3-139D-3EDB-816D-FB1D73476D25}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BDBCE7D3-139D-3EDB-816D-FB1D73476D25}.Release|Any CPU.Build.0 = Release|Any CPU
+		{033F7174-2BE1-4166-91A7-E7D2800C4DBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{033F7174-2BE1-4166-91A7-E7D2800C4DBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{033F7174-2BE1-4166-91A7-E7D2800C4DBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{033F7174-2BE1-4166-91A7-E7D2800C4DBC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-																								GlobalSection(MonoDevelopProperties) = preSolution
+	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Assembly-CSharp.csproj
 		Policies = $0
-		$0.TextStylePolicy = $1
+		$0.TextStylePolicy = $3
 		$1.inheritsSet = null
 		$1.scope = text/x-csharp
 		$0.CSharpFormattingPolicy = $2
 		$2.inheritsSet = Mono
 		$2.inheritsScope = text/x-csharp
 		$2.scope = text/x-csharp
-		$0.TextStylePolicy = $3
 		$3.FileWidth = 120
 		$3.TabWidth = 4
 		$3.EolMarker = Unix
@@ -35,5 +35,4 @@ Global
 		$3.inheritsScope = text/plain
 		$3.scope = text/plain
 	EndGlobalSection
-
 EndGlobal

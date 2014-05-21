@@ -9,7 +9,7 @@ namespace Veis.Services.Interfaces
 {
     public interface ISceneService
     {
-        void AddServiceToHandle(AssetServiceRoutine assetServiceRoutine);
+        void AddAssetServiceRoutineToHandle(AssetServiceRoutine assetServiceRoutine);
 
         Vector3 GetPositionOfObject(string name);
 

@@ -33,6 +33,7 @@ public class UserInteraction : MonoBehaviour
 
     private void Update()
     {
+        _simulation.Update();
         updateGUIText();
         handleUserInteraction();
     }

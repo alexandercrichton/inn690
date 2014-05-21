@@ -28,7 +28,7 @@ using Veis.Data.Services;
 using Veis.Unity.Bots;
 using Veis.Unity.Logging;
 using Veis.Unity.Scene;
-//using UnityEngine;
+using UnityEngine;
 
 namespace Veis.Unity.Simulation
 {
@@ -39,8 +39,6 @@ namespace Veis.Unity.Simulation
         public List<UnityNPCAvatar> _npcs;
         public SceneService _sceneService;
         public Planner<WorkItem> _npcWorkPlanner;
-
-        protected System.Timers.Timer assetServiceRoutinesTimer;
 
         public UnitySimulation()
         {
@@ -84,9 +82,6 @@ namespace Veis.Unity.Simulation
                 _worldStateService.AddStateSource(_polledWorldState);
                 _polledWorldState.Start(); // TODO: put this back in StartCase
                 _worldStateService.WorldStateUpdated += OnWorldStateUpdated;
-                assetServiceRoutinesTimer = new Timer(1000);
-                assetServiceRoutinesTimer.AutoReset = true;
-                assetServiceRoutinesTimer.Elapsed += OnAssetServiceRoutinesTimerElapsed;
             }
 
             if (_workflowProvider != null && _workflowProvider.IsConnected)
@@ -98,15 +93,12 @@ namespace Veis.Unity.Simulation
         public event WorldStateUpdatedHandler WorldStateUpdated;
         protected void OnWorldStateUpdated()
         {
+            Veis.Data.Logging.Logger.BroadcastMessage(this, "World State Updated");
             if (WorldStateUpdated != null)
             {
                 WorldStateUpdated();
+                Veis.Data.Logging.Logger.BroadcastMessage(this, "World State Updated");
             }
-        }
-
-        protected void OnAssetServiceRoutinesTimerElapsed(object sender, ElapsedEventArgs e)
-        {
-            _sceneService.HandleAssetServiceRoutines();
         }
 
         public override void Run() { }
@@ -139,6 +131,11 @@ namespace Veis.Unity.Simulation
 
             Log("\nClosing connection to YAWL...");
             _workflowProvider.Close();
+        }
+
+        public void Update()
+        {
+            _sceneService.HandleAssetServiceRoutines();
         }
 
         #endregion

@@ -6,28 +6,31 @@ using Veis.Services.Interfaces;
 using Veis.Unity.Bots;
 using UnityEngine;
 using Veis.Data.Entities;
+
 using System.ComponentModel;
+using System.Threading;
 
 namespace Veis.Unity.Scene
 {
     public class SceneService : ISceneService
     {
-        protected List<AssetServiceRoutine> assetServiceRoutinesToHandle;
+        protected Queue<AssetServiceRoutine> assetServiceRoutinesToHandle;
 
         public SceneService()
         {
-            assetServiceRoutinesToHandle = new List<AssetServiceRoutine>();
+            assetServiceRoutinesToHandle = new Queue<AssetServiceRoutine>();
         }
 
         public void AddAssetServiceRoutineToHandle(AssetServiceRoutine assetServiceRoutine)
         {
-            assetServiceRoutinesToHandle.Add(assetServiceRoutine);
+            assetServiceRoutinesToHandle.Enqueue(assetServiceRoutine);
         }
 
         public void HandleAssetServiceRoutines()
         {
-            foreach (AssetServiceRoutine assetServiceRoutine in assetServiceRoutinesToHandle)
+            while (assetServiceRoutinesToHandle.Count > 0)
             {
+                AssetServiceRoutine assetServiceRoutine = assetServiceRoutinesToHandle.Dequeue();
                 HandleMoveAsset(assetServiceRoutine);
                 Veis.Unity.Logging.UnityLogger.BroadcastMesage(this, "Handled routine");
             }
