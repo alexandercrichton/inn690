@@ -14,26 +14,25 @@ namespace Veis.Unity.Scene
 {
     public class SceneService : ISceneService
     {
-        protected Queue<AssetServiceRoutine> assetServiceRoutinesToHandle;
+        protected List<AssetServiceRoutine> assetServiceRoutinesToHandle;
 
         public SceneService()
         {
-            assetServiceRoutinesToHandle = new Queue<AssetServiceRoutine>();
+            assetServiceRoutinesToHandle = new List<AssetServiceRoutine>();
         }
 
         public void AddAssetServiceRoutineToHandle(AssetServiceRoutine assetServiceRoutine)
         {
-            assetServiceRoutinesToHandle.Enqueue(assetServiceRoutine);
+            assetServiceRoutinesToHandle.Add(assetServiceRoutine);
         }
 
         public void HandleAssetServiceRoutines()
         {
-            while (assetServiceRoutinesToHandle.Count > 0)
+            foreach (AssetServiceRoutine assetServiceRoutine in assetServiceRoutinesToHandle)
             {
-                AssetServiceRoutine assetServiceRoutine = assetServiceRoutinesToHandle.Dequeue();
                 HandleMoveAsset(assetServiceRoutine);
-                Veis.Unity.Logging.UnityLogger.BroadcastMesage(this, "Handled routine");
             }
+            assetServiceRoutinesToHandle.Clear();
         }
 
         protected bool HandleMoveAsset(AssetServiceRoutine assetServiceRoutine)

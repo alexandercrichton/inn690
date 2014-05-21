@@ -48,7 +48,7 @@ public class UserInteraction : MonoBehaviour
 
             if (clickedObject != null && clickedObject.tag == "Asset")
             {
-                launchAsset(clickedObject.name);
+                launchAsset(clickedObject.GetComponent<Asset>());
             }
         }
     }
@@ -268,14 +268,14 @@ public class UserInteraction : MonoBehaviour
         _userName = "Janie May";
     }
 
-    private void launchAsset(string assetName)
+    private void launchAsset(Asset asset)
     {
         Application.OpenURL(
             "http://localhost/forms/launch_asset.php"
             + "?user_key=" + _userKey
-            + "&asset_name=" + WWW.EscapeURL(assetName)
+            + "&asset_name=" + WWW.EscapeURL(asset.AssetName)
             + "&asset_key=" + _assetKey
-            + "&user_name=" + WWW.EscapeURL(_userName)
+            + "&user_name=" + WWW.EscapeURL(asset.AssetKey)
             );
     }
 
