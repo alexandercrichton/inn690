@@ -7,7 +7,7 @@ using System.Threading;
 
 namespace Veis.Unity
 {
-    public class SynchronizeInvoke : ISynchronizeInvoke
+    public class SynchronizeInvoke 
     {
         private readonly SynchronizationContext _currentContext = SynchronizationContext.Current;
 

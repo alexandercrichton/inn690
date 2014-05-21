@@ -50,53 +50,148 @@
      <Compile Include="Assets\Scripts\PlaceMarker.cs" />
      <Compile Include="Assets\Scripts\UserInteraction.cs" />
      <Compile Include="Assets\Scripts\WowCamera.cs" />
+     <Compile Include="Assets\Veis\Veis.Data\CommonRepository.cs" />
+     <Compile Include="Assets\Veis\Veis.Data\DataAccess.cs" />
+     <Compile Include="Assets\Veis\Veis.Data\Entities\AccessRecord.cs" />
+     <Compile Include="Assets\Veis\Veis.Data\Entities\ActivityMethod.cs" />
+     <Compile Include="Assets\Veis\Veis.Data\Entities\AssetServiceRoutine.cs" />
+     <Compile Include="Assets\Veis\Veis.Data\Entities\MethodParameter.cs" />
+     <Compile Include="Assets\Veis\Veis.Data\Entities\MethodPostcondition.cs" />
+     <Compile Include="Assets\Veis\Veis.Data\Entities\MethodPrecondition.cs" />
+     <Compile Include="Assets\Veis\Veis.Data\Entities\WorldState.cs" />
+     <Compile Include="Assets\Veis\Veis.Data\IDataAccess.cs" />
+     <Compile Include="Assets\Veis\Veis.Data\IRepository.cs" />
+     <Compile Include="Assets\Veis\Veis.Data\Logging\LogEventArgs.cs" />
+     <Compile Include="Assets\Veis\Veis.Data\Logging\Logger.cs" />
+     <Compile Include="Assets\Veis\Veis.Data\Properties\AssemblyInfo.cs" />
+     <Compile Include="Assets\Veis\Veis.Data\Repositories\AccessRecordRepository.cs" />
+     <Compile Include="Assets\Veis\Veis.Data\Repositories\AssetServiceRoutineRepository.cs" />
+     <Compile Include="Assets\Veis\Veis.Data\Repositories\MethodRepository.cs" />
+     <Compile Include="Assets\Veis\Veis.Data\Repositories\WorldStateRepository.cs" />
+     <Compile Include="Assets\Veis\Veis.Data\Repository.cs" />
+     <Compile Include="Assets\Veis\Veis.Data\Services\ActivityMethodService.cs" />
+     <Compile Include="Assets\Veis\Veis.Data\Services\IActivityMethodService.cs" />
+     <Compile Include="Assets\Veis\Veis.Data\Specification.cs" />
+     <Compile Include="Assets\Veis\Veis.Data\WorldKnowledgeDataAccess.cs" />
+     <Compile Include="Assets\Veis\Veis.Data\WorldStateDataAccess.cs" />
+     <Compile Include="Assets\Veis\Veis.Data\obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />
+     <Compile Include="Assets\Veis\Veis.Data\obj\Debug\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs" />
+     <Compile Include="Assets\Veis\Veis.Data\obj\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />
      <Compile Include="Assets\Veis\Veis.Unity\Bots\UUID.cs" />
      <Compile Include="Assets\Veis\Veis.Unity\Bots\UnityHumanAvatar.cs" />
      <Compile Include="Assets\Veis\Veis.Unity\Bots\UnityNPCAvatar.cs" />
      <Compile Include="Assets\Veis\Veis.Unity\Logging\UnityLogger.cs" />
+     <Compile Include="Assets\Veis\Veis.Unity\Properties\AssemblyInfo.cs" />
      <Compile Include="Assets\Veis\Veis.Unity\Services\SceneService.cs" />
      <Compile Include="Assets\Veis\Veis.Unity\Simulation\RequestDataEventArgs.cs" />
      <Compile Include="Assets\Veis\Veis.Unity\Simulation\UnitySimulation.cs" />
      <Compile Include="Assets\Veis\Veis.Unity\SynchronizeInvoke.cs" />
-     <None Include="Assets\Veis\Veis\Veis.xml" />
- <Reference Include="AIMLbot">
- <HintPath>Assets\Veis\Veis\AIMLbot.dll</HintPath>
- </Reference>
- <Reference Include="log4net">
- <HintPath>Assets\Veis\Veis\log4net.dll</HintPath>
- </Reference>
- <Reference Include="Mono.Addins">
- <HintPath>Assets\Veis\Veis\Mono.Addins.dll</HintPath>
- </Reference>
- <Reference Include="MySql.Data">
- <HintPath>Assets\Veis\Veis\MySql.Data.dll</HintPath>
- </Reference>
- <Reference Include="Nini">
- <HintPath>Assets\Veis\Veis\Nini.dll</HintPath>
- </Reference>
- <Reference Include="Spark35">
- <HintPath>Assets\Veis\Veis\Spark35.dll</HintPath>
- </Reference>
+     <Compile Include="Assets\Veis\Veis.Unity\obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />
+     <Compile Include="Assets\Veis\Veis.Unity\obj\Debug\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs" />
+     <Compile Include="Assets\Veis\Veis.Unity\obj\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />
+     <Compile Include="Assets\Veis\Veis\Bots\AvailableActions.cs" />
+     <Compile Include="Assets\Veis\Veis\Bots\Avatar.cs" />
+     <Compile Include="Assets\Veis\Veis\Bots\BotAvatar.cs" />
+     <Compile Include="Assets\Veis\Veis\Bots\ExecutableAction.cs" />
+     <Compile Include="Assets\Veis\Veis\Bots\HumanAvatar.cs" />
+     <Compile Include="Assets\Veis\Veis\Bots\HumanWorkProvider.cs" />
+     <Compile Include="Assets\Veis\Veis\Bots\NPCToHumanMapping.cs" />
+     <Compile Include="Assets\Veis\Veis\Bots\WorkProvider.cs" />
+     <Compile Include="Assets\Veis\Veis\Chat\AimlChatProvider.cs" />
+     <Compile Include="Assets\Veis\Veis\Chat\ChatHandler.cs" />
+     <Compile Include="Assets\Veis\Veis\Chat\ChatMessage.cs" />
+     <Compile Include="Assets\Veis\Veis\Chat\ChatProvider.cs" />
+     <Compile Include="Assets\Veis\Veis\Chat\SimulationChatHandler.cs" />
+     <Compile Include="Assets\Veis\Veis\Chat\WorkflowChatHandler.cs" />
+     <Compile Include="Assets\Veis\Veis\Chat\YAWLChatHandler.cs" />
+     <Compile Include="Assets\Veis\Veis\Common\ExecutableAction.cs" />
+     <Compile Include="Assets\Veis\Veis\Common\ILoggable.cs" />
+     <Compile Include="Assets\Veis\Veis\Common\Math\Vector3.cs" />
+     <Compile Include="Assets\Veis\Veis\Common\StringFormattingExtensions.cs" />
+     <Compile Include="Assets\Veis\Veis\Planning\BasicWorkItemPlanner.cs" />
+     <Compile Include="Assets\Veis\Veis\Planning\GoalBasedWorkItemPlanner.cs" />
+     <Compile Include="Assets\Veis\Veis\Planning\HTN\ComplexHTNPlanner.cs" />
+     <Compile Include="Assets\Veis\Veis\Planning\HTN\HTNEffect.cs" />
+     <Compile Include="Assets\Veis\Veis\Planning\HTN\HTNMethod.cs" />
+     <Compile Include="Assets\Veis\Veis\Planning\HTN\HTNOperator.cs" />
+     <Compile Include="Assets\Veis\Veis\Planning\HTN\HTNPlanner.cs" />
+     <Compile Include="Assets\Veis\Veis\Planning\HTN\HTNState.cs" />
+     <Compile Include="Assets\Veis\Veis\Planning\HTN\HTNTask.cs" />
+     <Compile Include="Assets\Veis\Veis\Planning\HTN\HTNTaskNetwork.cs" />
+     <Compile Include="Assets\Veis\Veis\Planning\HTN\HTNTaskNetworkConstraints.cs" />
+     <Compile Include="Assets\Veis\Veis\Planning\HTN\HTNTaskSet.cs" />
+     <Compile Include="Assets\Veis\Veis\Planning\HTN\HTNWorkItemPlanner.cs" />
+     <Compile Include="Assets\Veis\Veis\Planning\HTN\SimpleHTNPlanner.cs" />
+     <Compile Include="Assets\Veis\Veis\Planning\IDecompositionService.cs" />
+     <Compile Include="Assets\Veis\Veis\Planning\Knowledge\SpecificationKnowledge.cs" />
+     <Compile Include="Assets\Veis\Veis\Planning\Knowledge\WorkItemStateTransition.cs" />
+     <Compile Include="Assets\Veis\Veis\Planning\Knowledge\WorkflowKnowledgeBase.cs" />
+     <Compile Include="Assets\Veis\Veis\Planning\Knowledge\WorkitemKnowledge.cs" />
+     <Compile Include="Assets\Veis\Veis\Planning\PlanResult.cs" />
+     <Compile Include="Assets\Veis\Veis\Planning\Planner.cs" />
+     <Compile Include="Assets\Veis\Veis\Planning\Resourcing\ResourceProfile.cs" />
+     <Compile Include="Assets\Veis\Veis\Planning\Resourcing\ResourceProfileSet.cs" />
+     <Compile Include="Assets\Veis\Veis\Planning\SimpleWorkItemDecomposition.cs" />
+     <Compile Include="Assets\Veis\Veis\Planning\SmartWorkItemPlanner.cs" />
+     <Compile Include="Assets\Veis\Veis\Planning\WorkItemPlanner.cs" />
+     <Compile Include="Assets\Veis\Veis\Properties\AssemblyInfo.cs" />
+     <Compile Include="Assets\Veis\Veis\Services\Interfaces\IParallelisationService.cs" />
+     <Compile Include="Assets\Veis\Veis\Services\Interfaces\ISceneService.cs" />
+     <Compile Include="Assets\Veis\Veis\Services\ParallelisationService.cs" />
+     <Compile Include="Assets\Veis\Veis\Simulation\AvatarManagement\AvatarManager.cs" />
+     <Compile Include="Assets\Veis\Veis\Simulation\ISimulation.cs" />
+     <Compile Include="Assets\Veis\Veis\Simulation\Simulation.cs" />
+     <Compile Include="Assets\Veis\Veis\Simulation\SimulationActions.cs" />
+     <Compile Include="Assets\Veis\Veis\Simulation\UserArgs.cs" />
+     <Compile Include="Assets\Veis\Veis\Simulation\WorldState\Goal.cs" />
+     <Compile Include="Assets\Veis\Veis\Simulation\WorldState\GoalService.cs" />
+     <Compile Include="Assets\Veis\Veis\Simulation\WorldState\IServiceInvocationHandler.cs" />
+     <Compile Include="Assets\Veis\Veis\Simulation\WorldState\IStateSource.cs" />
+     <Compile Include="Assets\Veis\Veis\Simulation\WorldState\ServiceInvocationHandlers\AbortHandler.cs" />
+     <Compile Include="Assets\Veis\Veis\Simulation\WorldState\ServiceInvocationHandlers\MoveObjectHandler.cs" />
+     <Compile Include="Assets\Veis\Veis\Simulation\WorldState\ServiceRoutineService.cs" />
+     <Compile Include="Assets\Veis\Veis\Simulation\WorldState\State.cs" />
+     <Compile Include="Assets\Veis\Veis\Simulation\WorldState\StateSources\PolledDatabaseStateSource.cs" />
+     <Compile Include="Assets\Veis\Veis\Simulation\WorldState\WorldStateService.cs" />
+     <Compile Include="Assets\Veis\Veis\WebInterface\Controllers\Controller.cs" />
+     <Compile Include="Assets\Veis\Veis\WebInterface\Controllers\SimulationController.cs" />
+     <Compile Include="Assets\Veis\Veis\WebInterface\Controllers\WorkController.cs" />
+     <Compile Include="Assets\Veis\Veis\WebInterface\Infrastructure\DefaultPageBuilder.cs" />
+     <Compile Include="Assets\Veis\Veis\WebInterface\Infrastructure\PageBuilder.cs" />
+     <Compile Include="Assets\Veis\Veis\WebInterface\Infrastructure\TempateBase.cs" />
+     <Compile Include="Assets\Veis\Veis\WebInterface\Models\SimulationModel.cs" />
+     <Compile Include="Assets\Veis\Veis\WebInterface\Models\WorklistPersonalModel.cs" />
+     <Compile Include="Assets\Veis\Veis\Workflow\Case.cs" />
+     <Compile Include="Assets\Veis\Veis\Workflow\CaseStateEventArgs.cs" />
+     <Compile Include="Assets\Veis\Veis\Workflow\IWorkEnactor.cs" />
+     <Compile Include="Assets\Veis\Veis\Workflow\ParticipantEventArgs.cs" />
+     <Compile Include="Assets\Veis\Veis\Workflow\WorkAgent.cs" />
+     <Compile Include="Assets\Veis\Veis\Workflow\WorkItem.cs" />
+     <Compile Include="Assets\Veis\Veis\Workflow\WorkflowProvider.cs" />
+     <Compile Include="Assets\Veis\Veis\Workflow\YAWL\YAWLAgent.cs" />
+     <Compile Include="Assets\Veis\Veis\Workflow\YAWL\YAWLFormattingExtensions.cs" />
+     <Compile Include="Assets\Veis\Veis\Workflow\YAWL\YAWLWorkflowProvider.cs" />
+     <Compile Include="Assets\Veis\Veis\obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />
+     <Compile Include="Assets\Veis\Veis\obj\Debug\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs" />
+     <Compile Include="Assets\Veis\Veis\obj\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />
+     <None Include="Assets\Veis\Dependencies\Veis.xml" />
  <Reference Include="System.Configuration">
- <HintPath>Assets\Veis\Veis\System.Configuration.dll</HintPath>
+ <HintPath>Assets\Veis\Dependencies\System.Configuration.dll</HintPath>
  </Reference>
  <Reference Include="System.Data">
- <HintPath>Assets\Veis\Veis\System.Data.dll</HintPath>
+ <HintPath>Assets\Veis\Dependencies\System.Data.dll</HintPath>
  </Reference>
  <Reference Include="System">
- <HintPath>Assets\Veis\Veis\System.dll</HintPath>
+ <HintPath>Assets\Veis\Dependencies\System.dll</HintPath>
  </Reference>
  <Reference Include="System.Web">
- <HintPath>Assets\Veis\Veis\System.Web.dll</HintPath>
+ <HintPath>Assets\Veis\Dependencies\System.Web.dll</HintPath>
  </Reference>
- <Reference Include="Veis.Data">
- <HintPath>Assets\Veis\Veis\Veis.Data.dll</HintPath>
+ <Reference Include="System.Xml">
+ <HintPath>Assets\Veis\Dependencies\System.Xml.dll</HintPath>
  </Reference>
- <Reference Include="Veis">
- <HintPath>Assets\Veis\Veis\Veis.dll</HintPath>
- </Reference>
- <Reference Include="XMLRPC">
- <HintPath>Assets\Veis\Veis\XMLRPC.dll</HintPath>
+ <Reference Include="System.Xml.Linq">
+ <HintPath>Assets\Veis\Dependencies\System.Xml.Linq.dll</HintPath>
  </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
