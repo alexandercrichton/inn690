@@ -25,15 +25,14 @@ public class UserInteraction : MonoBehaviour
 
     private void Start()
     {
-        UnityLogger.LogMessage += Logger_LogMessage;
+        UnityLogger.LogMessage += OnLogMessage;
         _simulation = new UnitySimulation();
-        _simulation.WorldStateUpdated += OnWorldStateUpdated;
         clickableObjects = new List<GameObject>(GameObject.FindGameObjectsWithTag("Asset"));
     }
 
     private void Update()
     {
-        _simulation.Update();
+        _simulation.UnityMainThreadUpdate();
         updateGUIText();
         handleUserInteraction();
     }
@@ -212,7 +211,7 @@ public class UserInteraction : MonoBehaviour
 
     #region Simulation Methods
 
-    void Logger_LogMessage(object sender, Veis.Data. Logging.LogEventArgs e)
+    void OnLogMessage(object sender, Veis.Data. Logging.LogEventArgs e)
     {
         Debug.Log("[" + e.EventInitiator.ToString() + "]: " + e.Message);
     }
@@ -227,14 +226,8 @@ public class UserInteraction : MonoBehaviour
         _simulation.PerformSimulationAction(Veis.Simulation.SimulationActions.Reset);
     }
 
-    private void OnWorldStateUpdated()
-    {
-        print("World state updated");
-    }
-
     private void launchCase()
     {
-        print("launch");
         _simulation.RequestLaunchCase(CASE_ID);
     }
 

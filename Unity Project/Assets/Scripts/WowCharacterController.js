@@ -86,7 +86,7 @@ function Update ()
 
     
 
-    if(Input.GetMouseButton(1) || Input.GetMouseButton(0)) 
+    if(Input.GetMouseButton(1)) 
 
         Screen.lockCursor = true; 
 

@@ -92,11 +92,9 @@ namespace Veis.Unity.Simulation
         public event WorldStateUpdatedHandler WorldStateUpdated;
         protected void OnWorldStateUpdated()
         {
-            Veis.Data.Logging.Logger.BroadcastMessage(this, "World State Updated");
             if (WorldStateUpdated != null)
             {
                 WorldStateUpdated();
-                Veis.Data.Logging.Logger.BroadcastMessage(this, "World State Updated");
             }
         }
 
@@ -132,7 +130,7 @@ namespace Veis.Unity.Simulation
             _workflowProvider.Close();
         }
 
-        public void Update()
+        public void UnityMainThreadUpdate()
         {
             _sceneService.HandleAssetServiceRoutines();
         }
