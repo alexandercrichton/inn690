@@ -1,0 +1,188 @@
+Initialize engine version: 4.3.4f1 (e444f76e01cd)
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 9.0c [nvd3dum.dll 9.18.13.3523]
+    Renderer: NVIDIA GeForce GTX 560 
+    Vendor:   NVIDIA
+    VRAM:     971 MB (via DXGI)
+    Caps:     Shader=30 DepthRT=1 NativeDepth=1 NativeShadow=1 DF16=0 INTZ=1 RAWZ=0 NULL=1 RESZ=0 SlowINTZ=0
+Begin MonoManager ReloadAssembly
+Platform assembly: C:\Dev\inn690\Unity Project\Hospital Simulation_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading C:\Dev\inn690\Unity Project\Hospital Simulation_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: C:\Dev\inn690\Unity Project\Hospital Simulation_Data\Managed\I18N.dll (this message is harmless)
+Platform assembly: C:\Dev\inn690\Unity Project\Hospital Simulation_Data\Managed\I18N.West.dll (this message is harmless)
+Platform assembly: C:\Dev\inn690\Unity Project\Hospital Simulation_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading C:\Dev\inn690\Unity Project\Hospital Simulation_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: C:\Dev\inn690\Unity Project\Hospital Simulation_Data\Managed\Assembly-UnityScript.dll (this message is harmless)
+Loading C:\Dev\inn690\Unity Project\Hospital Simulation_Data\Managed\Assembly-UnityScript.dll into Unity Child Domain
+Platform assembly: C:\Dev\inn690\Unity Project\Hospital Simulation_Data\Managed\AIMLbot.dll (this message is harmless)
+Loading C:\Dev\inn690\Unity Project\Hospital Simulation_Data\Managed\AIMLbot.dll into Unity Child Domain
+Platform assembly: C:\Dev\inn690\Unity Project\Hospital Simulation_Data\Managed\MySql.Data.dll (this message is harmless)
+Loading C:\Dev\inn690\Unity Project\Hospital Simulation_Data\Managed\MySql.Data.dll into Unity Child Domain
+Platform assembly: C:\Dev\inn690\Unity Project\Hospital Simulation_Data\Managed\System.Configuration.dll (this message is harmless)
+Loading C:\Dev\inn690\Unity Project\Hospital Simulation_Data\Managed\System.Configuration.dll into Unity Child Domain
+Platform assembly: C:\Dev\inn690\Unity Project\Hospital Simulation_Data\Managed\System.Data.dll (this message is harmless)
+Loading C:\Dev\inn690\Unity Project\Hospital Simulation_Data\Managed\System.Data.dll into Unity Child Domain
+Platform assembly: C:\Dev\inn690\Unity Project\Hospital Simulation_Data\Managed\System.Security.dll (this message is harmless)
+Loading C:\Dev\inn690\Unity Project\Hospital Simulation_Data\Managed\System.Security.dll into Unity Child Domain
+Platform assembly: C:\Dev\inn690\Unity Project\Hospital Simulation_Data\Managed\Veis.Data.dll (this message is harmless)
+Loading C:\Dev\inn690\Unity Project\Hospital Simulation_Data\Managed\Veis.Data.dll into Unity Child Domain
+Platform assembly: C:\Dev\inn690\Unity Project\Hospital Simulation_Data\Managed\Veis.dll (this message is harmless)
+Loading C:\Dev\inn690\Unity Project\Hospital Simulation_Data\Managed\Veis.dll into Unity Child Domain
+Platform assembly: C:\Dev\inn690\Unity Project\Hospital Simulation_Data\Managed\System.EnterpriseServices.dll (this message is harmless)
+Loading C:\Dev\inn690\Unity Project\Hospital Simulation_Data\Managed\System.EnterpriseServices.dll into Unity Child Domain
+Platform assembly: C:\Dev\inn690\Unity Project\Hospital Simulation_Data\Managed\System.Configuration.Install.dll (this message is harmless)
+Loading C:\Dev\inn690\Unity Project\Hospital Simulation_Data\Managed\System.Configuration.Install.dll into Unity Child Domain
+Platform assembly: C:\Dev\inn690\Unity Project\Hospital Simulation_Data\Managed\System.Drawing.dll (this message is harmless)
+Loading C:\Dev\inn690\Unity Project\Hospital Simulation_Data\Managed\System.Drawing.dll into Unity Child Domain
+Platform assembly: C:\Dev\inn690\Unity Project\Hospital Simulation_Data\Managed\I18N.West.dll (this message is harmless)
+Loading C:\Dev\inn690\Unity Project\Hospital Simulation_Data\Managed\I18N.West.dll into Unity Child Domain
+Platform assembly: C:\Dev\inn690\Unity Project\Hospital Simulation_Data\Managed\I18N.dll (this message is harmless)
+Loading C:\Dev\inn690\Unity Project\Hospital Simulation_Data\Managed\I18N.dll into Unity Child Domain
+- Completed reload, in  0.263 seconds
+desktop: 1920x1080 60Hz; virtual: 3840x1080 at 0,0
+<RI> Initializing input.
+<RI> Input initialized.
+Platform assembly: C:\Dev\inn690\Unity Project\Hospital Simulation_Data\Managed\System.Core.dll (this message is harmless)
+Platform assembly: C:\Dev\inn690\Unity Project\Hospital Simulation_Data\Managed\System.dll (this message is harmless)
+yest
+Platform assembly: C:\Dev\inn690\Unity Project\Hospital Simulation_Data\Managed\System.Xml.dll (this message is harmless)
+[Veis.Unity.Simulation.UnitySimulation]: Trying to connect to workflow provider
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+connected
+[Veis.Unity.Simulation.UnitySimulation]: Connected to workflow provider
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+Aloha, type HELP for instruction.
+
+AGENT Janie May PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+AGENTROLE PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46 nurse
+AGENT Edwin Fahel PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+AGENTCAPABILITY PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4 TestCapability
+AGENTROLE PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4 doctor
+
+ACTIVEAGENT Janie May PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+[Veis.Unity.Simulation.UnitySimulation]: f68a0a60-1513-44ee-9ae8-afdcc0b3956b
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+ACTIVEAGENT Edwin Fahel PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+[Veis.Unity.Simulation.UnitySimulation]: 95403544-2a85-4b5c-81d1-17c179d0861a
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+
+SPECIFICATION UID_142f2e5a-7c7c-4d2e-a684-02c230e3689d CarAccident
+
+Platform assembly: C:\Dev\inn690\Unity Project\Hospital Simulation_Data\Managed\System.Transactions.dll (this message is harmless)
+[Veis.Simulation.WorldState.StateSources.PolledDatabaseStateSource]: World State Updated
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+[Veis.Unity.Simulation.UnitySimulation]: Registering user: Janie May
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+[Veis.Unity.Simulation.UnitySimulation]: Human: Janie May, , eb0cfa4d-5b52-4155-8643-24b60df8fd46 replacing NPC: Janie
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+[System.Object]: here
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+[System.Object]: here2
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+[Veis.Unity.Simulation.UnitySimulation]: Launching case
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+AGENT Janie May PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+AGENTROLE PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46 nurse
+AGENT Edwin Fahel PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+AGENTCAPABILITY PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4 TestCapability
+AGENTROLE PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4 doctor
+
+ACTIVEAGENT Janie May PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+ACTIVEAGENT Edwin Fahel PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+SPECIFICATION UID_142f2e5a-7c7c-4d2e-a684-02c230e3689d CarAccident
+
+CASE 198 CarAccident
+[Veis.Unity.Simulation.UnitySimulation]: Running case.
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+
+AGENT Janie May PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+AGENTROLE PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46 nurse
+AGENT Edwin Fahel PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+AGENTCAPABILITY PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4 TestCapability
+AGENTROLE PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4 doctor
+ACTIVEAGENT Janie May PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+ACTIVEAGENT Edwin Fahel PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+
+SPECIFICATION UID_142f2e5a-7c7c-4d2e-a684-02c230e3689d CarAccident
+
+WORKITEM 2 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46 0000000000000000000000001 Receive_Patient Receive_Patient
+
+WORKITEM 2 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46 0000000000000000000000001 Receive_Patient Receive_Patient PatientBill:bedAt;ExaminationRoom
+[Veis.Unity.Bots.UnityHumanAvatar]: Receive_Patient - Goal: PatientBill:bedAt;ExaminationRoom 
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+
+AGENT Janie May PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+AGENTROLE PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46 nurse
+AGENT Edwin Fahel PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+AGENTCAPABILITY PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4 TestCapability
+AGENTROLE PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4 doctor
+ACTIVEAGENT Janie May PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46
+ACTIVEAGENT Edwin Fahel PA-060a14e5-2402-4fb4-aa5e-f4d9cbcf0cc4
+
+SPECIFICATION UID_142f2e5a-7c7c-4d2e-a684-02c230e3689d CarAccident
+
+WORKITEM 2 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46 0000000000000000000000001 Receive_Patient Receive_Patient PatientBill:bedAt;ExaminationRoom
+[Veis.Unity.Bots.UnityHumanAvatar]: Just completed workitem: Receive_Patient
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+TASKEND PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46 0000000000000000000000001
+
+WORKITEM 2 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46 0000000000000000000000004 Visual_Examination Visual_Examination
+
+[Veis.Simulation.WorldState.StateSources.PolledDatabaseStateSource]: World State Updated
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+WORKITEM 2 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46 0000000000000000000000004 Visual_Examination Visual_Examination PatientBill:isVisuallyExamined;True
+[Veis.Unity.Bots.UnityHumanAvatar]: Visual_Examination - Goal: PatientBill:isVisuallyExamined;True 
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+
+WORKITEM 0 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46 0000000000000000000000003 Cheeck_Breathing Check_Breathing VitalSignsMonitor:mouthpieceAt;VitalSignsMonitor
+
+[Veis.Unity.Bots.UnityHumanAvatar]: Just completed workitem: Visual_Examination
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+WORKITEM 2 PA-eb0cfa4d-5b52-4155-8643-24b60df8fd46 0000000000000000000000006 Cheeck_Breathing Check_Breathing
+
+[Veis.Simulation.WorldState.StateSources.PolledDatabaseStateSource]: World State Updated
+ 
+(Filename: C:/BuildAgent/work/d3d49558e4d408f4/artifacts/StandalonePlayerGenerated/UnityEngineDebug.cpp Line: 53)
+
+SocketException: An existing connection was forcibly closed by the remote host.
+
+  at System.Net.Sockets.Socket.Send (System.Byte[] buf) [0x00000] in <filename unknown>:0 
+  at Veis.Workflow.YAWL.YAWLWorkflowProvider.Send (System.String msg) [0x00000] in <filename unknown>:0 
+  at Veis.Unity.Simulation.UnitySimulation.Send (System.String message) [0x00000] in <filename unknown>:0 
+  at UserInteraction.OnApplicationQuit () [0x00000] in <filename unknown>:0 
+ 
+(Filename:  Line: -1)
+

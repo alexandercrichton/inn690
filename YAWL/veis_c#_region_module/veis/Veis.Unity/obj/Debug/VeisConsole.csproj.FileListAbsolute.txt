@@ -1,1 +1,0 @@
-c:\users\alexj_000\documents\visual studio 2013\Projects\VeisConsole\VeisConsole\bin\Debug\VeisConsole.exe.config
