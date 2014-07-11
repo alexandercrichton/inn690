@@ -50,14 +50,29 @@
  <Reference Include="AIMLbot">
  <HintPath>Assets\Plugins\AIMLbot.dll</HintPath>
  </Reference>
+ <Reference Include="I18N">
+ <HintPath>Assets\Plugins\I18N.dll</HintPath>
+ </Reference>
+ <Reference Include="I18N.West">
+ <HintPath>Assets\Plugins\I18N.West.dll</HintPath>
+ </Reference>
  <Reference Include="MySql.Data">
  <HintPath>Assets\Plugins\MySql.Data.dll</HintPath>
  </Reference>
  <Reference Include="System.Configuration">
  <HintPath>Assets\Plugins\System.Configuration.dll</HintPath>
  </Reference>
+ <Reference Include="System.Configuration.Install">
+ <HintPath>Assets\Plugins\System.Configuration.Install.dll</HintPath>
+ </Reference>
  <Reference Include="System.Data">
  <HintPath>Assets\Plugins\System.Data.dll</HintPath>
+ </Reference>
+ <Reference Include="System.Drawing">
+ <HintPath>Assets\Plugins\System.Drawing.dll</HintPath>
+ </Reference>
+ <Reference Include="System.EnterpriseServices">
+ <HintPath>Assets\Plugins\System.EnterpriseServices.dll</HintPath>
  </Reference>
  <Reference Include="System.Security">
  <HintPath>Assets\Plugins\System.Security.dll</HintPath>
@@ -67,21 +82,6 @@
  </Reference>
  <Reference Include="Veis">
  <HintPath>Assets\Plugins\Veis.dll</HintPath>
- </Reference>
- <Reference Include="System.EnterpriseServices">
- <HintPath>Assets\Plugins\System.EnterpriseServices.dll</HintPath>
- </Reference>
- <Reference Include="System.Configuration.Install">
- <HintPath>Assets\Plugins\System.Configuration.Install.dll</HintPath>
- </Reference>
- <Reference Include="System.Drawing">
- <HintPath>Assets\Plugins\System.Drawing.dll</HintPath>
- </Reference>
- <Reference Include="I18N.West">
- <HintPath>Assets\Plugins\I18N.West.dll</HintPath>
- </Reference>
- <Reference Include="I18N">
- <HintPath>Assets\Plugins\I18N.dll</HintPath>
  </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
