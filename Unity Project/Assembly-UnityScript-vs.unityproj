@@ -77,12 +77,6 @@
  <Reference Include="System.Security">
  <HintPath>Assets\Plugins\System.Security.dll</HintPath>
  </Reference>
- <Reference Include="Veis.Data">
- <HintPath>Assets\Plugins\Veis.Data.dll</HintPath>
- </Reference>
- <Reference Include="Veis">
- <HintPath>Assets\Plugins\Veis.dll</HintPath>
- </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
