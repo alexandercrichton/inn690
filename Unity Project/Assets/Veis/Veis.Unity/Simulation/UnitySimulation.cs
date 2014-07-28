@@ -23,6 +23,7 @@ using Veis.Data;
 using Veis.Data.Repositories;
 using Veis.Simulation.AvatarManagement;
 using Veis.Data.Services;
+using Veis.Data.Entities;
 
 using Veis.Unity.Bots;
 using Veis.Unity.Logging;
@@ -49,10 +50,37 @@ namespace Veis.Unity.Simulation
                 new BasicWorkItemPlanner(_sceneService),
                 new GoalBasedWorkItemPlanner(_workItemDecomp, _activityMethodService, _worldStateRepos, _sceneService));
             _serviceRoutineService.AddServiceInvocationHandler(new MoveObjectHandler(_sceneService));
-            Initialise();
+
+            PerformSimulationAction(Veis.Simulation.SimulationActions.Reset);
         }
 
         #region Simulation Actions
+
+        public override void ResetAll()
+        {
+            RequestCancelAllCases();
+
+            Log("Resetting simulation state");
+            _npcs.Clear();
+            _humans.Clear();
+            if (_workflowProvider != null && _workflowProvider.IsConnected)
+            {
+                _workflowProvider.ResetAll();
+                _workflowProvider.AllWorkItems.Clear();
+                _workflowProvider.AllParticipants.Clear();
+            }
+            if (_polledWorldState != null)
+            {
+                _polledWorldState.Stop();
+                _polledWorldState = null;
+                _worldStateService.ClearStateSources();
+                _goalService.ClearGoals();
+            }
+
+            Initialise();
+            _sceneService.ResetAllAssetPositions();
+            _worldStateRepos.ResetAssetWorldStates();
+        }
 
         public override void Initialise()
         {
@@ -89,35 +117,9 @@ namespace Veis.Unity.Simulation
             }
         }
 
-        public event WorldStateUpdatedHandler WorldStateUpdated;
-        protected void OnWorldStateUpdated()
+        public override void Run() 
         {
-            if (WorldStateUpdated != null)
-            {
-                WorldStateUpdated();
-            }
-        }
-
-        public override void Run() { }
-
-        public override void ResetAll()
-        {
-            Log("Resetting simulation state");
-            _npcs.Clear();
-            _humans.Clear();
-            if (_workflowProvider != null && _workflowProvider.IsConnected)
-            {
-                _workflowProvider.ResetAll();
-                _workflowProvider.AllWorkItems.Clear();
-                _workflowProvider.AllParticipants.Clear();
-            }
-            if (_polledWorldState != null)
-            {
-                _polledWorldState.Stop();
-                _polledWorldState = null;
-                _worldStateService.ClearStateSources();
-                _goalService.ClearGoals();
-            }
+            RequestLaunchCase("CarAccident");
         }
 
         public override void End() 
@@ -128,6 +130,15 @@ namespace Veis.Unity.Simulation
 
             Log("\nClosing connection to YAWL...");
             _workflowProvider.Close();
+        }
+
+        public event WorldStateUpdatedHandler WorldStateUpdated;
+        protected void OnWorldStateUpdated()
+        {
+            if (WorldStateUpdated != null)
+            {
+                WorldStateUpdated();
+            }
         }
 
         public void UnityMainThreadUpdate()
@@ -260,8 +271,6 @@ namespace Veis.Unity.Simulation
                 Log("Already running case"); 
                 return false; 
             }
-
-            Initialise(); // Set up the simulation inititially
 
             if (_workflowProvider != null)
             {

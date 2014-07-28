@@ -116,6 +116,11 @@ namespace Veis.Unity.Scene
             return null;
         }
 
+        public List<Asset> GetAllAssets()
+        {
+            return GameObject.FindObjectsOfType<Asset>().ToList<Asset>();
+        }
+
         public string GetUserNameById(string id)
         {
             throw new NotImplementedException();
@@ -152,6 +157,15 @@ namespace Veis.Unity.Scene
         public void ShowResponse(string response, bool inWorld)
         {
             throw new NotImplementedException();
+        }
+
+        public void ResetAllAssetPositions()
+        {
+            Asset[] assets = GameObject.FindObjectsOfType<Asset>();
+            foreach (Asset asset in assets)
+            {
+                asset.transform.position = asset.StartPosition;
+            }
         }
     }
 }

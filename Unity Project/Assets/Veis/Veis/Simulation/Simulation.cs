@@ -42,7 +42,6 @@ namespace Veis.Simulation
 
         // Case fields
         protected bool _isRunningCase;    // If a case is already running, another cannot be launched (to combat complexity at this stage)
-        protected bool _isInitialised;
 
         // World state fields
         protected WorldStateService _worldStateService;
@@ -105,19 +104,11 @@ namespace Veis.Simulation
             {
                 case SimulationActions.Reset:
                     ResetAll();
-                    _isInitialised = false;
                     break;
                 case SimulationActions.Start:
-                    Initialise();
-                    _isInitialised = true;
                     Run();
                     break;
             }
-        }
-
-        public bool IsInitialised()
-        {
-            return _isInitialised;
         }
 
         public bool IsCaseRunning()

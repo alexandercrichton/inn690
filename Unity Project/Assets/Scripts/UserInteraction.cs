@@ -151,6 +151,34 @@ public class UserInteraction : MonoBehaviour
                 GUILayout.Label(_yawlInfo);
                 GUILayout.Label(_simulationInfo);
                 GUILayout.Label(_caseInfo);
+
+                if (_simulation._npcs.Count > 0)
+                {
+                    foreach (var npc in _simulation._npcs)
+                    {
+                        GUILayout.Label("Available NPC: " + npc.FirstName);
+                        if (npc.WorkProvider.GetWorkAgent().allocated.Count > 0)
+                        {
+                            GUILayout.Label(npc.WorkProvider.GetWorkAgent().allocated[0].taskName);
+                        }
+                        if (npc.WorkProvider.GetWorkAgent().offered.Count > 0)
+                        {
+                            GUILayout.Label(npc.WorkProvider.GetWorkAgent().offered[0].taskName);
+                        }
+                        if (npc.WorkProvider.GetWorkAgent().started.Count > 0)
+                        {
+                            GUILayout.Label(npc.WorkProvider.GetWorkAgent().started[0].taskName);
+                        }
+                        if (npc.WorkProvider.GetWorkAgent().processing.Count > 0)
+                        {
+                            GUILayout.Label(npc.WorkProvider.GetWorkAgent().processing[0].taskName);
+                        }
+                    }
+                }
+                else
+                {
+                    GUILayout.Label("No NPCs");
+                }
             }
             GUILayout.EndVertical();
         }
@@ -185,23 +213,15 @@ public class UserInteraction : MonoBehaviour
             Rect button = new Rect(0f, 0f, buttonContainerRect.width, buttonContainerRect.height / 5);
             if (GUI.Button(new Rect(button.xMin, button.height * 0, button.width, button.height), "Reset Simulation"))
             {
-                resetSimulation();
+                resetSimulationAndCase();
             }
             if (GUI.Button(new Rect(button.xMin, button.height * 1, button.width, button.height), "Start Simulation"))
             {
-                startSimulation();
+                startSimulationAndCase();
             }
             if (GUI.Button(new Rect(button.xMin, button.height * 2, button.width, button.height), "Register as Participant"))
             {
                 registerUser();
-            }
-            if (GUI.Button(new Rect(button.xMin, button.height * 3, button.width, button.height), "Launch Case"))
-            {
-                launchCase();
-            }
-            if (GUI.Button(new Rect(button.xMin, button.height * 4, button.width, button.height), "End All Cases"))
-            {
-                endAllCases();
             }
         }
         GUI.EndGroup();
@@ -216,24 +236,15 @@ public class UserInteraction : MonoBehaviour
         Debug.Log("[" + e.EventInitiator.ToString() + "]: " + e.Message);
     }
 
-    private void resetSimulation()
-    {
-        _simulation.PerformSimulationAction(Veis.Simulation.SimulationActions.Start);
-    }
-
-    private void startSimulation()
+    private void resetSimulationAndCase()
     {
         _simulation.PerformSimulationAction(Veis.Simulation.SimulationActions.Reset);
+
     }
 
-    private void launchCase()
+    private void startSimulationAndCase()
     {
-        _simulation.RequestLaunchCase(CASE_ID);
-    }
-
-    private void endAllCases()
-    {
-        _simulation.RequestCancelAllCases();
+        _simulation.PerformSimulationAction(Veis.Simulation.SimulationActions.Start);
     }
 
     private void registerUser()
@@ -274,6 +285,7 @@ public class UserInteraction : MonoBehaviour
 
     private void OnApplicationQuit()
     {
+        _simulation.RequestCancelAllCases();
         _simulation.Send("endsession");
     }
 
