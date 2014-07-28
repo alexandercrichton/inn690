@@ -8,6 +8,8 @@ using Veis.Unity.Logging;
 public class UserInteraction : MonoBehaviour
 {
     protected UnitySimulation _simulation;
+    protected UserCamera userCamera;
+
     //protected const string CASE_ID = "UID_142f2e5a-7c7c-4d2e-a684-02c230e3689d CarAccident";
     protected const string CASE_ID = "CarAccident";
     protected string _userKey = "";
@@ -25,6 +27,7 @@ public class UserInteraction : MonoBehaviour
 
     private void Start()
     {
+        userCamera = Camera.main.GetComponent<UserCamera>();
         UnityLogger.LogMessage += OnLogMessage;
         _simulation = new UnitySimulation();
         clickableObjects = new List<GameObject>(GameObject.FindGameObjectsWithTag("Asset"));
@@ -34,12 +37,12 @@ public class UserInteraction : MonoBehaviour
     {
         _simulation.UnityMainThreadUpdate();
         updateGUIText();
-        handleUserInteraction();
+        handleUserInput();
     }
 
-    #region User Click
+    #region User Input
 
-    private void handleUserInteraction()
+    private void handleUserInput()
     {
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
@@ -49,6 +52,15 @@ public class UserInteraction : MonoBehaviour
             {
                 launchAsset(clickedObject.GetComponent<Asset>());
             }
+            else if (clickedObject != null && clickedObject.tag == "Agent")
+            {
+                userCamera.AssumeControlOfAgent(clickedObject);
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            userCamera.RelinquishControlOfAgent();
         }
     }
 
@@ -61,6 +73,68 @@ public class UserInteraction : MonoBehaviour
             return hit.collider.gameObject;
         }
         return null;
+    }
+
+    #endregion
+    
+    #region Simulation Methods
+
+    void OnLogMessage(object sender, Veis.Data. Logging.LogEventArgs e)
+    {
+        Debug.Log("[" + e.EventInitiator.ToString() + "]: " + e.Message);
+    }
+
+    private void resetSimulationAndCase()
+    {
+        _simulation.PerformSimulationAction(Veis.Simulation.SimulationActions.Reset);
+
+    }
+
+    private void startSimulationAndCase()
+    {
+        _simulation.PerformSimulationAction(Veis.Simulation.SimulationActions.Start);
+    }
+
+    private void registerUser()
+    {
+        string key = "";
+        foreach (var entry in _simulation._workflowProvider.AllParticipants)
+        {
+            if (entry.Value.FirstName == "Janie")
+            {
+                key = entry.Key;
+            }
+        }
+        string uuid = _simulation._workflowProvider.AllParticipants[key].AgentId;
+        if (uuid.Length > 36)
+        {
+            uuid = uuid.Substring(uuid.Length - 36, 36);
+        }
+        _simulation.RegisterUser(new Veis.Simulation.UserArgs
+        {
+            UserName = "Janie May",
+            RoleName = "Janie May",
+            UserId = uuid
+        });
+        _userKey = _assetKey = uuid;
+        _userName = "Janie May";
+    }
+
+    private void launchAsset(Asset asset)
+    {
+        Application.OpenURL(
+            "http://localhost/forms/launch_asset.php"
+            + "?user_key=" + _userKey
+            + "&asset_name=" + WWW.EscapeURL(asset.AssetName)
+            + "&asset_key=" + asset.AssetKey
+            + "&user_name=" + WWW.EscapeURL(_userName)
+            );
+    }
+
+    private void OnApplicationQuit()
+    {
+        _simulation.RequestCancelAllCases();
+        _simulation.Send("endsession");
     }
 
     #endregion
@@ -225,68 +299,6 @@ public class UserInteraction : MonoBehaviour
             }
         }
         GUI.EndGroup();
-    }
-
-    #endregion
-
-    #region Simulation Methods
-
-    void OnLogMessage(object sender, Veis.Data. Logging.LogEventArgs e)
-    {
-        Debug.Log("[" + e.EventInitiator.ToString() + "]: " + e.Message);
-    }
-
-    private void resetSimulationAndCase()
-    {
-        _simulation.PerformSimulationAction(Veis.Simulation.SimulationActions.Reset);
-
-    }
-
-    private void startSimulationAndCase()
-    {
-        _simulation.PerformSimulationAction(Veis.Simulation.SimulationActions.Start);
-    }
-
-    private void registerUser()
-    {
-        string key = "";
-        foreach (var entry in _simulation._workflowProvider.AllParticipants)
-        {
-            if (entry.Value.FirstName == "Janie")
-            {
-                key = entry.Key;
-            }
-        }
-        string uuid = _simulation._workflowProvider.AllParticipants[key].AgentId;
-        if (uuid.Length > 36)
-        {
-            uuid = uuid.Substring(uuid.Length - 36, 36);
-        }
-        _simulation.RegisterUser(new Veis.Simulation.UserArgs
-        {
-            UserName = "Janie May",
-            RoleName = "Janie May",
-            UserId = uuid
-        });
-        _userKey = _assetKey = uuid;
-        _userName = "Janie May";
-    }
-
-    private void launchAsset(Asset asset)
-    {
-        Application.OpenURL(
-            "http://localhost/forms/launch_asset.php"
-            + "?user_key=" + _userKey
-            + "&asset_name=" + WWW.EscapeURL(asset.AssetName)
-            + "&asset_key=" + asset.AssetKey
-            + "&user_name=" + WWW.EscapeURL(_userName)
-            );
-    }
-
-    private void OnApplicationQuit()
-    {
-        _simulation.RequestCancelAllCases();
-        _simulation.Send("endsession");
     }
 
     #endregion
