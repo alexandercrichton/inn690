@@ -9,7 +9,7 @@ public class AgentController : MonoBehaviour
     protected float rotateSpeed = 150.0f;
 
     protected bool grounded = false;
-    public bool active = false;
+    public bool isActive = false;
 
     protected Vector3 moveDirection = Vector3.zero;
 
@@ -24,7 +24,7 @@ public class AgentController : MonoBehaviour
     // Update is called once per frame
     protected void Update()
     {
-        if (!active)
+        if (!isActive)
         {
             return;
         }

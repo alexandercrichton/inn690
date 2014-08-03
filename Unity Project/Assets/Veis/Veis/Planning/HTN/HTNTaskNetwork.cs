@@ -31,10 +31,10 @@ namespace Veis.Planning.HTN
                 HTNTasks.Add(id, name);
             }
 
-            foreach (KeyValuePair<string, HTNTaskNetworkConstraints> pv in htnTaskNetwork.Constraints)
-            {
+            //foreach (KeyValuePair<string, HTNTaskNetworkConstraints> pv in htnTaskNetwork.Constraints)
+            //{
                 // TODO .....uh? Is this on purpose?
-            }
+            //}
         }
 
         // TODO: Not used

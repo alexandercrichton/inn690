@@ -6,11 +6,11 @@ public class SpectatorController : MonoBehaviour
     protected float forwardSpeed = 30.0f;
     protected float upSpeed = 30.0f;
     protected Vector3 moveDirection = Vector3.zero;
-    public bool active = true;
+    public bool isActive = true;
 
     protected void Update()
     {
-        if (!active)
+        if (!isActive)
         {
             return;
         }

@@ -97,7 +97,6 @@
      <Compile Include="Assets\Veis\Veis\Chat\SimulationChatHandler.cs" />
      <Compile Include="Assets\Veis\Veis\Chat\WorkflowChatHandler.cs" />
      <Compile Include="Assets\Veis\Veis\Chat\YAWLChatHandler.cs" />
-     <Compile Include="Assets\Veis\Veis\Common\ExecutableAction.cs" />
      <Compile Include="Assets\Veis\Veis\Common\ILoggable.cs" />
      <Compile Include="Assets\Veis\Veis\Common\Math\Vector3.cs" />
      <Compile Include="Assets\Veis\Veis\Common\StringFormattingExtensions.cs" />

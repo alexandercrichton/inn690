@@ -34,29 +34,30 @@ namespace Veis.Unity.Simulation
 {
     public class UnitySimulation : Veis.Simulation.Simulation
     {
+        // These should be made non-public at some stage
         public YAWLWorkflowProvider _workflowProvider;
         public List<UnityHumanAvatar> _humans;
-        public List<UnityNPCAvatar> _npcs;
-        public SceneService _sceneService;
+        public List<UnityBotAvatar> _npcs;
+        new public SceneService _sceneService;
         public Planner<WorkItem> _npcWorkPlanner;
 
         public UnitySimulation()
         {
             _workflowProvider = new YAWLWorkflowProvider();
             _humans = new List<UnityHumanAvatar>();
-            _npcs = new List<UnityNPCAvatar>();
+            _npcs = new List<UnityBotAvatar>();
             _sceneService = new SceneService();
             _npcWorkPlanner = new SmartWorkItemPlanner(
                 new BasicWorkItemPlanner(_sceneService),
                 new GoalBasedWorkItemPlanner(_workItemDecomp, _activityMethodService, _worldStateRepos, _sceneService));
             _serviceRoutineService.AddServiceInvocationHandler(new MoveObjectHandler(_sceneService));
 
-            PerformSimulationAction(Veis.Simulation.SimulationActions.Reset);
+            Reset();
         }
 
         #region Simulation Actions
 
-        public override void ResetAll()
+        public override void Reset()
         {
             RequestCancelAllCases();
 
@@ -117,7 +118,7 @@ namespace Veis.Unity.Simulation
             }
         }
 
-        public override void Run() 
+        public override void Start() 
         {
             RequestLaunchCase("CarAccident");
         }
@@ -184,12 +185,12 @@ namespace Veis.Unity.Simulation
                     {
                         if (tokens[1] == "Reset")
                         {
-                            PerformSimulationAction(SimulationActions.Reset);
+                            Reset();
                             //_commsMod.DispatchReply(script, 1, "Attempting to reset simulation", "");
                         }
                         else if (tokens[1] == "Start")
                         {
-                            PerformSimulationAction(SimulationActions.Start);
+                            Start();
                             //_commsMod.DispatchReply(script, 1, "Initialising simulation", "");
                         }
                     }
@@ -406,7 +407,7 @@ namespace Veis.Unity.Simulation
             _humans.Add(newHuman);
         }
 
-        private void ReplaceNpc(UnityNPCAvatar oldNpc, UnityHumanAvatar newHuman)
+        private void ReplaceNpc(UnityBotAvatar oldNpc, UnityHumanAvatar newHuman)
         {
             //Log(oldNpc.WorkProvider.GetWorkAgent().ToString());
             //foreach (var workItem in oldNpc.WorkProvider.GetWorkAgent().ToString())
@@ -473,7 +474,7 @@ namespace Veis.Unity.Simulation
             if (newNPCUUID != UUID.Zero)
             {
                 // Create new controlled NPC
-                UnityNPCAvatar newNPC = new UnityNPCAvatar(newNPCUUID, e.FirstName, e.LastName, _sceneService);
+                UnityBotAvatar newNPC = new UnityBotAvatar(newNPCUUID, e.FirstName, e.LastName, _sceneService);
                 newNPC.Id = e.Id.ToString();
 
 
@@ -514,11 +515,10 @@ namespace Veis.Unity.Simulation
                 if (_workflowProvider != null)
                 {
                     List<string> allSpecs = _workflowProvider.AllSpecifications.Select(s => s.Value).ToList();
-                    /*for (int i = 0; i < allSpecs.Count; i++ )
+                    for (int i = 0; i < allSpecs.Count; i++ )
                     {
                         Log(i + " " + allSpecs[i]);
-                    }*/
-                    //_npcModule.SendData(allSpecs, true, UUID.Parse(e.Destination));
+                    }
                 }
             }
             if (e.DataType.Equals("availableagents", StringComparison.OrdinalIgnoreCase))
@@ -527,8 +527,10 @@ namespace Veis.Unity.Simulation
                 {
                     List<string> allAgents = _workflowProvider.AllParticipants
                         .Select(p => p.Value.FirstName + " " + p.Value.LastName).ToList();
-
-                    //npcModule.SendData(allAgents, true, UUID.Parse(e.Destination));
+                    foreach (string agent in allAgents)
+                    {
+                        Log(agent);
+                    }
                 }
             }
             if (e.DataType.Equals("methodsToExecute", StringComparison.OrdinalIgnoreCase))

@@ -12,11 +12,11 @@ namespace Veis.Chat
     /// </summary>
     public class SimulationChatHandler : ChatHandler
     {
-        private YAWLWorkflowProvider _yawlProvider;
+        //private YAWLWorkflowProvider _yawlProvider;
 
         public SimulationChatHandler(YAWLWorkflowProvider provider)
         {
-            _yawlProvider = provider;
+            //_yawlProvider = provider;
         }
         
         public override bool CanHandleMessage(string message)

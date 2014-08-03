@@ -7,7 +7,7 @@ using Veis.Unity.Scene;
 
 namespace Veis.Unity.Bots
 {
-    public class UnityNPCAvatar : BotAvatar
+    public class UnityBotAvatar : BotAvatar
     {
 
         public UUID UUID { get; set; }
@@ -16,7 +16,7 @@ namespace Veis.Unity.Bots
         public string LastName { get; set; }
         private SceneService _sceneService;
 
-        public UnityNPCAvatar(UUID uuid, string firstName, string lastName, SceneService sceneService)
+        public UnityBotAvatar(UUID uuid, string firstName, string lastName, SceneService sceneService)
         {
             this.UUID = uuid;
             this.FirstName = firstName;

@@ -172,7 +172,7 @@ namespace Veis.Data
         public void DebugMessage(string format, params object[] args)
         {
             string message = string.Format(format, args);
-            //Console.WriteLine(message);
+            Logging.Logger.BroadcastMessage(this, message);
         }
 
         #endregion

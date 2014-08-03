@@ -33,7 +33,7 @@ public class UserCamera : MonoBehaviour
     void Start()
     {
         spectatorController = GetComponent<SpectatorController>();
-        spectatorController.active = true;
+        spectatorController.isActive = true;
 
         x = transform.eulerAngles.x;
         y = transform.eulerAngles.y;
@@ -118,14 +118,14 @@ public class UserCamera : MonoBehaviour
     {
         if (target != agent.transform)
         {
-            spectatorController.active = false;
+            spectatorController.isActive = false;
             if (target != null)
             {
-                agentController.active = false;
+                agentController.isActive = false;
             }
             target = agent.transform;
             agentController = agent.GetComponent<AgentController>();
-            agentController.active = true;
+            agentController.isActive = true;
         }
     }
 
@@ -133,10 +133,10 @@ public class UserCamera : MonoBehaviour
     {
         if (agentController != null)
         {
-            agentController.active = false;
+            agentController.isActive = false;
             agentController = null;
         }
         target = null;
-        spectatorController.active = true;
+        spectatorController.isActive = true;
     }
 }

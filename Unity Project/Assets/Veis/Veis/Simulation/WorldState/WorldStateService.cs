@@ -18,12 +18,12 @@ namespace Veis.Simulation.WorldState
         public event WorldStateUpdatedHandler WorldStateUpdated;
 
         private List<IStateSource> _stateSources;
-        private readonly StateComparer _stateComparer;
+        //private readonly StateComparer _stateComparer; unused?
 
         public WorldStateService()
         {
             _stateSources = new List<IStateSource>();
-            _stateComparer = new StateComparer();
+            //_stateComparer = new StateComparer();
         }
 
         #region State Source Functions

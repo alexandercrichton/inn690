@@ -87,11 +87,11 @@ namespace Veis.Simulation
             _serviceRoutineService.AddServiceInvocationHandler(_abortHandler);
         }
         
-        public abstract void Run();
+        public abstract void Start();
         public abstract void End();
         public abstract void Initialise();
         public abstract void Log(string message);
-        public abstract void ResetAll();
+        public abstract void Reset();
         public abstract bool RequestLaunchCase(string specificationName);
         public abstract bool RequestCancelCase(string specificationName, int? caseNumber);
         public abstract void RequestCancelAllCases();
@@ -103,10 +103,10 @@ namespace Veis.Simulation
             switch (action)
             {
                 case SimulationActions.Reset:
-                    ResetAll();
+                    Reset();
                     break;
                 case SimulationActions.Start:
-                    Run();
+                    Start();
                     break;
             }
         }

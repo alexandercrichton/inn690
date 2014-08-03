@@ -49,7 +49,7 @@ namespace Veis.Common.Math
                     bool yOK = float.TryParse(values[1], out y);
                     bool zOK = float.TryParse(values[2], out z);
 
-                    if (xOK && yOK && xOK)
+                    if (xOK && yOK && zOK)
                         return new Vector3(x, y, z);
                 }
                 return Vector3.Zero; // Parsing has failed
