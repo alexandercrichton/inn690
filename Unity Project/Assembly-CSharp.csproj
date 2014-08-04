@@ -129,11 +129,11 @@
      <Compile Include="Assets\Veis\Veis\Services\Interfaces\IParallelisationService.cs" />
      <Compile Include="Assets\Veis\Veis\Services\Interfaces\ISceneService.cs" />
      <Compile Include="Assets\Veis\Veis\Services\ParallelisationService.cs" />
+     <Compile Include="Assets\Veis\Veis\Simulation\AgentEventArgs.cs" />
      <Compile Include="Assets\Veis\Veis\Simulation\AvatarManagement\AvatarManager.cs" />
      <Compile Include="Assets\Veis\Veis\Simulation\ISimulation.cs" />
      <Compile Include="Assets\Veis\Veis\Simulation\Simulation.cs" />
      <Compile Include="Assets\Veis\Veis\Simulation\SimulationActions.cs" />
-     <Compile Include="Assets\Veis\Veis\Simulation\UserArgs.cs" />
      <Compile Include="Assets\Veis\Veis\Simulation\WorldState\Goal.cs" />
      <Compile Include="Assets\Veis\Veis\Simulation\WorldState\GoalService.cs" />
      <Compile Include="Assets\Veis\Veis\Simulation\WorldState\IServiceInvocationHandler.cs" />
@@ -147,7 +147,6 @@
      <Compile Include="Assets\Veis\Veis\Workflow\Case.cs" />
      <Compile Include="Assets\Veis\Veis\Workflow\CaseStateEventArgs.cs" />
      <Compile Include="Assets\Veis\Veis\Workflow\IWorkEnactor.cs" />
-     <Compile Include="Assets\Veis\Veis\Workflow\ParticipantEventArgs.cs" />
      <Compile Include="Assets\Veis\Veis\Workflow\WorkAgent.cs" />
      <Compile Include="Assets\Veis\Veis\Workflow\WorkItem.cs" />
      <Compile Include="Assets\Veis\Veis\Workflow\WorkflowProvider.cs" />

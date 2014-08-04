@@ -76,32 +76,32 @@ public class UserCamera : MonoBehaviour
     {
         if (target != null)
         {
-            //// calculate the desired distance
-            //desiredDistance -= Input.GetAxis("Mouse ScrollWheel") * Time.deltaTime * zoomRate * Mathf.Abs(desiredDistance);
-            //desiredDistance = Mathf.Clamp(desiredDistance, minDistance, maxDistance);
-            //correctedDistance = desiredDistance;
+            // calculate the desired distance
+            desiredDistance -= Input.GetAxis("Mouse ScrollWheel") * Time.deltaTime * zoomRate * Mathf.Abs(desiredDistance);
+            desiredDistance = Mathf.Clamp(desiredDistance, minDistance, maxDistance);
+            correctedDistance = desiredDistance;
 
-            //// calculate desired camera position
-            //Vector3 position = target.position - (transform.rotation * Vector3.forward * desiredDistance + new Vector3(0, -targetHeight, 0));
+            // calculate desired camera position
+            Vector3 position = target.position - (transform.rotation * Vector3.forward * desiredDistance + new Vector3(0, -targetHeight, 0));
 
-            //// check for collision using the true target's desired registration point as set by user using height
-            //RaycastHit collisionHit;
-            //Vector3 trueTargetPosition = new Vector3(target.position.x, target.position.y + targetHeight, target.position.z);
+            // check for collision using the true target's desired registration point as set by user using height
+            RaycastHit collisionHit;
+            Vector3 trueTargetPosition = new Vector3(target.position.x, target.position.y + targetHeight, target.position.z);
 
-            //// if there was a collision, correct the camera position and calculate the corrected distance
-            //bool isCorrected = false;
-            //if (Physics.Linecast(trueTargetPosition, position, out collisionHit))
-            //{
-            //    position = collisionHit.point;
-            //    correctedDistance = Vector3.Distance(trueTargetPosition, position);
-            //    isCorrected = true;
-            //}
+            // if there was a collision, correct the camera position and calculate the corrected distance
+            bool isCorrected = false;
+            if (Physics.Linecast(trueTargetPosition, position, out collisionHit))
+            {
+                position = collisionHit.point;
+                correctedDistance = Vector3.Distance(trueTargetPosition, position);
+                isCorrected = true;
+            }
 
-            //// For smoothing, lerp distance only if either distance wasn't corrected, or correctedDistance is more than currentDistance
-            //currentDistance = !isCorrected || correctedDistance > currentDistance ? Mathf.Lerp(currentDistance, correctedDistance, Time.deltaTime * zoomDampening) : correctedDistance;
+            // For smoothing, lerp distance only if either distance wasn't corrected, or correctedDistance is more than currentDistance
+            currentDistance = !isCorrected || correctedDistance > currentDistance ? Mathf.Lerp(currentDistance, correctedDistance, Time.deltaTime * zoomDampening) : correctedDistance;
 
-            //// recalculate position based on the new currentDistance
-            //transform.position = target.position - (transform.rotation * Vector3.forward * currentDistance + new Vector3(0, -targetHeight, 0));
+            // recalculate position based on the new currentDistance
+            transform.position = target.position - (transform.rotation * Vector3.forward * currentDistance + new Vector3(0, -targetHeight, 0));
         }
     }
 

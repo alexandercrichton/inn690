@@ -95,7 +95,7 @@ namespace Veis.Simulation
         public abstract bool RequestLaunchCase(string specificationName);
         public abstract bool RequestCancelCase(string specificationName, int? caseNumber);
         public abstract void RequestCancelAllCases();
-        public abstract void AddUser(UserArgs user);
+        public abstract void AddUser(AgentEventArgs user);
         public abstract Avatar GetParticipantById(string id);
 
         public void PerformSimulationAction(SimulationActions action)

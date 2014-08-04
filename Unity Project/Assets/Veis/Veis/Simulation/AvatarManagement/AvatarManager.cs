@@ -23,11 +23,6 @@ namespace Veis.Simulation.AvatarManagement
             Humans = new List<HumanAvatar>();
         }
 
-        public void AddHuman(HumanAvatar human)
-        {
-
-        }
-
         public void Clear()
         {
             Bots.Clear();

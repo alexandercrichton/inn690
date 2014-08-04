@@ -92,7 +92,7 @@ namespace Veis.Unity.Simulation
                 if (connected) // Hook up events
                 {
                     Log("Connected to workflow provider");
-                    _workflowProvider.ParticipantCreated += CreateParticipant;
+                    _workflowProvider.AgentCreated += CreateBotAvatar;
                     _workflowProvider.CaseCompleted += CompleteCase;
                     _workflowProvider.CaseStarted += StartCase;
                     //_webInterfaceModule.Initialise(_workflowProvider);
@@ -130,6 +130,7 @@ namespace Veis.Unity.Simulation
 
             Log("\nClosing connection to YAWL...");
             _workflowProvider.Close();
+            _polledWorldState.Stop();
         }
 
         public event WorldStateUpdatedHandler WorldStateUpdated;
@@ -223,7 +224,7 @@ namespace Veis.Unity.Simulation
                 case "RegisterUser": // Involves the given user in the simulation
                     if (tokens.Length > 2)
                     {
-                        AddUser(new UserArgs { 
+                        AddUser(new AgentEventArgs { 
                             Name = tokens[1], Role = tokens[1], ID = tokens[2] });
                     }
                     break;
@@ -352,9 +353,9 @@ namespace Veis.Unity.Simulation
             return null;
         }
 
-        public override void AddUser(UserArgs e)
+        public override void AddUser(AgentEventArgs e)
         {
-            Log("Registering user: " + e.Name);
+            Log("Adding user: " + e.Name);
             
             UnityHumanAvatar human = new UnityHumanAvatar(e.ID);
 
@@ -365,7 +366,7 @@ namespace Veis.Unity.Simulation
             human.WorkEnactor = workEnactor;
 
             _workflowProvider.AddWorkEnactor(workAgentID, workEnactor);
-            _avatarManager.AddHuman(human);
+            _avatarManager.Humans.Add(human);
         }
 
         private void ReplaceNpc(UnityBotAvatar oldNpc, UnityHumanAvatar newHuman)
@@ -376,21 +377,21 @@ namespace Veis.Unity.Simulation
             //    Log(workItem.ToString());
             //}
             
-            HumanWorkEnactor workProvider = NPCToHumanMapping.MapWorkProviderFromNPC(
-                oldNpc, newHuman, _goalService, _workItemDecomp);
-            newHuman.WorkEnactor = workProvider;
-            newHuman.WorkId = oldNpc.Id;
-            bool successful = _workflowProvider.ReplaceWorker(newHuman.WorkId, workProvider);
-            if (successful)
-            {
-                //_npcModule.RemoveNPC(oldNpc.UUID);
-                _npcs.Remove(oldNpc);
-                _humans.Add(newHuman);
-            }
-            else
-            {
-                Log("Could not replace NPC with this user");
-            }
+            //HumanWorkEnactor workProvider = NPCToHumanMapping.MapWorkProviderFromNPC(
+            //    oldNpc, newHuman, _goalService, _workItemDecomp);
+            //newHuman.WorkEnactor = workProvider;
+            //newHuman.WorkId = oldNpc.Id;
+            //bool successful = _workflowProvider.ReplaceWorker(newHuman.WorkId, workProvider);
+            //if (successful)
+            //{
+            //    //_npcModule.RemoveNPC(oldNpc.UUID);
+            //    _npcs.Remove(oldNpc);
+            //    _humans.Add(newHuman);
+            //}
+            //else
+            //{
+            //    Log("Could not replace NPC with this user");
+            //}
         }
 
         /// <summary>
@@ -399,70 +400,19 @@ namespace Veis.Unity.Simulation
         /// a different kind of bot is created. 
         /// </summary>
         /// <param name="e">Contains information about the newly created workflow participant</param>
-        public void CreateParticipant(object sender, ParticipantEventArgs e)
+        public void CreateBotAvatar(object sender, AgentEventArgs e)
         {
-            // Make sure that the work agent and provider are compatible with this simulation
-            if (!CanCreateParticipant(e)) return;
+            Log("Adding bot avatar: " + e.Name);
 
-            // TODO: Retrieve a list of currently logged in agents and check if any match the participant descriptions
+            UnityBotAvatar bot = new UnityBotAvatar(e.ID, e.Name, e.Role, _sceneService);
 
-            // Check if any of the registered agents match the given participant
+            string workAgentID = _workflowProvider.GetAgentIdByFullName(e.Name);
+            WorkAgent workAgent = _workflowProvider.AllWorkAgents[workAgentID];
+            BotWorkEnactor workEnactor = new BotWorkEnactor(bot, _workflowProvider, workAgent, _npcWorkPlanner);
+            bot.WorkEnactor = workEnactor;
 
-            CreateNPC(e);
-        }
-
-        private bool CanCreateParticipant(ParticipantEventArgs e)
-        {
-            if (e.WorkAgent.GetType() != typeof(YAWLWorkAgent) ||
-                 e.WorkflowProvider.GetType() != typeof(YAWLWorkflowProvider))
-            {
-                Log("This simulation requires YAWLAgents and a YAWLWorkflowProvider.");
-                return false;
-            }
-
-            return true;
-        }
-
-        private bool CreateNPC(ParticipantEventArgs e)
-        {
-            // Create NPC via module
-            //UUID newNPCUUID = _npcModule.CreateNPC(e.FirstName, e.LastName,
-            //    _npcModule.GetDefaultStartingPosition(), _npcModule.GetAppearance(e.WorkAgent.Appearance));
-            UUID newNPCUUID = new UUID(Guid.NewGuid());
-            Log(newNPCUUID.ToString());
-
-            // TODO Handle concurrent executions of workflows, so don't create new NPCs each time & check for existence of the given UUID
-            if (newNPCUUID != UUID.Zero)
-            {
-                // Create new controlled NPC
-                UnityBotAvatar newNPC = new UnityBotAvatar(newNPCUUID, e.FirstName, e.LastName, _sceneService);
-                newNPC.Id = e.Id.ToString();
-
-
-                // Set up chat handlers
-                //OpenSimChatHandler openSimChat = new OpenSimChatHandler(newNPC, _npcModule.GetScene());
-                //WorkflowChatHandler workflowChat = new WorkflowChatHandler(e.WorkAgent, e.WorkflowProvider);
-                //YAWLChatHandler yawlChat = new YAWLChatHandler(e.WorkAgent as YAWLAgent, e.WorkflowProvider as YAWLWorkflowProvider);
-                //newNPC.ChatHandle.AddChatHandler(openSimChat);
-                //newNPC.ChatHandle.AddChatHandler(workflowChat);
-                //newNPC.ChatHandle.AddChatHandler(yawlChat);
-
-                // Set up work enactor and register it with the workflow provider
-                BotWorkEnactor workProvider = new BotWorkEnactor(newNPC, e.WorkflowProvider, e.WorkAgent, _npcWorkPlanner);
-                newNPC.WorkEnactor = workProvider;
-                (e.WorkflowProvider as YAWLWorkflowProvider).AddWorkEnactor(newNPC.Id, workProvider);
-
-                //The last uuid string will be trigger by an on-scene object to change avatar apperance, do not remove it.
-                //newNPC.Say(String.Format("Hello, I am {0} {1}, {2}, {3}", newNPC.FirstName, newNPC.LastName, newNPC.Appearance, newNPCUUID));
-
-                _npcs.Add(newNPC);
-                return true;
-            }
-            else
-            {
-                Log(String.Format("Could not create NPC for {0} {1}", e.FirstName, e.LastName));
-                return false;
-            }
+            _workflowProvider.AddWorkEnactor(workAgentID, workEnactor);
+            _avatarManager.Bots.Add(bot);
         }
 
         #endregion

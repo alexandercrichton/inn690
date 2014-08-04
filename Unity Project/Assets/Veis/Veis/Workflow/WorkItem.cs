@@ -10,7 +10,7 @@ namespace Veis.Workflow
     {
         public String taskName = "";
         public String taskID = "";
-        public String participant = "";
+        public String agentID = "";
         public String taskQueue = "0";
 
         // Task variables are a list of various task variables that can be 

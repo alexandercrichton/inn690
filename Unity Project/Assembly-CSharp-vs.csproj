@@ -134,7 +134,7 @@
     <Compile Include="Assets\Veis\Veis\Simulation\ISimulation.cs" />
     <Compile Include="Assets\Veis\Veis\Simulation\Simulation.cs" />
     <Compile Include="Assets\Veis\Veis\Simulation\SimulationActions.cs" />
-    <Compile Include="Assets\Veis\Veis\Simulation\UserArgs.cs" />
+    <Compile Include="Assets\Veis\Veis\Simulation\AgentEventArgs.cs" />
     <Compile Include="Assets\Veis\Veis\Simulation\WorldState\Goal.cs" />
     <Compile Include="Assets\Veis\Veis\Simulation\WorldState\GoalService.cs" />
     <Compile Include="Assets\Veis\Veis\Simulation\WorldState\IServiceInvocationHandler.cs" />
@@ -148,7 +148,6 @@
     <Compile Include="Assets\Veis\Veis\Workflow\Case.cs" />
     <Compile Include="Assets\Veis\Veis\Workflow\CaseStateEventArgs.cs" />
     <Compile Include="Assets\Veis\Veis\Workflow\IWorkEnactor.cs" />
-    <Compile Include="Assets\Veis\Veis\Workflow\ParticipantEventArgs.cs" />
     <Compile Include="Assets\Veis\Veis\Workflow\WorkAgent.cs" />
     <Compile Include="Assets\Veis\Veis\Workflow\WorkItem.cs" />
     <Compile Include="Assets\Veis\Veis\Workflow\WorkflowProvider.cs" />

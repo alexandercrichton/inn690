@@ -26,7 +26,7 @@ namespace Veis.Workflow
         public List<WorkItem> delegated;    //Tasks this agent were assigned to; but delegated to others
         public List<WorkItem> processing;   //Tasks this agent is running right this second in the task queue
 
-        public string AgentId { get; set; }   // TODO: Sort out the descrepancy between agentid and yawlid
+        public string AgentID { get; set; }   // TODO: Sort out the descrepancy between agentid and yawlid
         public string FirstName { get; set; }   // Workers have an identifying name
         public string LastName { get; set; }    
         public string Appearance { get; set; }  // Workers have an appearance which usually correspond with their role

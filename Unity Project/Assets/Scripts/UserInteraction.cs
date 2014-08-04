@@ -105,12 +105,12 @@ public class UserInteraction : MonoBehaviour
                 key = entry.Key;
             }
         }
-        string uuid = _simulation._workflowProvider.AllWorkAgents[key].AgentId;
+        string uuid = _simulation._workflowProvider.AllWorkAgents[key].AgentID;
         if (uuid.Length > 36)
         {
             uuid = uuid.Substring(uuid.Length - 36, 36);
         }
-        _simulation.AddUser(new Veis.Simulation.UserArgs
+        _simulation.AddUser(new Veis.Simulation.AgentEventArgs
         {
             Name = "Janie May",
             Role = "Janie May",
@@ -133,8 +133,7 @@ public class UserInteraction : MonoBehaviour
 
     private void OnApplicationQuit()
     {
-        _simulation.RequestCancelAllCases();
-        _simulation.Send("endsession");
+        _simulation.End();
     }
 
     #endregion
@@ -230,7 +229,7 @@ public class UserInteraction : MonoBehaviour
                 {
                     foreach (var bot in _simulation._avatarManager.Bots)
                     {
-                        GUILayout.Label("Available bot: " + bot.FirstName);
+                        GUILayout.Label("Available bot: " + bot.Name);
                         if (bot.WorkEnactor.GetWorkAgent().allocated.Count > 0)
                         {
                             GUILayout.Label(bot.WorkEnactor.GetWorkAgent().allocated[0].taskName);

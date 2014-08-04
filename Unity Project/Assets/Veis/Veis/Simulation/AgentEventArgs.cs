@@ -12,7 +12,7 @@ namespace Veis.Simulation
         Logout
     }
 
-    public class UserArgs
+    public class AgentEventArgs
     {
         public string Role { get; set; }
         public string Name { get; set; }
