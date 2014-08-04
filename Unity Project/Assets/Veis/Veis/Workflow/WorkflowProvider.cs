@@ -15,7 +15,7 @@ namespace Veis.Workflow
     public abstract class WorkflowProvider
     {
         public Dictionary<string, WorkItem> AllWorkItems { get; set; }
-        public Dictionary<string, WorkAgent> AllParticipants { get; set; }
+        public Dictionary<string, WorkAgent> AllWorkAgents { get; set; }
         public Dictionary<string, string> AllSpecifications { get; set; } // ID/Name
         public List<Case> StartedCases { get; set; } // The cases that have been started through this program
         public List<Case> CompletedCases { get; set; } // The cases that have been completed through this program
@@ -23,7 +23,7 @@ namespace Veis.Workflow
         protected WorkflowProvider()
         {
             AllWorkItems = new Dictionary<string, WorkItem>();
-            AllParticipants = new Dictionary<string, WorkAgent>();
+            AllWorkAgents = new Dictionary<string, WorkAgent>();
             AllSpecifications = new Dictionary<string, string>();
             StartedCases = new List<Case>();
             CompletedCases = new List<Case>();
@@ -41,7 +41,7 @@ namespace Veis.Workflow
         }
 
         public WorkAgent GetAgentByFirstName(string name) {
-            foreach (KeyValuePair<string, WorkAgent> agentKVP in AllParticipants) {
+            foreach (KeyValuePair<string, WorkAgent> agentKVP in AllWorkAgents) {
                 if (agentKVP.Value.FirstName == name) {
                     return agentKVP.Value;
                 }
@@ -53,7 +53,7 @@ namespace Veis.Workflow
 
         public string GetAgentIdByFullName(string name)
         {
-            foreach (KeyValuePair<string, WorkAgent> agentKVP in AllParticipants)
+            foreach (KeyValuePair<string, WorkAgent> agentKVP in AllWorkAgents)
             {
                 if (String.Format("{0} {1}", agentKVP.Value.FirstName, agentKVP.Value.LastName) == name)
                 {

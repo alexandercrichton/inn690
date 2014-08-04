@@ -13,10 +13,10 @@ namespace Veis.Chat
     /// </summary>
     public class YAWLChatHandler : ChatHandler
     {
-        private readonly YAWLAgent _yawlAgent;
+        private readonly YAWLWorkAgent _yawlAgent;
         private readonly YAWLWorkflowProvider _yawlProvider;
         
-        public YAWLChatHandler(YAWLAgent agent, YAWLWorkflowProvider yawlWorkflowProvider)
+        public YAWLChatHandler(YAWLWorkAgent agent, YAWLWorkflowProvider yawlWorkflowProvider)
         {
             _yawlAgent = agent;
             _yawlProvider = yawlWorkflowProvider;
@@ -171,7 +171,7 @@ namespace Veis.Chat
             {
                 string agents = "";
 
-                foreach (KeyValuePair<string, WorkAgent> kvp in _yawlProvider.AllParticipants)
+                foreach (KeyValuePair<string, WorkAgent> kvp in _yawlProvider.AllWorkAgents)
                 {
                     agents += kvp.Value + ", ";
                 }

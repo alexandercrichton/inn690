@@ -73,11 +73,11 @@ namespace Veis.Workflow.YAWL
             StartedCases.Clear();
         }
 
-        public void AddWorker(String workerId, IWorkEnactor worker)
+        public void AddWorkEnactor(String workAgentID, IWorkEnactor workEnactor)
         {
-            Workers.Add(workerId, worker);
+            Workers.Add(workAgentID, workEnactor);
 
-            GetTaskQueuesForWorker(workerId);
+            GetTaskQueuesForWorker(workAgentID);
         }
 
         private void GetTaskQueuesForWorker(String workerId)
@@ -114,7 +114,7 @@ namespace Veis.Workflow.YAWL
                 YawlToWorker[yawlId] = newWorkerId;
                 // Remove the work enactor for the old worker and add the new one
                 Workers.Remove(oldWorkerId);
-                AddWorker(newWorkerId, newWorker);
+                AddWorkEnactor(newWorkerId, newWorker);
                 return true;
             }
             return false; 
@@ -238,7 +238,7 @@ namespace Veis.Workflow.YAWL
                                     String last = x.Split(sep)[2];
                                     String yawlID = x.Split(sep)[3];
 
-                                    if (AllParticipants.ContainsKey(yawlID))
+                                    if (AllWorkAgents.ContainsKey(yawlID))
                                     {
                                         if (!YawlToWorker.ContainsKey(yawlID))
                                         {
@@ -253,7 +253,7 @@ namespace Veis.Workflow.YAWL
                                                 FirstName = first,
                                                 LastName = last,
                                                 Id = newParticipant,
-                                                WorkAgent = AllParticipants[yawlID],
+                                                WorkAgent = AllWorkAgents[yawlID],
                                                 WorkflowProvider = this
                                             });
                                         }
@@ -271,14 +271,14 @@ namespace Veis.Workflow.YAWL
                                     String first = x.Split(sep)[1];
                                     String last = x.Split(sep)[2];
 
-                                    if (!AllParticipants.ContainsKey(yawlID))
+                                    if (!AllWorkAgents.ContainsKey(yawlID))
                                     {
-                                        YAWLAgent agent = new YAWLAgent { YawlId = yawlID };
-                                        AllParticipants.Add(yawlID, agent);
+                                        YAWLWorkAgent agent = new YAWLWorkAgent { YawlId = yawlID };
+                                        AllWorkAgents.Add(yawlID, agent);
                                     }
 
-                                    AllParticipants[yawlID].FirstName = first;
-                                    AllParticipants[yawlID].LastName = last;
+                                    AllWorkAgents[yawlID].FirstName = first;
+                                    AllWorkAgents[yawlID].LastName = last;
                                 }
 
                                 // There is a role being applied to an agent
@@ -287,16 +287,16 @@ namespace Veis.Workflow.YAWL
                                     String yawlID = x.Split(sep)[1];
                                     String role = x.Split(sep, 3)[2];
 
-                                    if (!AllParticipants.ContainsKey(yawlID))
+                                    if (!AllWorkAgents.ContainsKey(yawlID))
                                     {
-                                        YAWLAgent agent = new YAWLAgent();
+                                        YAWLWorkAgent agent = new YAWLWorkAgent();
                                         agent.YawlId = yawlID;
-                                        AllParticipants.Add(yawlID, agent);
+                                        AllWorkAgents.Add(yawlID, agent);
 
                                     }
 
-                                    AllParticipants[yawlID].Appearance = role;
-                                    AllParticipants[yawlID].AddRole(role);
+                                    AllWorkAgents[yawlID].Appearance = role;
+                                    AllWorkAgents[yawlID].AddRole(role);
                                 }
 
                                 // There is a capabality being applied to an agent
@@ -305,57 +305,58 @@ namespace Veis.Workflow.YAWL
                                     String yawlID = x.Split(sep)[1];
                                     String capability = x.Split(sep, 3)[2];
 
-                                    if (!AllParticipants.ContainsKey(yawlID))
+                                    if (!AllWorkAgents.ContainsKey(yawlID))
                                     {
-                                        YAWLAgent agent = new YAWLAgent();
+                                        YAWLWorkAgent agent = new YAWLWorkAgent();
                                         agent.YawlId = yawlID;
-                                        AllParticipants.Add(yawlID, agent);
+                                        AllWorkAgents.Add(yawlID, agent);
                                     }
 
-                                    AllParticipants[yawlID].AddCapability(capability);
+                                    AllWorkAgents[yawlID].AddCapability(capability);
                                 }
 
                                 // A workitem is being added to a queue
                                 else if (action == "WORKITEM" && totalParams >= 7)
                                 {
-                                    String currentQueue = x.Split(sep)[1];
+                                    String taskQueue = x.Split(sep)[1];
                                     String yawlID = x.Split(sep)[2];
                                     String taskID = x.Split(sep)[3];
                                     String tasks = x.Split(sep)[4];
                                     String taskName = x.Split(sep)[5];
                                     String goals = x.Split(sep)[6];
 
-                                    WorkItem work;
+                                    WorkItem workItem;
 
                                     if (!AllWorkItems.ContainsKey(taskID))
                                     {
-                                        work = new WorkItem();
-                                        work.taskID = taskID;
-                                        AllWorkItems.Add(taskID, work);
+                                        workItem = new WorkItem();
+                                        workItem.taskID = taskID;
+                                        AllWorkItems.Add(taskID, workItem);
                                     }
                                     else
                                     {
-                                        work = AllWorkItems[taskID];
-                                        if (AllParticipants.ContainsKey(work.participant))
-                                            ((YAWLAgent)AllParticipants[work.participant]).GetQueueById(currentQueue).Remove(work);
+                                        workItem = AllWorkItems[taskID];
+                                        if (AllWorkAgents.ContainsKey(workItem.participant))
+                                        {
+                                            ((YAWLWorkAgent)AllWorkAgents[workItem.participant]).GetQueueById(taskQueue).Remove(workItem);
+                                        }
                                     }
-
-                                    work.participant = yawlID;
-                                    work.taskVariables.Add("Tasks", tasks);
-                                    work.taskVariables.Add("Goals", goals);
-                                    work.taskName = taskName;
-                                    work.taskQueue = currentQueue;
+                                    workItem.taskQueue = taskQueue;
+                                    workItem.participant = yawlID;
+                                    workItem.taskVariables.Add("Tasks", tasks);
+                                    workItem.taskVariables.Add("Goals", goals);
+                                    workItem.taskName = taskName;
 
                                     // Add work to queue if work item doesnt exist in the queue already
-                                    if (AllParticipants.ContainsKey(yawlID) && DoesNotContainWorkItem(yawlID, currentQueue, work))
+                                    if (AllWorkAgents.ContainsKey(yawlID) && DoesNotContainWorkItem(yawlID, taskQueue, workItem))
                                     {
-                                        ((YAWLAgent)AllParticipants[yawlID]).AddToQueue(currentQueue, work);
+                                        ((YAWLWorkAgent)AllWorkAgents[yawlID]).AddToQueue(taskQueue, workItem);
                                     }
 
                                     // Add the work if it has not been completed already
-                                    if (currentQueue == WorkAgent.STARTED && DoesNotContainWorkItem(yawlID, WorkAgent.COMPLETED, work))
+                                    if (taskQueue == WorkAgent.STARTED && DoesNotContainWorkItem(yawlID, WorkAgent.COMPLETED, workItem))
                                     {
-                                        Workers[YawlToWorker[yawlID]].AddWork(work);
+                                        Workers[YawlToWorker[yawlID]].AddWork(workItem);
                                     }
                                 }
 
@@ -381,12 +382,12 @@ namespace Veis.Workflow.YAWL
                                     String yawlID = x.Split(sep)[1];
                                     String taskID = x.Split(sep)[2];
 
-                                    if (AllWorkItems.ContainsKey(taskID) && AllParticipants.ContainsKey(yawlID))
+                                    if (AllWorkItems.ContainsKey(taskID) && AllWorkAgents.ContainsKey(yawlID))
                                     {
                                         WorkItem work = AllWorkItems[taskID];
                                         if (work.participant == yawlID)
                                         {
-                                            ((YAWLAgent)AllParticipants[yawlID]).GetQueueById(work.taskQueue).Remove(work);
+                                            ((YAWLWorkAgent)AllWorkAgents[yawlID]).GetQueueById(work.taskQueue).Remove(work);
                                             if (work.taskQueue == WorkAgent.STARTED)
                                             {
                                                 Workers[YawlToWorker[yawlID]].StopTaskIfStarted(work);
@@ -402,17 +403,17 @@ namespace Veis.Workflow.YAWL
                                     String yawlID = x.Split(sep)[1];
                                     String taskID = x.Split(sep)[2];
 
-                                    if (AllWorkItems.ContainsKey(taskID) && AllParticipants.ContainsKey(yawlID))
+                                    if (AllWorkItems.ContainsKey(taskID) && AllWorkAgents.ContainsKey(yawlID))
                                     {
                                         WorkItem work = AllWorkItems[taskID];
                                         if (work.participant == yawlID)
                                         {
-                                            ((YAWLAgent)AllParticipants[yawlID]).GetQueueById(work.taskQueue).Remove(work);
+                                            ((YAWLWorkAgent)AllWorkAgents[yawlID]).GetQueueById(work.taskQueue).Remove(work);
                                             if (work.taskQueue == WorkAgent.STARTED)
                                             {
                                                 Workers[YawlToWorker[yawlID]].StopTaskIfStarted(work);
                                             }
-                                            ((YAWLAgent)AllParticipants[yawlID]).GetQueueById(WorkAgent.SUSPENDED).Add(work);
+                                            ((YAWLWorkAgent)AllWorkAgents[yawlID]).GetQueueById(WorkAgent.SUSPENDED).Add(work);
                                         }
                                     }
                                 }
@@ -423,13 +424,13 @@ namespace Veis.Workflow.YAWL
                                     String yawlID = x.Split(sep)[1];
                                     String taskID = x.Split(sep)[2];
 
-                                    if (AllWorkItems.ContainsKey(taskID) && AllParticipants.ContainsKey(yawlID))
+                                    if (AllWorkItems.ContainsKey(taskID) && AllWorkAgents.ContainsKey(yawlID))
                                     {
                                         WorkItem work = AllWorkItems[taskID];
                                         if (work.participant == yawlID)
                                         {
-                                            ((YAWLAgent)AllParticipants[yawlID]).GetQueueById(work.taskQueue).Remove(work);
-                                            ((YAWLAgent)AllParticipants[yawlID]).GetQueueById(WorkAgent.STARTED).Add(work);
+                                            ((YAWLWorkAgent)AllWorkAgents[yawlID]).GetQueueById(work.taskQueue).Remove(work);
+                                            ((YAWLWorkAgent)AllWorkAgents[yawlID]).GetQueueById(WorkAgent.STARTED).Add(work);
                                             Workers[YawlToWorker[yawlID]].AddWork(work);
 
                                             Workers[YawlToWorker[yawlID]].AddWork(work);
@@ -514,7 +515,7 @@ namespace Veis.Workflow.YAWL
 
         private bool DoesNotContainWorkItem(string yawlID, string queueID, WorkItem workItem)
         {
-            return !AllParticipants[yawlID].GetQueueById(queueID).Any(w => w.taskID == workItem.taskID);
+            return !AllWorkAgents[yawlID].GetQueueById(queueID).Any(w => w.taskID == workItem.taskID);
         }
     }
 }

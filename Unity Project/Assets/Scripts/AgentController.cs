@@ -38,12 +38,12 @@ public class AgentController : MonoBehaviour
         }
         else
         {
-            transform.Rotate(0, Input.GetAxis("Horizontal") * rotateSpeed * Time.deltaTime, 0);
+            transform.Rotate(0, Input.GetAxisRaw("Horizontal") * rotateSpeed * Time.deltaTime, 0);
         }
 
         if (grounded)
         {
-            moveDirection = new Vector3((RMB ? Input.GetAxis("Horizontal") : 0), 0, Input.GetAxis("Vertical"));
+            moveDirection = new Vector3((RMB ? Input.GetAxisRaw("Horizontal") : 0), 0, Input.GetAxisRaw("Vertical"));
             moveDirection = moveDirection.normalized * moveSpeed;
 
             if (Input.GetButton("Jump"))

@@ -7,5 +7,8 @@ namespace Veis.Bots
 {
     public class Avatar
     {
+        public string Name { get; set; }
+        public string Role { get; set; }
+        public string ID { get; set; }
     }
 }

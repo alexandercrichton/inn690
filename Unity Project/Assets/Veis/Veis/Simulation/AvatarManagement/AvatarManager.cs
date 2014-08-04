@@ -13,45 +13,25 @@ namespace Veis.Simulation.AvatarManagement
     /// </summary>
     public class AvatarManager
     {
-        public List<BotAvatar> AllBots { get; private set; }
+        public List<BotAvatar> Bots { get; private set; }
 
-        public List<HumanAvatar> AllHumans { get; private set; }
+        public List<HumanAvatar> Humans { get; private set; }
 
         public AvatarManager()
         {
-            AllBots = new List<BotAvatar>();
-            AllHumans = new List<HumanAvatar>();
+            Bots = new List<BotAvatar>();
+            Humans = new List<HumanAvatar>();
         }
 
-        public bool AddHuman(bool replaceBot)
+        public void AddHuman(HumanAvatar human)
         {
-            throw new NotImplementedException();
+
         }
 
-        public bool AddBot(bool replaceHuman)
+        public void Clear()
         {
-            throw new NotImplementedException();
+            Bots.Clear();
+            Humans.Clear();
         }
-
-        public bool ReplaceHuman()
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool ReplaceBot()
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool RemoveHuman(bool replaceWithBot)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool RemoveBot(bool replaceWithHuman)
-        {
-            throw new NotImplementedException();
-        }
-
     }
 }

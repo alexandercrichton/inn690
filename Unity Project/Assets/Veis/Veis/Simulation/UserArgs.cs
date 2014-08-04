@@ -14,9 +14,9 @@ namespace Veis.Simulation
 
     public class UserArgs
     {
-        public string RoleName { get; set; }
-        public string UserName { get; set; }
-        public string UserId { get; set; }
+        public string Role { get; set; }
+        public string Name { get; set; }
+        public string ID { get; set; }
         public UserActions UserAction { get; set; }
     }
 }

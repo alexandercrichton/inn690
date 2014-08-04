@@ -15,7 +15,7 @@ public class SpectatorController : MonoBehaviour
             return;
         }
 
-        moveDirection = transform.rotation * new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+        moveDirection = transform.rotation * new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
         moveDirection = moveDirection.normalized * forwardSpeed;
 
         if (Input.GetKey(KeyCode.Space))

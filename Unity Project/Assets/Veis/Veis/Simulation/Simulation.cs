@@ -38,7 +38,7 @@ namespace Veis.Simulation
     public abstract class Simulation : ISimulation, ILoggable
     {
         // Avatar fields
-        protected AvatarManager _avatarManager;
+        public AvatarManager _avatarManager;
 
         // Case fields
         protected bool _isRunningCase;    // If a case is already running, another cannot be launched (to combat complexity at this stage)
@@ -95,7 +95,7 @@ namespace Veis.Simulation
         public abstract bool RequestLaunchCase(string specificationName);
         public abstract bool RequestCancelCase(string specificationName, int? caseNumber);
         public abstract void RequestCancelAllCases();
-        public abstract void RegisterUser(UserArgs user);
+        public abstract void AddUser(UserArgs user);
         public abstract Avatar GetParticipantById(string id);
 
         public void PerformSimulationAction(SimulationActions action)

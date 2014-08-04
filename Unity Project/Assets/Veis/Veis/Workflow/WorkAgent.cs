@@ -125,7 +125,7 @@ namespace Veis.Workflow
 
         public void AddToQueue(List<WorkItem> queue, WorkItem potentialNewAllocatedItem)
         {
-            IComparer<WorkItem> kkk = (IComparer<WorkItem>)new WorkItemComparer();
+            IComparer<WorkItem> kkk = new WorkItemComparer();
             if (queue.BinarySearch(potentialNewAllocatedItem, kkk) < 0)
             {
                 queue.Add(potentialNewAllocatedItem);
