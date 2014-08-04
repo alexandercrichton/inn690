@@ -47,76 +47,71 @@ namespace Veis.Workflow.YAWL
         
         private static readonly UTF8Encoding Encoding = new UTF8Encoding();
 
-        public Dictionary<String, String> YawlToWorker { get; set; }   // Maps YAWL participant IDs to Enactor IDs
-        private Dictionary<String, String> WorkerToYawl { get; set; }  // Maps Enactor IDs back to YAWL IDs
-        private Dictionary<String, IWorkEnactor> Workers { get; set; } // Things that can enact workitems
+        private List<WorkEnactor> WorkEnactors { get; set; } // Things that can enact workitems
         
         private Socket _externalProcessor;
         private Thread _oThread;
 
         public YAWLWorkflowProvider()
         {
-            Console.WriteLine("yest");
             _externalProcessor = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            YawlToWorker = new Dictionary<string, string>();
-            WorkerToYawl = new Dictionary<string, string>();
-            Workers = new Dictionary<string, IWorkEnactor>();
+            WorkEnactors = new List<WorkEnactor>();
             _oThread = new Thread(ReadMessages);
         }
 
         public void ResetAll()
         {
             EndAllCases();
-            YawlToWorker.Clear();
-            WorkerToYawl.Clear();
-            Workers.Clear();
+            WorkEnactors.Clear();
             StartedCases.Clear();
         }
 
-        public void AddWorkEnactor(String workAgentID, IWorkEnactor workEnactor)
+        public void AddWorkEnactor(WorkEnactor workEnactor)
         {
-            Workers.Add(workAgentID, workEnactor);
-
-            GetTaskQueuesForWorker(workAgentID);
+            WorkEnactors.Add(workEnactor);
+            GetTaskQueuesForWorkEnactor(workEnactor);
         }
 
-        private void GetTaskQueuesForWorker(String workerId)
+        private void GetTaskQueuesForWorkEnactor(WorkEnactor workEnactor)
         {
-            if (!WorkerToYawl.ContainsKey(workerId)) return;
-            Send("GetTaskQueue " + WorkAgent.OFFERED + " " + WorkerToYawl[workerId]);
-            Send("GetTaskQueue " + WorkAgent.ALLOCATED + " " + WorkerToYawl[workerId]);
-            Send("GetTaskQueue " + WorkAgent.STARTED + " " + WorkerToYawl[workerId]);
-            Send("GetTaskQueue " + WorkAgent.SUSPENDED + " " + WorkerToYawl[workerId]);
+            if (WorkEnactors.Contains(workEnactor)) 
+            {
+                string agentID = workEnactor.WorkAgent.AgentID;
+                Send("GetTaskQueue " + WorkAgent.OFFERED + " " + agentID);
+                Send("GetTaskQueue " + WorkAgent.ALLOCATED + " " + agentID);
+                Send("GetTaskQueue " + WorkAgent.STARTED + " " + agentID);
+                Send("GetTaskQueue " + WorkAgent.SUSPENDED + " " + agentID);
+            }
         }
 
-        public bool ReplaceWorker(String workerId, IWorkEnactor newWorker)
+        public bool ReplaceWorker(String workerId, WorkEnactor newWorker)
         {
             // Merely replace the WorkEnactor for this 'worker'
-            if (Workers.ContainsKey(workerId))
-            {
-                Workers[workerId] = newWorker;
-                GetTaskQueuesForWorker(workerId);
-                return true;
-            }
+            //if (WorkEnactors.Any(w => w.WorkAgent.AgentID == ))
+            //{
+            //    WorkEnactors[workerId] = newWorker;
+            //    GetTaskQueuesForWorker(workerId);
+            //    return true;
+            //}
             return false;
         }
 
-        public bool ReplaceWorker(String oldWorkerId, String newWorkerId, IWorkEnactor newWorker)
+        public bool ReplaceWorker(String oldWorkerId, String newWorkerId, WorkEnactor newWorker)
         {
             // If old worker exists, replace its work enactor entry
-            if (WorkerToYawl.ContainsKey(oldWorkerId))
-            {
-                string yawlId = WorkerToYawl[oldWorkerId];
-                // Remove WorkerToYawl entry and add new entry
-                WorkerToYawl.Remove(oldWorkerId);
-                WorkerToYawl.Add(newWorkerId, yawlId);
-                // Replace YawlToWorker entry with the newWorkerId
-                YawlToWorker[yawlId] = newWorkerId;
-                // Remove the work enactor for the old worker and add the new one
-                Workers.Remove(oldWorkerId);
-                AddWorkEnactor(newWorkerId, newWorker);
-                return true;
-            }
+            //if (WorkerToYawl.ContainsKey(oldWorkerId))
+            //{
+            //    string yawlId = WorkerToYawl[oldWorkerId];
+            //    // Remove WorkerToYawl entry and add new entry
+            //    WorkerToYawl.Remove(oldWorkerId);
+            //    WorkerToYawl.Add(newWorkerId, yawlId);
+            //    // Replace YawlToWorker entry with the newWorkerId
+            //    YawlToWorker[yawlId] = newWorkerId;
+            //    // Remove the work enactor for the old worker and add the new one
+            //    WorkEnactors.Remove(oldWorkerId);
+            //    AddWorkEnactor(newWorkerId, newWorker);
+            //    return true;
+            //}
             return false; 
         } 
 
@@ -183,10 +178,7 @@ namespace Veis.Workflow.YAWL
             Send("GetAllAgents");
             Send("GetActiveAgents");
             Send("GetAllSpecifications");
-            foreach (string worker in WorkerToYawl.Keys)
-            {
-                GetTaskQueuesForWorker(worker);
-            }
+            WorkEnactors.ForEach(w => GetTaskQueuesForWorkEnactor(w));
         }
 
         public override void LaunchCase(string specification)
@@ -240,20 +232,11 @@ namespace Veis.Workflow.YAWL
 
                                     if (AllWorkAgents.ContainsKey(agentID))
                                     {
-                                        if (!YawlToWorker.ContainsKey(agentID))
+                                        OnAgentCreated(new AgentEventArgs
                                         {
-                                            string id = Guid.NewGuid().ToString();
-                                            YawlToWorker.Add(agentID, id);
-                                            WorkerToYawl.Add(id, agentID);
-
-                                            // npcs[yawlid2uuid[yawlID]].SetYAWLReferences(this, AllYawlParticipants[yawlID]);
-
-                                            OnAgentCreated(new AgentEventArgs
-                                            {
-                                                Name = first + " " + last,
-                                                ID = id
-                                            });
-                                        }
+                                            Name = first + " " + last,
+                                            ID = Guid.NewGuid().ToString()
+                                        });
                                     }
                                     else
                                     {
@@ -353,7 +336,7 @@ namespace Veis.Workflow.YAWL
                                     // Add the work if it has not been completed already
                                     if (taskQueue == WorkAgent.STARTED && DoesNotContainWorkItem(agentID, WorkAgent.COMPLETED, workItem))
                                     {
-                                        Workers[YawlToWorker[agentID]].AddWork(workItem);
+                                        WorkEnactors.FirstOrDefault(w => w.WorkAgent.AgentID == agentID).AddWork(workItem);
                                     }
                                 }
 
@@ -387,7 +370,7 @@ namespace Veis.Workflow.YAWL
                                             ((YAWLWorkAgent)AllWorkAgents[agentID]).GetQueueById(work.taskQueue).Remove(work);
                                             if (work.taskQueue == WorkAgent.STARTED)
                                             {
-                                                Workers[YawlToWorker[agentID]].StopTaskIfStarted(work);
+                                                WorkEnactors.FirstOrDefault(w => w.WorkAgent.AgentID == agentID).StopTaskIfStarted(work);
                                             }
                                             AllWorkItems.Remove(taskID);
                                         }
@@ -408,7 +391,7 @@ namespace Veis.Workflow.YAWL
                                             ((YAWLWorkAgent)AllWorkAgents[agentID]).GetQueueById(work.taskQueue).Remove(work);
                                             if (work.taskQueue == WorkAgent.STARTED)
                                             {
-                                                Workers[YawlToWorker[agentID]].StopTaskIfStarted(work);
+                                                WorkEnactors.FirstOrDefault(w => w.WorkAgent.AgentID == agentID).StopTaskIfStarted(work);
                                             }
                                             ((YAWLWorkAgent)AllWorkAgents[agentID]).GetQueueById(WorkAgent.SUSPENDED).Add(work);
                                         }
@@ -428,9 +411,7 @@ namespace Veis.Workflow.YAWL
                                         {
                                             ((YAWLWorkAgent)AllWorkAgents[agentID]).GetQueueById(work.taskQueue).Remove(work);
                                             ((YAWLWorkAgent)AllWorkAgents[agentID]).GetQueueById(WorkAgent.STARTED).Add(work);
-                                            Workers[YawlToWorker[agentID]].AddWork(work);
-
-                                            Workers[YawlToWorker[agentID]].AddWork(work);
+                                            WorkEnactors.FirstOrDefault(w => w.WorkAgent.AgentID == agentID).AddWork(work);
                                         }
                                     }
                                 }

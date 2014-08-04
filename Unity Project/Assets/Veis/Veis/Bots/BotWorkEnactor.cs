@@ -7,105 +7,103 @@ using Veis.Planning;
 
 namespace Veis.Bots
 {
-    public class BotWorkEnactor : IWorkEnactor
+    public class BotWorkEnactor : WorkEnactor
     {
-        private readonly BotAvatar _avatar;
-        private readonly WorkflowProvider _workflowProvider;
-        private readonly WorkAgent _workAgent;
+        new private readonly BotAvatar Avatar;
         private readonly Planner<WorkItem> _planner;
 
         public BotWorkEnactor(BotAvatar avatar, WorkflowProvider provider, WorkAgent workAgent, Planner<WorkItem> planner)
         {
-            _avatar = avatar;
-            _workflowProvider = provider;
-            _workAgent = workAgent;
+            Avatar = avatar;
+            WorkflowProvider = provider;
+            WorkAgent = workAgent;
             _planner = planner;
         }
         
-        public void AddWork(WorkItem workItem)
+        public override void AddWork(WorkItem workItem)
         {
-            lock (_workAgent.started)
+            lock (WorkAgent.started)
             {
-                _avatar.AddTaskToQueue("STARTWORK:" + workItem.taskID);
+                Avatar.AddTaskToQueue("STARTWORK:" + workItem.taskID);
             }
         }
 
-        public void StartWork(WorkItem workItem)
+        public override void StartWork(WorkItem workItem)
         {
-            lock (_workAgent.processing)
+            lock (WorkAgent.processing)
             {
-                _workAgent.processing.Add(workItem);
+                WorkAgent.processing.Add(workItem);
             }
             AddWorkTasks(workItem);
         }
 
         public void StartWork(string workItemId)
         {
-            StartWork(_workAgent.GetWorkItem(workItemId, _workAgent.started));
+            StartWork(WorkAgent.GetWorkItem(workItemId, WorkAgent.started));
         }
-       
-        public void CompleteWork(WorkItem workItem)
+
+        public override void CompleteWork(WorkItem workItem)
         {
-            if (/*_workAgent.started.Contains(workItem) &&*/ _workAgent.processing.Contains(workItem))
+            if (/*_workAgent.started.Contains(workItem) &&*/ WorkAgent.processing.Contains(workItem))
             {
-                _workAgent.Complete(workItem, _workflowProvider);
+                WorkAgent.Complete(workItem, WorkflowProvider);
             }
         }
 
         public void CompleteWork(string workItemId)
         {
-            CompleteWork(_workAgent.GetWorkItem(workItemId, _workAgent.processing));
+            CompleteWork(WorkAgent.GetWorkItem(workItemId, WorkAgent.processing));
         }
 
         public void AddWorkTasks(WorkItem workItem)
         {
-            if (_workAgent.started.Contains(workItem))
+            if (WorkAgent.started.Contains(workItem))
             {
                 IList<String> tasklist = _planner.MakePlan(workItem).Tasks; // HERE is where the workitem tasks are EXTRACTED
 
-                lock (_avatar.taskQueue)
+                lock (Avatar.taskQueue)
                 {
-                    _avatar.taskQueue.AddFirst("COMPLETEWORK:" + workItem.taskID);
+                    Avatar.taskQueue.AddFirst("COMPLETEWORK:" + workItem.taskID);
 
                     for (int i = tasklist.Count - 1; i >= 0; i--)
                     {
-                        _avatar.taskQueue.AddFirst(tasklist[i]);
+                        Avatar.taskQueue.AddFirst(tasklist[i]);
                     }
                 }
             }
         }
 
-        public void StopTaskIfStarted(WorkItem workItem)
+        public override void StopTaskIfStarted(WorkItem workItem)
         {
-            if (_workAgent.started.Contains(workItem))
+            if (WorkAgent.started.Contains(workItem))
             {
-                lock (_avatar.taskQueue)
+                lock (Avatar.taskQueue)
                 {
-                    if (_workAgent.processing.Contains(workItem))
+                    if (WorkAgent.processing.Contains(workItem))
                     {
                         //We have a slight problem?
-                        while (_avatar.taskQueue.First.Value != "COMPLETEWORK:" + workItem.taskID && _avatar.taskQueue.Count > 0)
+                        while (Avatar.taskQueue.First.Value != "COMPLETEWORK:" + workItem.taskID && Avatar.taskQueue.Count > 0)
                         {
-                            _avatar.taskQueue.RemoveFirst();
+                            Avatar.taskQueue.RemoveFirst();
                         }
-                        _avatar.taskQueue.RemoveFirst();
+                        Avatar.taskQueue.RemoveFirst();
                     }
                     else
                     {
                         //remove the start item thingo
                         Stack<String> reverseTasks = new Stack<string>();
-                        while (_avatar.taskQueue.First.Value != "STARTWORK:" + workItem.taskID && _avatar.taskQueue.Count > 0)
+                        while (Avatar.taskQueue.First.Value != "STARTWORK:" + workItem.taskID && Avatar.taskQueue.Count > 0)
                         {
-                            reverseTasks.Push(_avatar.taskQueue.First.Value);
-                            _avatar.taskQueue.RemoveFirst();
+                            reverseTasks.Push(Avatar.taskQueue.First.Value);
+                            Avatar.taskQueue.RemoveFirst();
                         }
-                        if (_avatar.taskQueue.Count > 0)
+                        if (Avatar.taskQueue.Count > 0)
                         {
-                            _avatar.taskQueue.RemoveFirst();
+                            Avatar.taskQueue.RemoveFirst();
                         }
                         while (reverseTasks.Count > 0)
                         {
-                            _avatar.taskQueue.AddFirst(reverseTasks.Pop());
+                            Avatar.taskQueue.AddFirst(reverseTasks.Pop());
                         }
                     }
                 }
@@ -114,12 +112,12 @@ namespace Veis.Bots
 
         public WorkAgent GetWorkAgent()
         {
-            return _workAgent;
+            return WorkAgent;
         }
 
         public WorkflowProvider GetWorkflowProvider()
         {
-            return _workflowProvider;
+            return WorkflowProvider;
         }
     }
 }

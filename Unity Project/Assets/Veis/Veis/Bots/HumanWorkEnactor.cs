@@ -10,11 +10,9 @@ using Veis.Simulation.WorldState;
 
 namespace Veis.Bots
 {
-    public class HumanWorkEnactor : IWorkEnactor
+    public class HumanWorkEnactor : WorkEnactor
     {
-        private readonly HumanAvatar _user;
-        public readonly WorkflowProvider _workflow;
-        public readonly WorkAgent WorkAgent;
+        new public HumanAvatar Avatar;
 
         private readonly IDecompositionService<WorkItem> _decompService; // Like the planner, except it produces some goals for a work item
         private readonly GoalService _goalService;
@@ -27,8 +25,8 @@ namespace Veis.Bots
             WorkflowProvider workflow, IDecompositionService<WorkItem> decompService,
             GoalService goalService)
         {
-            _user = user;
-            _workflow = workflow;
+            Avatar = user;
+            WorkflowProvider = workflow;
             WorkAgent = workAgent;
             _decompService = decompService;
             _goalService = goalService;
@@ -37,7 +35,7 @@ namespace Veis.Bots
         }
 
         // 1. Work item is added
-        public void AddWork(WorkItem workItem)
+        public override void AddWork(WorkItem workItem)
         {           
             // 2. Work task is decomposed
             List<Goal> newGoals = _decompService.Decompose(workItem);
@@ -62,7 +60,7 @@ namespace Veis.Bots
             // 6. Notify user of goals etc...
             foreach (var goal in newGoals)
             {
-                _user.NotifyUser(workItem.taskName + " - " + goal.ToString());
+                Avatar.NotifyUser(workItem.taskName + " - " + goal.ToString());
             }
             
         }
@@ -81,7 +79,7 @@ namespace Veis.Bots
             }
         }
 
-        public void StopTaskIfStarted(WorkItem workItem)
+        public override void StopTaskIfStarted(WorkItem workItem)
         {
             if (WorkAgent.started.Contains(workItem))
             {
@@ -92,7 +90,7 @@ namespace Veis.Bots
             }
         }
 
-        public void StartWork(WorkItem workItem)
+        public override void StartWork(WorkItem workItem)
         {
             lock (WorkAgent.processing)
             {
@@ -104,12 +102,12 @@ namespace Veis.Bots
             }
         }
 
-        public void CompleteWork(WorkItem workItem)
+        public override void CompleteWork(WorkItem workItem)
         {
             if (/*_workAgent.started.Contains(workItem) &&*/ WorkAgent.processing.Contains(workItem))
             {
-                _user.NotifyUser("Just completed workitem: " + workItem.taskName);
-                WorkAgent.Complete(workItem, _workflow);
+                Avatar.NotifyUser("Just completed workitem: " + workItem.taskName);
+                WorkAgent.Complete(workItem, WorkflowProvider);
             }
             _completedGoals.Add(workItem, _workitemGoals[workItem]);
             _workitemGoals.Remove(workItem);

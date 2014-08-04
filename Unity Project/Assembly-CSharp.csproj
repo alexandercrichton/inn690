@@ -146,8 +146,8 @@
      <Compile Include="Assets\Veis\Veis\Simulation\WorldState\WorldStateService.cs" />
      <Compile Include="Assets\Veis\Veis\Workflow\Case.cs" />
      <Compile Include="Assets\Veis\Veis\Workflow\CaseStateEventArgs.cs" />
-     <Compile Include="Assets\Veis\Veis\Workflow\IWorkEnactor.cs" />
      <Compile Include="Assets\Veis\Veis\Workflow\WorkAgent.cs" />
+     <Compile Include="Assets\Veis\Veis\Workflow\WorkEnactor.cs" />
      <Compile Include="Assets\Veis\Veis\Workflow\WorkItem.cs" />
      <Compile Include="Assets\Veis\Veis\Workflow\WorkflowProvider.cs" />
      <Compile Include="Assets\Veis\Veis\Workflow\YAWL\YAWLFormattingExtensions.cs" />

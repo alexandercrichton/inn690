@@ -365,7 +365,7 @@ namespace Veis.Unity.Simulation
                 _workItemDecomp, _goalService);
             human.WorkEnactor = workEnactor;
 
-            _workflowProvider.AddWorkEnactor(workAgentID, workEnactor);
+            _workflowProvider.AddWorkEnactor(workEnactor);
             _avatarManager.Humans.Add(human);
         }
 
@@ -411,7 +411,7 @@ namespace Veis.Unity.Simulation
             BotWorkEnactor workEnactor = new BotWorkEnactor(bot, _workflowProvider, workAgent, _npcWorkPlanner);
             bot.WorkEnactor = workEnactor;
 
-            _workflowProvider.AddWorkEnactor(workAgentID, workEnactor);
+            _workflowProvider.AddWorkEnactor(workEnactor);
             _avatarManager.Bots.Add(bot);
         }
 

@@ -292,10 +292,6 @@ public class UserInteraction : MonoBehaviour
             {
                 startSimulationAndCase();
             }
-            if (GUI.Button(new Rect(button.xMin, button.height * 2, button.width, button.height), "Register as Participant"))
-            {
-                registerUser();
-            }
         }
         GUI.EndGroup();
     }
