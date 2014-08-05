@@ -404,15 +404,23 @@ namespace Veis.Unity.Simulation
         {
             Log("Adding bot avatar: " + e.Name);
 
-            UnityBotAvatar bot = new UnityBotAvatar(e.ID, e.Name, e.Role, _sceneService);
+            if (!_avatarManager.Bots.Any(b => b.ID == e.ID))
+            {
+                UnityBotAvatar bot = new UnityBotAvatar(e.ID, e.Name, e.Role, _sceneService);
 
-            string workAgentID = _workflowProvider.GetAgentIdByFullName(e.Name);
-            WorkAgent workAgent = _workflowProvider.AllWorkAgents[workAgentID];
-            BotWorkEnactor workEnactor = new BotWorkEnactor(bot, _workflowProvider, workAgent, _npcWorkPlanner);
-            bot.WorkEnactor = workEnactor;
+                string workAgentID = _workflowProvider.GetAgentIdByFullName(e.Name);
+                WorkAgent workAgent = _workflowProvider.AllWorkAgents[workAgentID];
+                BotWorkEnactor workEnactor = new BotWorkEnactor(bot, _workflowProvider, workAgent, _npcWorkPlanner);
+                bot.WorkEnactor = workEnactor;
 
-            _workflowProvider.AddWorkEnactor(workEnactor);
-            _avatarManager.Bots.Add(bot);
+                _workflowProvider.AddWorkEnactor(workEnactor);
+                _avatarManager.Bots.Add(bot);
+            }
+            else
+            {
+                Log("That bot ID already exists");
+            }
+
         }
 
         #endregion

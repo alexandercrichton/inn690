@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Veis.Workflow;
 using Veis.Planning;
+using Veis.Data.Logging;
 
 namespace Veis.Bots
 {

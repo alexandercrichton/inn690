@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Linq;
 using Veis.Simulation;
+using Veis.Data.Logging;
 
 namespace Veis.Workflow.YAWL
 {
@@ -137,6 +138,7 @@ namespace Veis.Workflow.YAWL
             byte[] bytes = Encoding.GetBytes(msg + "\n");
             _externalProcessor.Send(bytes);
             System.Diagnostics.Debug.WriteLine("SEND: " + msg);
+            Logger.BroadcastMessage(this, "SEND: " + msg);
         }
 
         public override void Close() {
@@ -215,7 +217,7 @@ namespace Veis.Workflow.YAWL
                             string x = xi.Replace("\r", "");
 
                             System.Diagnostics.Debug.WriteLine("RECV: " + x);
-                            Console.WriteLine(x);
+                            Logger.BroadcastMessage(this, "RECV: " + x);
 
                             String action = x.Split(' ')[0];
                             int totalParams = x.Split(' ').Length;
@@ -232,10 +234,11 @@ namespace Veis.Workflow.YAWL
 
                                     if (AllWorkAgents.ContainsKey(agentID))
                                     {
+
                                         OnAgentCreated(new AgentEventArgs
                                         {
                                             Name = first + " " + last,
-                                            ID = Guid.NewGuid().ToString()
+                                            ID = agentID
                                         });
                                     }
                                     else
@@ -251,14 +254,11 @@ namespace Veis.Workflow.YAWL
                                     String first = x.Split(sep)[1];
                                     String last = x.Split(sep)[2];
 
-                                    if (!AllWorkAgents.ContainsKey(agentID))
-                                    {
-                                        YAWLWorkAgent agent = new YAWLWorkAgent { AgentID = agentID };
-                                        AllWorkAgents.Add(agentID, agent);
-                                    }
+                                    AddYAWLWorkAgent(agentID);
 
                                     AllWorkAgents[agentID].FirstName = first;
                                     AllWorkAgents[agentID].LastName = last;
+                                    Logger.BroadcastMessage(this, "Updating YAWLWorkAgent: " + first + " " + last);
                                 }
 
                                 // There is a role being applied to an agent
@@ -267,16 +267,11 @@ namespace Veis.Workflow.YAWL
                                     String agentID = x.Split(sep)[1];
                                     String role = x.Split(sep, 3)[2];
 
-                                    if (!AllWorkAgents.ContainsKey(agentID))
-                                    {
-                                        YAWLWorkAgent agent = new YAWLWorkAgent();
-                                        agent.AgentID = agentID;
-                                        AllWorkAgents.Add(agentID, agent);
-
-                                    }
+                                    AddYAWLWorkAgent(agentID);
 
                                     AllWorkAgents[agentID].Appearance = role;
                                     AllWorkAgents[agentID].AddRole(role);
+                                    Logger.BroadcastMessage(this, "Updating YAWLWorkAgent: " + role);
                                 }
 
                                 // There is a capabality being applied to an agent
@@ -285,14 +280,10 @@ namespace Veis.Workflow.YAWL
                                     String agentID = x.Split(sep)[1];
                                     String capability = x.Split(sep, 3)[2];
 
-                                    if (!AllWorkAgents.ContainsKey(agentID))
-                                    {
-                                        YAWLWorkAgent agent = new YAWLWorkAgent();
-                                        agent.AgentID = agentID;
-                                        AllWorkAgents.Add(agentID, agent);
-                                    }
+                                    AddYAWLWorkAgent(agentID);
 
                                     AllWorkAgents[agentID].AddCapability(capability);
+                                    Logger.BroadcastMessage(this, "Updating YAWLWorkAgent: " + capability);
                                 }
 
                                 // A workitem is being added to a queue
@@ -488,6 +479,16 @@ namespace Veis.Workflow.YAWL
                     //Do nothing
                     System.Diagnostics.Debug.WriteLine(e.Message);
                 }
+            }
+        }
+
+        protected void AddYAWLWorkAgent(string agentID)
+        {
+            if (!AllWorkAgents.ContainsKey(agentID))
+            {
+                YAWLWorkAgent agent = new YAWLWorkAgent { AgentID = agentID };
+                AllWorkAgents.Add(agentID, agent);
+                Logger.BroadcastMessage(this, "Adding YAWLWorkAgent: " + agentID);
             }
         }
 

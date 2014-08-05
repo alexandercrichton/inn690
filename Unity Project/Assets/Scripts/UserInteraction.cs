@@ -144,25 +144,53 @@ public class UserInteraction : MonoBehaviour
     {
         _caseInfo = "No case";
 
-        foreach (var startedCase in _simulation._workflowProvider.StartedCases)
+        if (_simulation._workflowProvider.StartedCases.Count <= 0)
         {
-            _caseInfo = "Current Case: " + startedCase.SpecificationName + " "
-                + startedCase.SpecificationId;
-            foreach (var human in _simulation._avatarManager.Humans)
+            _caseInfo = "";
+            foreach (var cases in _simulation._workflowProvider.AllSpecifications)
             {
-                if (human.WorkEnactor.GetGoals().Count > 0)
+                _caseInfo += "\nCase Specification: " + cases.Key + " " + cases.Value;
+            }
+        }
+        else
+        {
+            _caseInfo = "";
+            foreach (var startedCase in _simulation._workflowProvider.StartedCases)
+            {
+                _caseInfo += "\nCurrent Case: " + startedCase.SpecificationName + " "
+                    + startedCase.SpecificationId;
+                foreach (var human in _simulation._avatarManager.Humans)
                 {
-                    foreach (var workItem in human.WorkEnactor.GetGoals())
+                    if (human.WorkEnactor.GetGoals().Count > 0)
                     {
-                        _caseInfo += "\nCurrent Task: " + workItem.Key.taskName;
-                        foreach (var goal in workItem.Value)
+                        foreach (var workItem in human.WorkEnactor.GetGoals())
                         {
-                            _caseInfo += "\n" + goal.ToString();
+                            _caseInfo += "\nCurrent Task: " + workItem.Key.taskName;
+                            foreach (var goal in workItem.Value)
+                            {
+                                _caseInfo += "\n" + goal.ToString();
+                            }
                         }
                     }
                 }
-            }  
-        }      
+                //foreach (var human in _simulation._avatarManager.Bots)
+                //{
+                //    if (human.WorkEnactor.GetGoals().Count > 0)
+                //    {
+                //        foreach (var workItem in human.WorkEnactor.GetGoals())
+                //        {
+                //            _caseInfo += "\nCurrent Task: " + workItem.Key.taskName;
+                //            foreach (var goal in workItem.Value)
+                //            {
+                //                _caseInfo += "\n" + goal.ToString();
+                //            }
+                //        }
+                //    }
+                //}  
+            }      
+
+        }
+
     }
 
     private void OnGUI()
@@ -230,18 +258,18 @@ public class UserInteraction : MonoBehaviour
                     foreach (var bot in _simulation._avatarManager.Bots)
                     {
                         GUILayout.Label("Available bot: " + bot.Name);
-                        if (bot.WorkEnactor.GetWorkAgent().allocated.Count > 0)
-                        {
-                            GUILayout.Label(bot.WorkEnactor.GetWorkAgent().allocated[0].taskName);
-                        }
-                        if (bot.WorkEnactor.GetWorkAgent().offered.Count > 0)
-                        {
-                            GUILayout.Label(bot.WorkEnactor.GetWorkAgent().offered[0].taskName);
-                        }
-                        if (bot.WorkEnactor.GetWorkAgent().started.Count > 0)
-                        {
-                            GUILayout.Label(bot.WorkEnactor.GetWorkAgent().started[0].taskName);
-                        }
+                        //if (bot.WorkEnactor.GetWorkAgent().allocated.Count > 0)
+                        //{
+                        //    GUILayout.Label(bot.WorkEnactor.GetWorkAgent().allocated[0].taskName);
+                        //}
+                        //if (bot.WorkEnactor.GetWorkAgent().offered.Count > 0)
+                        //{
+                        //    GUILayout.Label(bot.WorkEnactor.GetWorkAgent().offered[0].taskName);
+                        //}
+                        //if (bot.WorkEnactor.GetWorkAgent().started.Count > 0)
+                        //{
+                        //    GUILayout.Label(bot.WorkEnactor.GetWorkAgent().started[0].taskName);
+                        //}
                         if (bot.WorkEnactor.GetWorkAgent().processing.Count > 0)
                         {
                             GUILayout.Label(bot.WorkEnactor.GetWorkAgent().processing[0].taskName);
@@ -279,11 +307,11 @@ public class UserInteraction : MonoBehaviour
 
     private void drawSimulationControlButtons()
     {
-        float buttonContainerSize = Screen.height / 6;
-        Rect buttonContainerRect = new Rect(0f, Screen.height - buttonContainerSize, buttonContainerSize * 1.5f, buttonContainerSize);
+        float buttonContainerSize = Screen.height / 12;
+        Rect buttonContainerRect = new Rect(0f, Screen.height - buttonContainerSize, buttonContainerSize * 3f, buttonContainerSize);
         GUI.BeginGroup(buttonContainerRect);
         {
-            Rect button = new Rect(0f, 0f, buttonContainerRect.width, buttonContainerRect.height / 5);
+            Rect button = new Rect(0f, 0f, buttonContainerRect.width, buttonContainerRect.height / 2);
             if (GUI.Button(new Rect(button.xMin, button.height * 0, button.width, button.height), "Reset Simulation"))
             {
                 resetSimulationAndCase();

@@ -54,7 +54,7 @@ namespace Veis.Unity.Bots
 
         public override void Say(string message)
         {
-            Logging.UnityLogger.BroadcastMesage(this, "Bot says: " + message);
+            Logging.UnityLogger.BroadcastMesage(this, "Bot[" + Name + "] says: " + message);
         }
 
         //public override void SendTextBox(string message, int chatChannel, string objectname, UUID ownerID, string ownerFirstName, string ownerLastName, UUID objectId)
