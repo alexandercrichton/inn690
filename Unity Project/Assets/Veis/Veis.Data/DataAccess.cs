@@ -69,7 +69,7 @@ namespace Veis.Data
                     }
                     if (rows > 0)
                     {
-                        //DebugMessage("{0} rows affected\n", rows);
+                        DebugMessage("{0} rows affected\n", rows);
                     }
                 }
             }
