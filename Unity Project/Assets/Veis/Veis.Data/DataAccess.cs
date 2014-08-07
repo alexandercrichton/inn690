@@ -67,8 +67,10 @@ namespace Veis.Data
                         var entity = transformRowToEntity(reader);
                         list.Add(entity);
                     }
-
-                    DebugMessage("{0} rows affected\n", rows);
+                    if (rows > 0)
+                    {
+                        //DebugMessage("{0} rows affected\n", rows);
+                    }
                 }
             }
             finally

@@ -217,7 +217,7 @@ namespace Veis.Workflow.YAWL
                             string x = xi.Replace("\r", "");
 
                             System.Diagnostics.Debug.WriteLine("RECV: " + x);
-                            Logger.BroadcastMessage(this, "RECV: " + x);
+                            //Logger.BroadcastMessage(this, "RECV: " + x);
 
                             String action = x.Split(' ')[0];
                             int totalParams = x.Split(' ').Length;

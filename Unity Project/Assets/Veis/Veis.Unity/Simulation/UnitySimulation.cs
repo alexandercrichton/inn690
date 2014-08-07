@@ -120,7 +120,7 @@ namespace Veis.Unity.Simulation
 
         public override void Start() 
         {
-            RequestLaunchCase("CarAccident");
+            RequestLaunchCase(_workflowProvider.AllSpecifications.FirstOrDefault().Value);
         }
 
         public override void End() 
