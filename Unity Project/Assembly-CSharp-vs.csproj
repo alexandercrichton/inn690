@@ -48,6 +48,7 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\AgentScript.cs" />
      <Compile Include="Assets\Scripts\Asset.cs" />
+     <Compile Include="Assets\Scripts\BotMovingScript.cs" />
      <Compile Include="Assets\Scripts\PlaceMarker.cs" />
      <Compile Include="Assets\Scripts\UserInteraction.cs" />
      <Compile Include="Assets\Scripts\WowCamera.cs" />
@@ -154,6 +155,9 @@
      <Compile Include="Assets\Veis\Veis\Workflow\YAWL\YAWLAgent.cs" />
      <Compile Include="Assets\Veis\Veis\Workflow\YAWL\YAWLFormattingExtensions.cs" />
      <Compile Include="Assets\Veis\Veis\Workflow\YAWL\YAWLWorkflowProvider.cs" />
+ <Reference Include="Assembly-UnityScript-firstpass">
+ <HintPath>Library\ScriptAssemblies\Assembly-UnityScript-firstpass.dll</HintPath>
+ </Reference>
  <Reference Include="AIMLbot">
  <HintPath>Assets\Plugins\AIMLbot.dll</HintPath>
  </Reference>
@@ -184,6 +188,10 @@
  <Reference Include="System.Security">
  <HintPath>Assets\Plugins\System.Security.dll</HintPath>
  </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="Assembly-CSharp-firstpass-vs.csproj">
+      <Project>{C65DF7E6-5082-3454-2A7F-EDDBED1731B5}</Project>      <Name>Assembly-CSharp-firstpass-vs</Name>    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
