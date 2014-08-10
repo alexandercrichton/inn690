@@ -15,7 +15,6 @@ namespace Veis.Data.Repositories
             
         public override IEnumerable<AccessRecord> Find(params Specification<AccessRecord>[] specifications)
         {
-            Logging.Logger.BroadcastMessage(this, "Find()");
             return Select(SelectQuery, x => x, Convert, specifications);
         }
 

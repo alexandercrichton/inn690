@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="C:/Dev/inn69x Unity BPM Simulation/YAWL/YAWL Relay/lib/commons-codec-1.6.jar"/>
+	<classpathentry kind="lib" path="C:/Dev/inn69x Unity BPM Simulation/YAWL/YAWL Relay/lib/jdom-2.0.5.jar"/>
+	<classpathentry kind="lib" path="C:/Dev/inn69x Unity BPM Simulation/YAWL/YAWL Relay/lib/log4j-1.2.16.jar"/>
+	<classpathentry kind="lib" path="C:/Dev/inn69x Unity BPM Simulation/YAWL/YAWL Relay/lib/servlet-api.jar"/>
+	<classpathentry kind="lib" path="C:/Dev/inn69x Unity BPM Simulation/YAWL/YAWL Relay/lib/yawl-lib-2.3.5.jar"/>
+	<classpathentry kind="lib" path="C:/Dev/inn69x Unity BPM Simulation/YAWL/YAWL Relay/lib/YResourceServiceClient.jar"/>
+	<classpathentry kind="lib" path="C:/Users/alexj_000/Desktop/xerces-2_6_2.jar/xerces-2_6_2.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

@@ -42,7 +42,6 @@ namespace Veis.Simulation.WorldState.StateSources
             try
             {
                 AccessRecord lastAccess = _accessRecordRepository.Find().FirstOrDefault();
-                Veis.Data.Logging.Logger.BroadcastMessage(this, string.Format("{0}, {1}, {2}", lastAccess == null, lastAccess.LastUpdated, _lastChecked));
 
                 // If changes were made since the last time
                 if (lastAccess != null && lastAccess.LastUpdated > _lastChecked)
@@ -78,7 +77,6 @@ namespace Veis.Simulation.WorldState.StateSources
         {
             if (StateUpdated != null)
                 StateUpdated();
-            Veis.Data.Logging.Logger.BroadcastMessage(this, "World State Updated");
         }
 
         public event StateUpdatedHandler StateUpdated;
