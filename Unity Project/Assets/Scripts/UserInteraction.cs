@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using Veis.Unity.Simulation;
@@ -97,15 +98,8 @@ public class UserInteraction : MonoBehaviour
 
     private void registerUser()
     {
-        string key = "";
-        foreach (var entry in _simulation._workflowProvider.AllWorkAgents)
-        {
-            if (entry.Value.FirstName == "Janie")
-            {
-                key = entry.Key;
-            }
-        }
-        string uuid = _simulation._workflowProvider.AllWorkAgents[key].AgentID;
+        string uuid = _simulation._workflowProvider.AllWorkAgents
+            .FirstOrDefault(a => a.FirstName == "Janie").AgentID;
         if (uuid.Length > 36)
         {
             uuid = uuid.Substring(uuid.Length - 36, 36);
@@ -147,9 +141,10 @@ public class UserInteraction : MonoBehaviour
         if (_simulation._workflowProvider.StartedCases.Count <= 0)
         {
             _caseInfo = "";
-            foreach (var cases in _simulation._workflowProvider.AllSpecifications)
+            foreach (var cases in _simulation._workflowProvider.AllCases)
             {
-                _caseInfo += "\nCase Specification: " + cases.Key + " " + cases.Value;
+                _caseInfo += "\nCase Specification: " + cases.SpecificationName 
+                    + " " + cases.Identifier;
             }
         }
         else
@@ -158,14 +153,14 @@ public class UserInteraction : MonoBehaviour
             foreach (var startedCase in _simulation._workflowProvider.StartedCases)
             {
                 _caseInfo += "\nCurrent Case: " + startedCase.SpecificationName + " "
-                    + startedCase.SpecificationId;
+                    + startedCase.SpecificationID;
                 foreach (var human in _simulation._avatarManager.Humans)
                 {
                     if (human.WorkEnactor.GetGoals().Count > 0)
                     {
                         foreach (var workItem in human.WorkEnactor.GetGoals())
                         {
-                            _caseInfo += "\nCurrent Task: " + workItem.Key.taskName;
+                            _caseInfo += "\nCurrent Task: " + workItem.Key.TaskName;
                             foreach (var goal in workItem.Value)
                             {
                                 _caseInfo += "\n" + goal.ToString();
@@ -258,22 +253,16 @@ public class UserInteraction : MonoBehaviour
                     foreach (var bot in _simulation._avatarManager.Bots)
                     {
                         GUILayout.Label("Available bot: " + bot.Name);
-                        //if (bot.WorkEnactor.GetWorkAgent().allocated.Count > 0)
-                        //{
-                        //    GUILayout.Label(bot.WorkEnactor.GetWorkAgent().allocated[0].taskName);
-                        //}
-                        //if (bot.WorkEnactor.GetWorkAgent().offered.Count > 0)
-                        //{
-                        //    GUILayout.Label(bot.WorkEnactor.GetWorkAgent().offered[0].taskName);
-                        //}
-                        //if (bot.WorkEnactor.GetWorkAgent().started.Count > 0)
-                        //{
-                        //    GUILayout.Label(bot.WorkEnactor.GetWorkAgent().started[0].taskName);
-                        //}
-                        if (bot.WorkEnactor.GetWorkAgent().processing.Count > 0)
-                        {
-                            GUILayout.Label(bot.WorkEnactor.GetWorkAgent().processing[0].taskName);
-                        }
+                        bot.WorkEnactor.GetWorkAgent().offered
+                            .ForEach(w => GUILayout.Label("Offered: " + w.TaskName));
+                        bot.WorkEnactor.GetWorkAgent().delegated
+                            .ForEach(w => GUILayout.Label("Delegated: " + w.TaskName));
+                        bot.WorkEnactor.GetWorkAgent().allocated
+                            .ForEach(w => GUILayout.Label("Allocated: " + w.TaskName));
+                        bot.WorkEnactor.GetWorkAgent().started
+                            .ForEach(w => GUILayout.Label("Started: " + w.TaskName));
+                        bot.WorkEnactor.GetWorkAgent().processing
+                            .ForEach(w => GUILayout.Label("Processing: " + w.TaskName));
                     }
                 }
                 else

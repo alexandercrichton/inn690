@@ -92,7 +92,7 @@ namespace Veis.Simulation
         public abstract void Initialise();
         public abstract void Log(string message);
         public abstract void Reset();
-        public abstract bool RequestLaunchCase(string specificationName);
+        public abstract bool RequestLaunchCase(string uri);
         public abstract bool RequestCancelCase(string specificationName, int? caseNumber);
         public abstract void RequestCancelAllCases();
         public abstract void AddUser(AgentEventArgs user);

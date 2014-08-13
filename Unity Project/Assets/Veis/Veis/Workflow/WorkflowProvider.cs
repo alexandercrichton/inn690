@@ -14,53 +14,25 @@ namespace Veis.Workflow
     /// </summary>
     public abstract class WorkflowProvider
     {
-        public Dictionary<string, WorkItem> AllWorkItems { get; set; }
-        public Dictionary<string, WorkAgent> AllWorkAgents { get; set; }
-        public Dictionary<string, string> AllSpecifications { get; set; } // ID/Name
+        public List<WorkItem> AllWorkItems { get; set; }
+        public List<WorkAgent> AllWorkAgents { get; set; }
+        public List<Case> AllCases { get; set; }
         public List<Case> StartedCases { get; set; } // The cases that have been started through this program
         public List<Case> CompletedCases { get; set; } // The cases that have been completed through this program
+        public Case CurrentCase { get; set; }
 
         protected WorkflowProvider()
         {
-            AllWorkItems = new Dictionary<string, WorkItem>();
-            AllWorkAgents = new Dictionary<string, WorkAgent>();
-            AllSpecifications = new Dictionary<string, string>();
+            AllWorkItems = new List<WorkItem>();
+            AllWorkAgents = new List<WorkAgent>();
+            AllCases = new List<Case>();
             StartedCases = new List<Case>();
             CompletedCases = new List<Case>();
         }
 
-        public WorkItem GetWorkItemByName(string name) {
-            foreach (KeyValuePair<string, WorkItem> workKVP in AllWorkItems) {
-                if (workKVP.Value.taskName == name) {
-                        return workKVP.Value;
-                }
-            }
-
-            //Didn't find it
-            return null;
-        }
-
-        public WorkAgent GetAgentByFirstName(string name) {
-            foreach (KeyValuePair<string, WorkAgent> agentKVP in AllWorkAgents) {
-                if (agentKVP.Value.FirstName == name) {
-                    return agentKVP.Value;
-                }
-            }
-
-            //Didn't find it
-            return null;
-        }
-
         public string GetAgentIdByFullName(string name)
         {
-            foreach (KeyValuePair<string, WorkAgent> agentKVP in AllWorkAgents)
-            {
-                if (String.Format("{0} {1}", agentKVP.Value.FirstName, agentKVP.Value.LastName) == name)
-                {
-                    return agentKVP.Key;
-                }
-            }
-            return null;
+            return AllWorkAgents.FirstOrDefault(a => (String.Format("{0} {1}", a.FirstName, a.LastName)) == name).AgentID;
         }
 
         /// <summary>

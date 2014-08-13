@@ -118,15 +118,16 @@ namespace Veis.Workflow.YAWL
 
         public override void EndWorkItem(WorkAgent agent, WorkItem workItem)
         {
-            Send("WorkItemAction Complete " + agent.AgentID + " " + workItem.taskID);
-            Thread.Sleep(1000);
+            Send("WorkItemAction Complete " + agent.AgentID + " " + workItem.WorkItemID + " "
+                + workItem.CaseID + " " + workItem.SpecificationID);
+            Thread.Sleep(500);
             // Before requesting the next task, make sure that th
-            if (_oThread.ThreadState == ThreadState.Stopped) 
-                _oThread.Start(); 
-            else if (_oThread.ThreadState == ThreadState.Suspended) 
-                _oThread.Resume(); 
-            else if (_oThread.ThreadState == ThreadState.WaitSleepJoin)              
-                _oThread.Interrupt(); 
+            if (_oThread.ThreadState == ThreadState.Stopped)
+                _oThread.Start();
+            else if (_oThread.ThreadState == ThreadState.Suspended)
+                _oThread.Resume();
+            else if (_oThread.ThreadState == ThreadState.WaitSleepJoin)
+                _oThread.Interrupt();
 
 
             Send("GetTaskQueue " + WorkAgent.STARTED + " " + agent.AgentID);
@@ -183,16 +184,17 @@ namespace Veis.Workflow.YAWL
             WorkEnactors.ForEach(w => GetTaskQueuesForWorkEnactor(w));
         }
 
-        public override void LaunchCase(string specification)
+        public override void LaunchCase(string specificationName)
         {
-            Send("LaunchCase " + specification);
+            Case newCase = AllCases.FirstOrDefault(c => c.SpecificationName == specificationName);
+            Send(string.Format("LaunchCase {0} {1} {2}", newCase.Identifier, newCase.Version, newCase.SpecificationName));
         }
 
         public void EndAllCases()
         {
             foreach (var startedCase in StartedCases)
             {
-                Send("CancelCase " + startedCase.CaseId);
+                Send("CancelCase " + startedCase.SpecificationName);
             }
             StartedCases.Clear();
         }
@@ -226,13 +228,13 @@ namespace Veis.Workflow.YAWL
                             { // Try - catch to process string processing errors, to not break the flow of the program
 
                                 // If a new active (bot-based) agent needs to be created, notify someone of this
-                                if (action == "ACTIVEAGENT" && totalParams == 4)
+                                if (action == "ACTIVEAGENT")
                                 {
                                     String first = x.Split(sep)[1];
                                     String last = x.Split(sep)[2];
                                     String agentID = x.Split(sep)[3];
 
-                                    if (AllWorkAgents.ContainsKey(agentID))
+                                    if (AllWorkAgents.Any(a => a.AgentID == agentID))
                                     {
 
                                         OnAgentCreated(new AgentEventArgs
@@ -248,201 +250,202 @@ namespace Veis.Workflow.YAWL
                                 }
 
                                 // A new non-bot agent needs to be created.
-                                else if (action == "AGENT" && totalParams == 4)
+                                else if (action == "AGENT")
                                 {
                                     String agentID = x.Split(sep)[3];
                                     String first = x.Split(sep)[1];
                                     String last = x.Split(sep)[2];
 
                                     AddYAWLWorkAgent(agentID);
+                                    WorkAgent workAgent = AllWorkAgents.FirstOrDefault(a => a.AgentID == agentID);
+                                    workAgent.FirstName = first;
+                                    workAgent.LastName = last;
 
-                                    AllWorkAgents[agentID].FirstName = first;
-                                    AllWorkAgents[agentID].LastName = last;
                                     Logger.BroadcastMessage(this, "Updating YAWLWorkAgent: " + first + " " + last);
                                 }
 
                                 // There is a role being applied to an agent
-                                else if (action == "AGENTROLE" && totalParams >= 3)
+                                else if (action == "AGENTROLE")
                                 {
                                     String agentID = x.Split(sep)[1];
                                     String role = x.Split(sep, 3)[2];
 
                                     AddYAWLWorkAgent(agentID);
+                                    WorkAgent workAgent = AllWorkAgents.FirstOrDefault(a => a.AgentID == agentID);
 
-                                    AllWorkAgents[agentID].Appearance = role;
-                                    AllWorkAgents[agentID].AddRole(role);
+                                    workAgent.Appearance = role;
+                                    workAgent.AddRole(role);
                                     Logger.BroadcastMessage(this, "Updating YAWLWorkAgent: " + role);
                                 }
 
                                 // There is a capabality being applied to an agent
-                                else if (action == "AGENTCAPABILITY" && totalParams >= 3)
+                                else if (action == "AGENTCAPABILITY")
                                 {
                                     String agentID = x.Split(sep)[1];
                                     String capability = x.Split(sep, 3)[2];
 
                                     AddYAWLWorkAgent(agentID);
 
-                                    AllWorkAgents[agentID].AddCapability(capability);
+                                    AllWorkAgents.FirstOrDefault(a => a.AgentID == agentID).AddCapability(capability);
                                     Logger.BroadcastMessage(this, "Updating YAWLWorkAgent: " + capability);
                                 }
 
                                 // A workitem is being added to a queue
-                                else if (action == "WORKITEM" && totalParams >= 7)
+                                else if (action == "WORKITEM")
                                 {
-                                    String taskQueue = x.Split(sep)[1];
-                                    String agentID = x.Split(sep)[2];
-                                    String taskID = x.Split(sep)[3];
-                                    String tasks = x.Split(sep)[4];
-                                    String taskName = x.Split(sep)[5];
-                                    String goals = x.Split(sep)[6];
-
+                                    string taskID = x.Split(sep)[5];
+                                    string agentID = x.Split(sep)[6];
+                                    string taskQueue = x.Split(sep)[7];
                                     WorkItem workItem;
-
-                                    if (!AllWorkItems.ContainsKey(taskID))
+                                    if (!AllWorkItems.Any(w => w.TaskID == taskID))
                                     {
                                         workItem = new WorkItem();
-                                        workItem.taskID = taskID;
-                                        AllWorkItems.Add(taskID, workItem);
+                                        workItem.TaskID = taskID;
+                                        AllWorkItems.Add(workItem);
                                     }
                                     else
                                     {
-                                        workItem = AllWorkItems[taskID];
-                                        if (AllWorkAgents.ContainsKey(workItem.agentID))
-                                        {
-                                            ((YAWLWorkAgent)AllWorkAgents[workItem.agentID]).GetQueueById(taskQueue).Remove(workItem);
-                                        }
+                                        workItem = AllWorkItems.FirstOrDefault(w => w.TaskID == taskID);
+                                        AllWorkAgents.FirstOrDefault(a => a.AgentID == agentID)
+                                            .GetQueueById(taskQueue)
+                                            .Remove(workItem);
                                     }
-                                    workItem.taskQueue = taskQueue;
-                                    workItem.agentID = agentID;
-                                    workItem.taskVariables.Add("Tasks", tasks);
-                                    workItem.taskVariables.Add("Goals", goals);
-                                    workItem.taskName = taskName;
+                                    workItem.CaseID = x.Split(sep)[1];
+                                    workItem.SpecificationID = x.Split(sep)[2];
+                                    workItem.UniqueID = x.Split(sep)[3];
+                                    workItem.WorkItemID = x.Split(sep)[4];
+                                    workItem.TaskID = taskID;
+                                    workItem.TaskName = taskID;
+                                    workItem.AgentID = agentID;
+                                    workItem.TaskQueue = taskQueue;
+                                    workItem.tasksAndGoals.Add("Tasks", x.Split(sep)[8]);
+                                    workItem.tasksAndGoals.Add("Goals", x.Split(sep)[9]);
 
                                     // Add work to queue if work item doesnt exist in the queue already
-                                    if (AllWorkAgents.ContainsKey(agentID) && DoesNotContainWorkItem(agentID, taskQueue, workItem))
+                                    WorkAgent agent = AllWorkAgents.FirstOrDefault(a => a.AgentID == agentID);
+                                    if (agent != null && !agent.GetQueueById(taskQueue).Any(w => w.TaskID == taskID)) 
                                     {
-                                        ((YAWLWorkAgent)AllWorkAgents[agentID]).AddToQueue(taskQueue, workItem);
-                                    }
+                                        agent.AddToQueue(taskQueue, workItem);
+                                    }                                       
 
                                     // Add the work if it has not been completed already
-                                    if (taskQueue == WorkAgent.STARTED && DoesNotContainWorkItem(agentID, WorkAgent.COMPLETED, workItem))
+                                    if (workItem.TaskQueue == WorkAgent.STARTED
+                                        && !agent.GetQueueById(WorkAgent.COMPLETED).Any(w => w.TaskID == taskID))
                                     {
-                                        WorkEnactors.FirstOrDefault(w => w.WorkAgent.AgentID == agentID).AddWork(workItem);
+                                        WorkEnactors.FirstOrDefault(w => w.WorkAgent.AgentID == workItem.AgentID).AddWork(workItem);
                                     }
                                 }
 
                                 // A work item name is being applied to a work item
-                                else if (action == "WORKITEMNAME" && totalParams >= 3)
+                                else if (action == "WORKITEMNAME")
                                 {
                                     String taskID = x.Split(sep)[1];
                                     String taskName = x.Split(sep, 3)[2];
 
-                                    if (!AllWorkItems.ContainsKey(taskID))
+                                    if (!AllWorkItems.Any(w => w.TaskID == taskID))
                                     {
-                                        WorkItem work = new WorkItem();
-                                        work.taskID = taskID;
-                                        AllWorkItems.Add(taskID, work);
+                                        WorkItem workItem = new WorkItem();
+                                        workItem.TaskID = taskID;
+                                        AllWorkItems.Add(workItem);
                                     }
 
-                                    AllWorkItems[taskID].taskName = taskName;
+                                    AllWorkItems.FirstOrDefault(w => w.TaskID == taskID).TaskName = taskName;
                                 }
 
                                 // A work item is being signalled to end
-                                else if (action == "TASKEND" && totalParams == 3)
+                                else if (action == "TASKEND")
                                 {
                                     String agentID = x.Split(sep)[1];
-                                    String taskID = x.Split(sep)[2];
+                                    String workItemID = x.Split(sep)[2];
+                                    WorkItem workItem = AllWorkItems.FirstOrDefault(w => w.WorkItemID == workItemID && w.AgentID == agentID);
+                                    WorkAgent workAgent = AllWorkAgents.FirstOrDefault(a => a.AgentID == agentID);
 
-                                    if (AllWorkItems.ContainsKey(taskID) && AllWorkAgents.ContainsKey(agentID))
+                                    if (workItem != null && workAgent != null)
                                     {
-                                        WorkItem work = AllWorkItems[taskID];
-                                        if (work.agentID == agentID)
+                                        workAgent.GetQueueById(workItem.TaskQueue).Remove(workItem);
+                                        if (workItem.TaskQueue == WorkAgent.STARTED)
                                         {
-                                            ((YAWLWorkAgent)AllWorkAgents[agentID]).GetQueueById(work.taskQueue).Remove(work);
-                                            if (work.taskQueue == WorkAgent.STARTED)
-                                            {
-                                                WorkEnactors.FirstOrDefault(w => w.WorkAgent.AgentID == agentID).StopTaskIfStarted(work);
-                                            }
-                                            AllWorkItems.Remove(taskID);
+                                            WorkEnactors.FirstOrDefault(w => w.WorkAgent.AgentID == agentID).StopTaskIfStarted(workItem);
                                         }
+                                        AllWorkItems.Remove(workItem);
                                     }
+
+                                    //Send("GetTaskQueue " + WorkAgent.STARTED + " " + workAgent.AgentID);
+                                    //Send("GetTaskQueue " + WorkAgent.OFFERED + " " + workAgent.AgentID);
                                 }
 
                                 // A work item is being signalled to be suspended
-                                else if (action == "SUSPEND" && totalParams == 3)
-                                {
-                                    String agentID = x.Split(sep)[1];
-                                    String taskID = x.Split(sep)[2];
+                                //else if (action == "SUSPEND" && totalParams == 3)
+                                //{
+                                //    String agentID = x.Split(sep)[1];
+                                //    String taskID = x.Split(sep)[2];
 
-                                    if (AllWorkItems.ContainsKey(taskID) && AllWorkAgents.ContainsKey(agentID))
-                                    {
-                                        WorkItem work = AllWorkItems[taskID];
-                                        if (work.agentID == agentID)
-                                        {
-                                            ((YAWLWorkAgent)AllWorkAgents[agentID]).GetQueueById(work.taskQueue).Remove(work);
-                                            if (work.taskQueue == WorkAgent.STARTED)
-                                            {
-                                                WorkEnactors.FirstOrDefault(w => w.WorkAgent.AgentID == agentID).StopTaskIfStarted(work);
-                                            }
-                                            ((YAWLWorkAgent)AllWorkAgents[agentID]).GetQueueById(WorkAgent.SUSPENDED).Add(work);
-                                        }
-                                    }
-                                }
+                                //    if (AllWorkItems.ContainsKey(taskID) && AllWorkAgents.ContainsKey(agentID))
+                                //    {
+                                //        WorkItem work = AllWorkItems[taskID];
+                                //        if (work.AgentID == agentID)
+                                //        {
+                                //            ((YAWLWorkAgent)AllWorkAgents[agentID]).GetQueueById(work.TaskQueue).Remove(work);
+                                //            if (work.TaskQueue == WorkAgent.STARTED)
+                                //            {
+                                //                WorkEnactors.FirstOrDefault(w => w.WorkAgent.AgentID == agentID).StopTaskIfStarted(work);
+                                //            }
+                                //            ((YAWLWorkAgent)AllWorkAgents[agentID]).GetQueueById(WorkAgent.SUSPENDED).Add(work);
+                                //        }
+                                //    }
+                                //}
 
-                                // A work item is being signalled to be unsuspended
-                                else if (action == "UNSUSPEND" && totalParams == 3)
-                                {
-                                    String agentID = x.Split(sep)[1];
-                                    String taskID = x.Split(sep)[2];
+                                //// A work item is being signalled to be unsuspended
+                                //else if (action == "UNSUSPEND" && totalParams == 3)
+                                //{
+                                //    String agentID = x.Split(sep)[1];
+                                //    String taskID = x.Split(sep)[2];
 
-                                    if (AllWorkItems.ContainsKey(taskID) && AllWorkAgents.ContainsKey(agentID))
-                                    {
-                                        WorkItem work = AllWorkItems[taskID];
-                                        if (work.agentID == agentID)
-                                        {
-                                            ((YAWLWorkAgent)AllWorkAgents[agentID]).GetQueueById(work.taskQueue).Remove(work);
-                                            ((YAWLWorkAgent)AllWorkAgents[agentID]).GetQueueById(WorkAgent.STARTED).Add(work);
-                                            WorkEnactors.FirstOrDefault(w => w.WorkAgent.AgentID == agentID).AddWork(work);
-                                        }
-                                    }
-                                }
+                                //    if (AllWorkItems.ContainsKey(taskID) && AllWorkAgents.ContainsKey(agentID))
+                                //    {
+                                //        WorkItem work = AllWorkItems[taskID];
+                                //        if (work.AgentID == agentID)
+                                //        {
+                                //            ((YAWLWorkAgent)AllWorkAgents[agentID]).GetQueueById(work.TaskQueue).Remove(work);
+                                //            ((YAWLWorkAgent)AllWorkAgents[agentID]).GetQueueById(WorkAgent.STARTED).Add(work);
+                                //            WorkEnactors.FirstOrDefault(w => w.WorkAgent.AgentID == agentID).AddWork(work);
+                                //        }
+                                //    }
+                                //}
 
                                     // A new case has been launched
-                                else if (action == "CASE" && totalParams == 3)
+                                else if (action == "CASE")
                                 {
-                                    String caseId = x.Split(sep)[1];
-                                    String specificationId = x.Split(sep)[2];
-                                    String specificationName = string.Empty;
+                                    string identifier = x.Split(sep)[1];
+                                    string caseId = x.Split(sep)[1];
+                                    string specificationID = x.Split(sep)[2];
+                                    string specificationName = string.Empty;
 
-                                    if (!StartedCases.Any(c => c.CaseId.Equals(caseId)))
+                                    if (!StartedCases.Any(c => c.SpecificationName.Equals(caseId)))
                                     {
-                                        // Find the name of the specification
-                                        if (AllSpecifications.ContainsKey(specificationId))
-                                        {
-                                            specificationName = AllSpecifications[specificationId];
-                                        }
                                         // Add it to the list of started cases and "begin" the simulation
                                         // with a SyncAll() call
-                                        StartedCases.Add(new Case { CaseId = caseId, SpecificationId = specificationId, SpecificationName = specificationName});
+                                        CurrentCase = AllCases.FirstOrDefault(c => c.SpecificationID == specificationID);
+                                        StartedCases.Add(CurrentCase);
                                         Thread.Sleep(1000);
                                         OnCaseStateChanged(new CaseStateEventArgs
                                         {
                                             State = CaseState.STARTED,
                                             CaseID = caseId,
-                                            SpecificationID = specificationId
+                                            SpecificationID = specificationID
                                         });
                                         SyncAll(); // TODO: do this in the event handler listener
                                     }
                                 }
 
-                                else if (action == "CASEEND" && totalParams == 3)
+                                else if (action == "CASEEND")
                                 {
-                                    String caseId = x.Split(sep)[1];
-                                    String specificationId = x.Split(sep)[2];
+                                    string caseId = x.Split(sep)[1];
+                                    string specificationId = x.Split(sep)[2];
                                     
-                                    if (StartedCases.Any(c => c.CaseId.Equals(caseId)))
+                                    if (StartedCases.Any(c => c.SpecificationName.Equals(caseId)))
                                     {
-                                        StartedCases.Remove(StartedCases.FirstOrDefault(c => c.CaseId.Equals(caseId)));
+                                        StartedCases.Remove(StartedCases.FirstOrDefault(c => c.SpecificationName.Equals(caseId)));
                                         OnCaseStateChanged(new CaseStateEventArgs
                                         {
                                             State = CaseState.COMPLETED,
@@ -452,14 +455,18 @@ namespace Veis.Workflow.YAWL
                                     }
                                 }
 
-                                else if (action == "SPECIFICATION" && totalParams == 3)
-                                {                                    
-                                    String specificationId = x.Split(sep)[1];
-                                    String specificationName = x.Split(sep)[2];
-
-                                    if (!AllSpecifications.ContainsKey(specificationId))
+                                else if (action == "SPECIFICATION")
+                                {
+                                    string specificationID = x.Split(sep)[3];
+                                    if (!AllCases.Any(c => c.SpecificationID == specificationID))
                                     {
-                                        AllSpecifications.Add(specificationId, specificationName);
+                                        AllCases.Add(new Case
+                                        {
+                                            Identifier = x.Split(sep)[1],
+                                            Version = x.Split(sep)[2],
+                                            SpecificationID = specificationID,
+                                            SpecificationName = x.Split(sep)[4]
+                                        });
                                     }
                                 }
 
@@ -484,17 +491,12 @@ namespace Veis.Workflow.YAWL
 
         protected void AddYAWLWorkAgent(string agentID)
         {
-            if (!AllWorkAgents.ContainsKey(agentID))
+            if (!AllWorkAgents.Any(a => a.AgentID == agentID))
             {
                 YAWLWorkAgent agent = new YAWLWorkAgent { AgentID = agentID };
-                AllWorkAgents.Add(agentID, agent);
+                AllWorkAgents.Add(agent);
                 Logger.BroadcastMessage(this, "Adding YAWLWorkAgent: " + agentID);
             }
-        }
-
-        private bool DoesNotContainWorkItem(string yawlID, string queueID, WorkItem workItem)
-        {
-            return !AllWorkAgents[yawlID].GetQueueById(queueID).Any(w => w.taskID == workItem.taskID);
         }
     }
 }

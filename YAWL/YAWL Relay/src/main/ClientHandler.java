@@ -11,6 +11,8 @@ import java.net.ServerSocket;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.yawlfoundation.yawl.resourcing.rsInterface.ResourceGatewayException;
+
 import main.Server.BusinessLogic;
 
 public class ClientHandler implements Runnable {
@@ -45,6 +47,8 @@ public class ClientHandler implements Runnable {
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
+		} catch (ResourceGatewayException e) {
+			e.printStackTrace();
 		} finally {
 			try {
 				_out.close();
@@ -63,7 +67,7 @@ public class ClientHandler implements Runnable {
 				|| !_clientSocket.isClosed() && _clientSocket.isConnected();
 	}
 
-	protected List<String> processInput(String inputLine) {
+	protected List<String> processInput(String inputLine) throws IOException, ResourceGatewayException {
 		List<String> replyMessages = new ArrayList<>();
 		String command = inputLine.split(" ")[0];
 

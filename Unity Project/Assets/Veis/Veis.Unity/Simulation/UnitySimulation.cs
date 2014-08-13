@@ -120,7 +120,7 @@ namespace Veis.Unity.Simulation
 
         public override void Start() 
         {
-            RequestLaunchCase(_workflowProvider.AllSpecifications.FirstOrDefault().Value);
+            RequestLaunchCase(_workflowProvider.AllCases[0].SpecificationName);
         }
 
         public override void End() 
@@ -264,8 +264,8 @@ namespace Veis.Unity.Simulation
         /// Starts the simulation if a case launch request comes through.
         /// It cannot start another case if one is already running.
         /// </summary>
-        /// <param name="specificationName"></param>
-        public override bool RequestLaunchCase(string specificationName)
+        /// <param name="uri"></param>
+        public override bool RequestLaunchCase(string uri)
         {
             if (_isRunningCase) 
             { 
@@ -276,7 +276,7 @@ namespace Veis.Unity.Simulation
             if (_workflowProvider != null)
             {
                 Log("Launching case");
-                _workflowProvider.LaunchCase(specificationName);
+                _workflowProvider.LaunchCase(uri);
             }
 
             return true;
@@ -359,8 +359,8 @@ namespace Veis.Unity.Simulation
             
             UnityHumanAvatar human = new UnityHumanAvatar(e.ID);
 
-            string workAgentID = _workflowProvider.GetAgentIdByFullName(e.Name);
-            WorkAgent workAgent = _workflowProvider.AllWorkAgents[workAgentID];
+            string agentID = _workflowProvider.GetAgentIdByFullName(e.Name);
+            WorkAgent workAgent = _workflowProvider.AllWorkAgents.FirstOrDefault(a => a.AgentID == agentID);
             HumanWorkEnactor workEnactor = new HumanWorkEnactor(human, workAgent, _workflowProvider,
                 _workItemDecomp, _goalService);
             human.WorkEnactor = workEnactor;
@@ -408,8 +408,8 @@ namespace Veis.Unity.Simulation
             {
                 UnityBotAvatar bot = new UnityBotAvatar(e.ID, e.Name, e.Role, _sceneService);
 
-                string workAgentID = _workflowProvider.GetAgentIdByFullName(e.Name);
-                WorkAgent workAgent = _workflowProvider.AllWorkAgents[workAgentID];
+                string agentID = _workflowProvider.GetAgentIdByFullName(e.Name);
+                WorkAgent workAgent = _workflowProvider.AllWorkAgents.FirstOrDefault(a => a.AgentID == agentID);
                 BotWorkEnactor workEnactor = new BotWorkEnactor(bot, _workflowProvider, workAgent, _npcWorkPlanner);
                 bot.WorkEnactor = workEnactor;
 

@@ -26,7 +26,7 @@ namespace Veis.Planning
         public PlanResult MakePlan(WorkItem input)
         {
             // If input has goals, use the goal based planner
-            if (input.taskVariables.ContainsKey(GoalVariableName) && !String.IsNullOrEmpty(input.taskVariables[GoalVariableName]))
+            if (input.tasksAndGoals.ContainsKey(GoalVariableName) && !String.IsNullOrEmpty(input.tasksAndGoals[GoalVariableName]))
             {
                 return _goalBased.MakePlan(input);
             }

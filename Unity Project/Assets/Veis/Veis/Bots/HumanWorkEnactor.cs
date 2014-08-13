@@ -60,7 +60,7 @@ namespace Veis.Bots
             // 6. Notify user of goals etc...
             foreach (var goal in newGoals)
             {
-                Avatar.NotifyUser(workItem.taskName + " - " + goal.ToString());
+                Avatar.NotifyUser(workItem.TaskName + " - " + goal.ToString());
             }
             
         }
@@ -106,7 +106,7 @@ namespace Veis.Bots
         {
             if (/*_workAgent.started.Contains(workItem) &&*/ WorkAgent.processing.Contains(workItem))
             {
-                Avatar.NotifyUser("Just completed workitem: " + workItem.taskName);
+                Avatar.NotifyUser("Just completed workitem: " + workItem.TaskName);
                 WorkAgent.Complete(workItem, WorkflowProvider);
             }
             _completedGoals.Add(workItem, _workitemGoals[workItem]);

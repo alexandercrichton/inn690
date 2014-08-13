@@ -16,22 +16,22 @@ namespace Veis.Workflow.YAWL
         public override void Delegate(WorkItem item, WorkAgent other, WorkflowProvider provider)
         {
             delegated.Add(item);
-            provider.Send("WorkItemAction Delegate " + this.AgentID + " " + item.taskID + " " + other.AgentID);
+            provider.Send("WorkItemAction Delegate " + this.AgentID + " " + item.TaskID + " " + other.AgentID);
         }
 
         public override void Accept(WorkItem item, WorkflowProvider provider)
         {
-            provider.Send("WorkItemAction Accept " + this.AgentID + " " + item.taskID);
+            provider.Send("WorkItemAction Accept " + this.AgentID + " " + item.TaskID);
         }
 
         public override void Suspend(WorkItem item, WorkflowProvider provider)
         {
-            provider.Send("WorkItemAction Suspend " + this.AgentID + " " + item.taskID);
+            provider.Send("WorkItemAction Suspend " + this.AgentID + " " + item.TaskID);
         }
 
         public override void Unsuspend(WorkItem item, WorkflowProvider provider)
         {
-            provider.Send("WorkItemAction Unsuspend " + this.AgentID + " " + item.taskID);
+            provider.Send("WorkItemAction Unsuspend " + this.AgentID + " " + item.TaskID);
         }      
 
         public override void Complete(WorkItem workItem, WorkflowProvider provider)

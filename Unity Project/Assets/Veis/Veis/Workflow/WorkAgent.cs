@@ -68,7 +68,7 @@ namespace Veis.Workflow
         {
             foreach (WorkItem ifC in queue)
             {
-                if (ifC.taskID == id)
+                if (ifC.TaskID == id)
                 {
                     return ifC;
                 }

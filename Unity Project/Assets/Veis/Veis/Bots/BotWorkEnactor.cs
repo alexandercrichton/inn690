@@ -25,7 +25,7 @@ namespace Veis.Bots
         {
             lock (WorkAgent.started)
             {
-                Avatar.AddTaskToQueue("STARTWORK:" + workItem.taskID);
+                Avatar.AddTaskToQueue("STARTWORK:" + workItem.TaskID);
             }
         }
 
@@ -40,6 +40,7 @@ namespace Veis.Bots
 
         public void StartWork(string workItemId)
         {
+            Logger.BroadcastMessage(this, "Starting work: " + WorkAgent.GetWorkItem(workItemId, WorkAgent.started).TaskName);
             StartWork(WorkAgent.GetWorkItem(workItemId, WorkAgent.started));
         }
 
@@ -64,7 +65,7 @@ namespace Veis.Bots
 
                 lock (Avatar.taskQueue)
                 {
-                    Avatar.taskQueue.AddFirst("COMPLETEWORK:" + workItem.taskID);
+                    Avatar.taskQueue.AddFirst("COMPLETEWORK:" + workItem.TaskID);
 
                     for (int i = tasklist.Count - 1; i >= 0; i--)
                     {
@@ -83,7 +84,7 @@ namespace Veis.Bots
                     if (WorkAgent.processing.Contains(workItem))
                     {
                         //We have a slight problem?
-                        while (Avatar.taskQueue.First.Value != "COMPLETEWORK:" + workItem.taskID && Avatar.taskQueue.Count > 0)
+                        while (Avatar.taskQueue.First.Value != "COMPLETEWORK:" + workItem.TaskID && Avatar.taskQueue.Count > 0)
                         {
                             Avatar.taskQueue.RemoveFirst();
                         }
@@ -93,7 +94,7 @@ namespace Veis.Bots
                     {
                         //remove the start item thingo
                         Stack<String> reverseTasks = new Stack<string>();
-                        while (Avatar.taskQueue.First.Value != "STARTWORK:" + workItem.taskID && Avatar.taskQueue.Count > 0)
+                        while (Avatar.taskQueue.First.Value != "STARTWORK:" + workItem.TaskID && Avatar.taskQueue.Count > 0)
                         {
                             reverseTasks.Push(Avatar.taskQueue.First.Value);
                             Avatar.taskQueue.RemoveFirst();

@@ -46,7 +46,7 @@ namespace Veis.Chat
                     //System.Console.WriteLine(_yawlAgent.processing.Count);
                     for (int i = 0; i < _yawlAgent.processing.Count; i++ )
                     {
-                        tasks += _yawlAgent.processing[i].taskName;// +", ";
+                        tasks += _yawlAgent.processing[i].TaskName;// +", ";
                         if (i != _yawlAgent.processing.Count - 1) tasks += ", ";
                     }
                 }
@@ -62,7 +62,7 @@ namespace Veis.Chat
                 {
                     foreach (WorkItem workItem in _yawlAgent.started)
                     {
-                        tasks += workItem.taskName + ", ";
+                        tasks += workItem.TaskName + ", ";
                     }
                 }
 
@@ -77,7 +77,7 @@ namespace Veis.Chat
                 {
                     foreach (WorkItem workItem in _yawlAgent.completed)
                     {
-                        tasks += workItem.taskName + ", ";
+                        tasks += workItem.TaskName + ", ";
                     }
                 }
 
@@ -92,7 +92,7 @@ namespace Veis.Chat
                 {
                     foreach (WorkItem workItem in _yawlAgent.suspended)
                     {
-                        tasks += workItem.taskName + ", ";
+                        tasks += workItem.TaskName + ", ";
                     }
                 }
 
@@ -107,7 +107,7 @@ namespace Veis.Chat
                 {
                     foreach (WorkItem workItem in _yawlAgent.offered)
                     {
-                        tasks += workItem.taskName + ", ";
+                        tasks += workItem.TaskName + ", ";
                     }
                 }
 
@@ -122,7 +122,7 @@ namespace Veis.Chat
                 {
                     foreach (WorkItem workItem in _yawlAgent.allocated)
                     {
-                        tasks += workItem.taskName + ", ";
+                        tasks += workItem.TaskName + ", ";
                     }
                 }
 
@@ -137,7 +137,7 @@ namespace Veis.Chat
                 {
                     foreach (WorkItem workItem in _yawlAgent.delegated)
                     {
-                        tasks += workItem.taskName + ", ";
+                        tasks += workItem.TaskName + ", ";
                     }
                 }
 
@@ -170,12 +170,7 @@ namespace Veis.Chat
             else if (request == "ALLAGENTS")
             {
                 string agents = "";
-
-                foreach (KeyValuePair<string, WorkAgent> kvp in _yawlProvider.AllWorkAgents)
-                {
-                    agents += kvp.Value + ", ";
-                }
-
+                _yawlProvider.AllWorkAgents.ForEach(a => agents += a.AgentID);
                 output = pre + agents + post;
             }
             else
