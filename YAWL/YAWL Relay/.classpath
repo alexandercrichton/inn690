@@ -8,6 +8,6 @@
 	<classpathentry kind="lib" path="C:/Dev/inn69x Unity BPM Simulation/YAWL/YAWL Relay/lib/servlet-api.jar"/>
 	<classpathentry kind="lib" path="C:/Dev/inn69x Unity BPM Simulation/YAWL/YAWL Relay/lib/yawl-lib-2.3.5.jar"/>
 	<classpathentry kind="lib" path="C:/Dev/inn69x Unity BPM Simulation/YAWL/YAWL Relay/lib/YResourceServiceClient.jar"/>
-	<classpathentry kind="lib" path="C:/Users/alexj_000/Desktop/xerces-2_6_2.jar/xerces-2_6_2.jar"/>
+	<classpathentry kind="lib" path="C:/Dev/inn69x Unity BPM Simulation/YAWL/YAWL Relay/lib/xerces-2_6_2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

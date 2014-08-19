@@ -4,19 +4,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jdom2.JDOMException;
-import org.xml.sax.*;
 import org.yawlfoundation.yawl.engine.YSpecificationID;
 import org.yawlfoundation.yawl.engine.interfce.SpecificationData;
 import org.yawlfoundation.yawl.engine.interfce.WorkItemRecord;
 import org.yawlfoundation.yawl.engine.interfce.interfaceA.InterfaceA_EnvironmentBasedClient;
 import org.yawlfoundation.yawl.engine.interfce.interfaceB.InterfaceB_EnvironmentBasedClient;
 import org.yawlfoundation.yawl.logging.YLogDataItemList;
-import org.yawlfoundation.yawl.resourcing.resource.*;
-import org.yawlfoundation.yawl.resourcing.rsInterface.ResourceGatewayClient;
+import org.yawlfoundation.yawl.resourcing.resource.Capability;
+import org.yawlfoundation.yawl.resourcing.resource.Participant;
+import org.yawlfoundation.yawl.resourcing.resource.Role;
 import org.yawlfoundation.yawl.resourcing.rsInterface.ResourceGatewayClientAdapter;
 import org.yawlfoundation.yawl.resourcing.rsInterface.ResourceGatewayException;
-import org.yawlfoundation.yawl.resourcing.rsInterface.WorkQueueGatewayClient;
 import org.yawlfoundation.yawl.resourcing.rsInterface.WorkQueueGatewayClientAdapter;
 import org.yawlfoundation.yawl.util.XNode;
 import org.yawlfoundation.yawl.util.XNodeParser;
@@ -66,7 +64,7 @@ public class YAWLInterface {
 	// CASE METHODS
 
 	public static synchronized List<String> GetAllSpecifications() {
-		List<String> messageList = new ArrayList();
+		List<String> messageList = new ArrayList<String>();
 		try {
 			for (SpecificationData spec : interfaceB.getSpecificationList(handleInterfaceB)) {
 				YSpecificationID id = spec.getID();

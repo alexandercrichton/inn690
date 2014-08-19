@@ -1,21 +1,18 @@
 package main;
 
 import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.net.ServerSocket;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.yawlfoundation.yawl.resourcing.rsInterface.ResourceGatewayException;
 
-import main.Server.BusinessLogic;
-
 public class ClientHandler implements Runnable {
+	protected static List<ClientHandler> Clients = new ArrayList<ClientHandler>();
+	
 	private Socket _clientSocket = null;
 	private PrintWriter _out = null;
 	private BufferedReader _in = null;
@@ -23,6 +20,15 @@ public class ClientHandler implements Runnable {
 
 	public ClientHandler(Socket socket) {
 		_clientSocket = socket;
+		addClient(this);
+	}
+	
+	protected static synchronized void addClient(ClientHandler client) {
+		Clients.add(client);
+	}
+	
+	protected static synchronized void removeClient(ClientHandler client) {
+		Clients.remove(client);
 	}
 
 	public void run() {
@@ -45,19 +51,13 @@ public class ClientHandler implements Runnable {
 					}
 				}
 			}
-		} catch (IOException e) {
+			_out.close();
+			_in.close();
+			_clientSocket.close();
+			System.out.println("Closing client connection");
+			removeClient(this);
+		} catch (Exception e) {
 			e.printStackTrace();
-		} catch (ResourceGatewayException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				_out.close();
-				_in.close();
-				_clientSocket.close();
-				System.out.println("Closing client connection");
-			} catch (Exception e) {
-				System.out.println("Couldn't close I/O streams");
-			}
 		}
 	}
 
@@ -65,6 +65,10 @@ public class ClientHandler implements Runnable {
 		return !_clientSocket.isInputShutdown()
 				&& !_clientSocket.isOutputShutdown()
 				|| !_clientSocket.isClosed() && _clientSocket.isConnected();
+	}
+	
+	protected void closeClientConnection() {
+		_isListening = false;
 	}
 
 	protected List<String> processInput(String inputLine) throws IOException, ResourceGatewayException {
@@ -107,7 +111,9 @@ public class ClientHandler implements Runnable {
 		}
 	}
 	
-	protected void closeClientConnection() {
-		_isListening = false;
+	public static synchronized void SendToAll(List<String> replyMessages) {
+		for (ClientHandler client : Clients) {
+			client.send(replyMessages);
+		}
 	}
 }

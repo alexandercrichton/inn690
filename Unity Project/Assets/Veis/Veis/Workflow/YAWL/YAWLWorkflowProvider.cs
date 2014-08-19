@@ -120,18 +120,18 @@ namespace Veis.Workflow.YAWL
         {
             Send("WorkItemAction Complete " + agent.AgentID + " " + workItem.WorkItemID + " "
                 + workItem.CaseID + " " + workItem.SpecificationID);
-            Thread.Sleep(500);
+            //Thread.Sleep(2000);
             // Before requesting the next task, make sure that th
-            if (_oThread.ThreadState == ThreadState.Stopped)
-                _oThread.Start();
-            else if (_oThread.ThreadState == ThreadState.Suspended)
-                _oThread.Resume();
-            else if (_oThread.ThreadState == ThreadState.WaitSleepJoin)
-                _oThread.Interrupt();
+            //if (_oThread.ThreadState == ThreadState.Stopped)
+            //    _oThread.Start();
+            //else if (_oThread.ThreadState == ThreadState.Suspended)
+            //    _oThread.Resume();
+            //else if (_oThread.ThreadState == ThreadState.WaitSleepJoin)
+            //    _oThread.Interrupt();
 
 
-            Send("GetTaskQueue " + WorkAgent.STARTED + " " + agent.AgentID);
-            Send("GetTaskQueue " + WorkAgent.OFFERED + " " + agent.AgentID);
+            //Send("GetTaskQueue " + WorkAgent.STARTED + " " + agent.AgentID);
+            //Send("GetTaskQueue " + WorkAgent.OFFERED + " " + agent.AgentID);
         }
 
         public override void Send(string msg) {
@@ -370,8 +370,8 @@ namespace Veis.Workflow.YAWL
                                         AllWorkItems.Remove(workItem);
                                     }
 
-                                    //Send("GetTaskQueue " + WorkAgent.STARTED + " " + workAgent.AgentID);
-                                    //Send("GetTaskQueue " + WorkAgent.OFFERED + " " + workAgent.AgentID);
+                                    Send("GetTaskQueue " + WorkAgent.STARTED + " " + workAgent.AgentID);
+                                    Send("GetTaskQueue " + WorkAgent.OFFERED + " " + workAgent.AgentID);
                                 }
 
                                 // A work item is being signalled to be suspended
