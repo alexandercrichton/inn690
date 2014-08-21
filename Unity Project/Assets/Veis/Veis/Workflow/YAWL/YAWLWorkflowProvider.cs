@@ -48,7 +48,7 @@ namespace Veis.Workflow.YAWL
         
         private static readonly UTF8Encoding Encoding = new UTF8Encoding();
 
-        private List<WorkEnactor> WorkEnactors { get; set; } // Things that can enact workitems
+        public List<WorkEnactor> WorkEnactors { get; set; } // Things that can enact workitems
         
         private Socket _externalProcessor;
         private Thread _oThread;
@@ -70,10 +70,10 @@ namespace Veis.Workflow.YAWL
         public void AddWorkEnactor(WorkEnactor workEnactor)
         {
             WorkEnactors.Add(workEnactor);
-            GetTaskQueuesForWorkEnactor(workEnactor);
+            //GetTaskQueuesForWorkEnactor(workEnactor);
         }
 
-        private void GetTaskQueuesForWorkEnactor(WorkEnactor workEnactor)
+        public void GetTaskQueuesForWorkEnactor(WorkEnactor workEnactor)
         {
             if (WorkEnactors.Contains(workEnactor)) 
             {
@@ -120,7 +120,7 @@ namespace Veis.Workflow.YAWL
         {
             Send("WorkItemAction Complete " + agent.AgentID + " " + workItem.WorkItemID + " "
                 + workItem.CaseID + " " + workItem.SpecificationID);
-            //Thread.Sleep(2000);
+            Thread.Sleep(2000);
             // Before requesting the next task, make sure that th
             //if (_oThread.ThreadState == ThreadState.Stopped)
             //    _oThread.Start();
@@ -130,8 +130,8 @@ namespace Veis.Workflow.YAWL
             //    _oThread.Interrupt();
 
 
-            //Send("GetTaskQueue " + WorkAgent.STARTED + " " + agent.AgentID);
-            //Send("GetTaskQueue " + WorkAgent.OFFERED + " " + agent.AgentID);
+            Send("GetTaskQueue " + WorkAgent.STARTED + " " + agent.AgentID);
+            Send("GetTaskQueue " + WorkAgent.OFFERED + " " + agent.AgentID);
         }
 
         public override void Send(string msg) {
@@ -181,7 +181,7 @@ namespace Veis.Workflow.YAWL
             Send("GetAllAgents");
             Send("GetActiveAgents");
             Send("GetAllSpecifications");
-            WorkEnactors.ForEach(w => GetTaskQueuesForWorkEnactor(w));
+            //WorkEnactors.ForEach(w => GetTaskQueuesForWorkEnactor(w));
         }
 
         public override void LaunchCase(string specificationName)
@@ -325,15 +325,19 @@ namespace Veis.Workflow.YAWL
                                     WorkAgent agent = AllWorkAgents.FirstOrDefault(a => a.AgentID == agentID);
                                     if (agent != null && !agent.GetQueueById(taskQueue).Any(w => w.TaskID == taskID)) 
                                     {
+                                        Logger.BroadcastMessage(this, "Adding to queue");
                                         agent.AddToQueue(taskQueue, workItem);
+
+                                        // Add the work if it has not been completed already
+                                        if (workItem.TaskQueue == WorkAgent.STARTED
+                                            && !agent.GetQueueById(WorkAgent.COMPLETED).Any(w => w.TaskID == taskID))
+                                        {
+                                            Logger.BroadcastMessage(this, "Starting item");
+                                            WorkEnactors.FirstOrDefault(w => w.WorkAgent.AgentID == workItem.AgentID).AddWork(workItem);
+                                        }
                                     }                                       
 
-                                    // Add the work if it has not been completed already
-                                    if (workItem.TaskQueue == WorkAgent.STARTED
-                                        && !agent.GetQueueById(WorkAgent.COMPLETED).Any(w => w.TaskID == taskID))
-                                    {
-                                        WorkEnactors.FirstOrDefault(w => w.WorkAgent.AgentID == workItem.AgentID).AddWork(workItem);
-                                    }
+                                    
                                 }
 
                                 // A work item name is being applied to a work item
@@ -435,6 +439,7 @@ namespace Veis.Workflow.YAWL
                                             SpecificationID = specificationID
                                         });
                                         SyncAll(); // TODO: do this in the event handler listener
+                                        WorkEnactors.ForEach(w => GetTaskQueuesForWorkEnactor(w));
                                     }
                                 }
 

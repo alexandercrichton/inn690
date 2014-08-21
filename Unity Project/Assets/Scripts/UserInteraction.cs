@@ -59,6 +59,12 @@ public class UserInteraction : MonoBehaviour
             }
         }
 
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            _simulation._workflowProvider.WorkEnactors.ForEach(
+                w => _simulation._workflowProvider.GetTaskQueuesForWorkEnactor(w));
+        }
+
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             userCamera.RelinquishControlOfAgent();
@@ -253,6 +259,10 @@ public class UserInteraction : MonoBehaviour
                     foreach (var bot in _simulation._avatarManager.Bots)
                     {
                         GUILayout.Label("Available bot: " + bot.Name);
+                        foreach (string task in bot.taskQueue)
+                        {
+                            GUILayout.Label("Task: " + task);
+                        }
                         bot.WorkEnactor.GetWorkAgent().offered
                             .ForEach(w => GUILayout.Label("Offered: " + w.TaskName));
                         bot.WorkEnactor.GetWorkAgent().delegated
