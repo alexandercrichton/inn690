@@ -16,8 +16,8 @@ namespace Veis.Workflow.YAWL
 
         public static string FormatWorkitemName(this WorkItem workitem)
         {
-            var lastUnderscore = workitem.taskName.LastIndexOf('_');
-            var formattedString = workitem.taskName.Remove(lastUnderscore).Replace('_', ' ');
+            var lastUnderscore = workitem.TaskName.LastIndexOf('_');
+            var formattedString = workitem.TaskName.Remove(lastUnderscore).Replace('_', ' ');
             return formattedString;
         }
 

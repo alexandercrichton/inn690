@@ -15,19 +15,19 @@ namespace Veis.Planning
 
             String animation = String.Empty;
 
-            if (input.taskName.ToLower().Contains("laugh"))
+            if (input.TaskName.ToLower().Contains("laugh"))
             {
                 animation = "EXPRESS_LAUGH".ToLower();
             }
-            else if (input.taskName.ToLower().Contains("dance"))
+            else if (input.TaskName.ToLower().Contains("dance"))
             {
                 animation = "DANCE1".ToLower();
             }
-            else if (input.taskName.ToLower().Contains("wave"))
+            else if (input.TaskName.ToLower().Contains("wave"))
             {
                 animation = "BLOWKISS".ToLower();
             }
-            else if (input.taskName.ToLower().Contains("punch"))
+            else if (input.TaskName.ToLower().Contains("punch"))
             {
                 animation = "PUNCH_ONETWO".ToLower();
             }

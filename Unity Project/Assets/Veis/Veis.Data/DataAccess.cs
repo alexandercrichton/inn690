@@ -67,8 +67,10 @@ namespace Veis.Data
                         var entity = transformRowToEntity(reader);
                         list.Add(entity);
                     }
-
-                    DebugMessage("{0} rows affected\n", rows);
+                    if (rows > 0)
+                    {
+                        //DebugMessage("{0} rows affected\n", rows);
+                    }
                 }
             }
             finally
@@ -172,7 +174,7 @@ namespace Veis.Data
         public void DebugMessage(string format, params object[] args)
         {
             string message = string.Format(format, args);
-            //Console.WriteLine(message);
+            Logging.Logger.BroadcastMessage(this, message);
         }
 
         #endregion

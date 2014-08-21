@@ -23,6 +23,7 @@ using Veis.Data;
 using Veis.Data.Repositories;
 using Veis.Simulation.AvatarManagement;
 using Veis.Data.Services;
+using Veis.Data.Entities;
 
 using Veis.Unity.Bots;
 using Veis.Unity.Logging;
@@ -33,26 +34,54 @@ namespace Veis.Unity.Simulation
 {
     public class UnitySimulation : Veis.Simulation.Simulation
     {
+        // These should be made non-public at some stage
         public YAWLWorkflowProvider _workflowProvider;
-        public List<UnityHumanAvatar> _humans;
-        public List<UnityNPCAvatar> _npcs;
-        public SceneService _sceneService;
+        //public List<UnityHumanAvatar> _humans;
+        //public List<UnityBotAvatar> _npcs;
+        new public UnitySceneService _sceneService;
         public Planner<WorkItem> _npcWorkPlanner;
 
         public UnitySimulation()
         {
+            _avatarManager = new AvatarManager();
             _workflowProvider = new YAWLWorkflowProvider();
-            _humans = new List<UnityHumanAvatar>();
-            _npcs = new List<UnityNPCAvatar>();
-            _sceneService = new SceneService();
+            //_humans = new List<UnityHumanAvatar>();
+            //_npcs = new List<UnityBotAvatar>();
+            _sceneService = new UnitySceneService();
             _npcWorkPlanner = new SmartWorkItemPlanner(
                 new BasicWorkItemPlanner(_sceneService),
                 new GoalBasedWorkItemPlanner(_workItemDecomp, _activityMethodService, _worldStateRepos, _sceneService));
             _serviceRoutineService.AddServiceInvocationHandler(new MoveObjectHandler(_sceneService));
-            Initialise();
+
+            Reset();
         }
 
         #region Simulation Actions
+
+        public override void Reset()
+        {
+            RequestCancelAllCases();
+
+            Log("Resetting simulation state");
+            _avatarManager.Clear();
+            if (_workflowProvider != null && _workflowProvider.IsConnected)
+            {
+                _workflowProvider.ResetAll();
+                _workflowProvider.AllWorkItems.Clear();
+                _workflowProvider.AllWorkAgents.Clear();
+            }
+            if (_polledWorldState != null)
+            {
+                _polledWorldState.Stop();
+                _polledWorldState = null;
+                _worldStateService.ClearStateSources();
+                _goalService.ClearGoals();
+            }
+
+            Initialise();
+            _sceneService.ResetAllAssetPositions();
+            _worldStateRepos.ResetAssetWorldStates();
+        }
 
         public override void Initialise()
         {
@@ -63,7 +92,7 @@ namespace Veis.Unity.Simulation
                 if (connected) // Hook up events
                 {
                     Log("Connected to workflow provider");
-                    _workflowProvider.ParticipantCreated += CreateParticipant;
+                    _workflowProvider.AgentCreated += CreateBotAvatar;
                     _workflowProvider.CaseCompleted += CompleteCase;
                     _workflowProvider.CaseStarted += StartCase;
                     //_webInterfaceModule.Initialise(_workflowProvider);
@@ -89,6 +118,21 @@ namespace Veis.Unity.Simulation
             }
         }
 
+        public override void Start() 
+        {
+            RequestLaunchCase(_workflowProvider.AllCases[0].SpecificationName);
+        }
+
+        public override void End() 
+        {
+            Log("\nLogging out all bots...");
+            _avatarManager.Clear();
+
+            Log("\nClosing connection to YAWL...");
+            _workflowProvider.Close();
+            _polledWorldState.Stop();
+        }
+
         public event WorldStateUpdatedHandler WorldStateUpdated;
         protected void OnWorldStateUpdated()
         {
@@ -96,38 +140,6 @@ namespace Veis.Unity.Simulation
             {
                 WorldStateUpdated();
             }
-        }
-
-        public override void Run() { }
-
-        public override void ResetAll()
-        {
-            Log("Resetting simulation state");
-            _npcs.Clear();
-            _humans.Clear();
-            if (_workflowProvider != null && _workflowProvider.IsConnected)
-            {
-                _workflowProvider.ResetAll();
-                _workflowProvider.AllWorkItems.Clear();
-                _workflowProvider.AllParticipants.Clear();
-            }
-            if (_polledWorldState != null)
-            {
-                _polledWorldState.Stop();
-                _polledWorldState = null;
-                _worldStateService.ClearStateSources();
-                _goalService.ClearGoals();
-            }
-        }
-
-        public override void End() 
-        {
-            Log("\nLogging out all bots...");
-            _npcs.Clear();
-            _humans.Clear();
-
-            Log("\nClosing connection to YAWL...");
-            _workflowProvider.Close();
         }
 
         public void UnityMainThreadUpdate()
@@ -173,12 +185,12 @@ namespace Veis.Unity.Simulation
                     {
                         if (tokens[1] == "Reset")
                         {
-                            PerformSimulationAction(SimulationActions.Reset);
+                            Reset();
                             //_commsMod.DispatchReply(script, 1, "Attempting to reset simulation", "");
                         }
                         else if (tokens[1] == "Start")
                         {
-                            PerformSimulationAction(SimulationActions.Start);
+                            Start();
                             //_commsMod.DispatchReply(script, 1, "Initialising simulation", "");
                         }
                     }
@@ -212,8 +224,8 @@ namespace Veis.Unity.Simulation
                 case "RegisterUser": // Involves the given user in the simulation
                     if (tokens.Length > 2)
                     {
-                        RegisterUser(new UserArgs { 
-                            UserName = tokens[1], RoleName = tokens[1], UserId = tokens[2] });
+                        AddUser(new AgentEventArgs { 
+                            Name = tokens[1], Role = tokens[1], ID = tokens[2] });
                     }
                     break;
             }
@@ -239,9 +251,9 @@ namespace Veis.Unity.Simulation
         {
             _isRunningCase = false;
             Log("Completed case");
-            foreach (var human in _humans)
+            foreach (var human in _avatarManager.Humans)
             {
-                human.WorkProvider.ClearCompletedGoals();
+                human.WorkEnactor.ClearCompletedGoals();
             }
             //_polledWorldState.Stop();
             // _sceneService.ShowResponse("Make sense 456!", true);
@@ -252,8 +264,8 @@ namespace Veis.Unity.Simulation
         /// Starts the simulation if a case launch request comes through.
         /// It cannot start another case if one is already running.
         /// </summary>
-        /// <param name="specificationName"></param>
-        public override bool RequestLaunchCase(string specificationName)
+        /// <param name="uri"></param>
+        public override bool RequestLaunchCase(string uri)
         {
             if (_isRunningCase) 
             { 
@@ -261,12 +273,10 @@ namespace Veis.Unity.Simulation
                 return false; 
             }
 
-            Initialise(); // Set up the simulation inititially
-
             if (_workflowProvider != null)
             {
                 Log("Launching case");
-                _workflowProvider.LaunchCase(specificationName);
+                _workflowProvider.LaunchCase(uri);
             }
 
             return true;
@@ -330,74 +340,36 @@ namespace Veis.Unity.Simulation
 
         public override Veis.Bots.Avatar GetParticipantById(string id)
         {
-            UUID temp = new UUID();
-            if (UUID.TryParse(id, out temp))
+            var human = _avatarManager.Humans.FirstOrDefault(h => h.ID == id);
+            if (human != null)
             {
-                var human = _humans.Where(h => h.UUID.Equals(temp)).FirstOrDefault();
-                if (human != null) return human;
-
-                var npc = _npcs.Where(n => n.UUID.Equals(temp)).FirstOrDefault();
-                if (npc != null) return npc;
+                return human;
             }
+            var bot = _avatarManager.Bots.FirstOrDefault(b => b.ID == id);
+            if (bot != null) 
+            {
+                return bot;
+            } 
             return null;
         }
 
-        public override void RegisterUser(UserArgs e)
+        public override void AddUser(AgentEventArgs e)
         {
-            Log("Registering user: " + e.UserName);
-            // If there is no UserName, find it using UUID
-            if (String.IsNullOrEmpty(e.UserName))
-            {
-                Log("User name is empty");
-                e.UserName = _sceneService.GetUserNameById(e.UserId);
-            }
+            Log("Adding user: " + e.Name);
+            
+            UnityHumanAvatar human = new UnityHumanAvatar(e.ID);
 
-            // Check if there already exists an npc/human matching this role name (or real name if role name is blank)
-            var nameQuery = String.IsNullOrEmpty(e.RoleName) ? e.UserName : e.RoleName;
-
-            var existingHuman = _humans.FirstOrDefault(h => h.Name == nameQuery || h.ActingName == nameQuery);
-            if (existingHuman != null)
-            {
-                Log("Cannot register because this role has already been taken");
-                return;
-            }
-
-            var oldNpc = _npcs.FirstOrDefault(n => String.Format("{0} {1}", n.FirstName, n.LastName) == nameQuery);
-            string yawlId = _workflowProvider.GetAgentIdByFullName(nameQuery);
-
-            // Create new OpenSimHumanAvatar
-            UnityHumanAvatar human = new UnityHumanAvatar(UUID.Parse(e.UserId), e.UserName, e.RoleName);
-
-            if (oldNpc != null)
-            {
-                // Replace work enactor for this participant with the new work provider (if npc != null)
-                Log("Human: " + human.RoleName + ", " + human.WorkId + ", " + human.UUID.Guid.ToString() 
-                    + " replacing NPC: " + oldNpc.FirstName);
-                ReplaceNpc(oldNpc, human);
-            }
-            else if (!String.IsNullOrEmpty(yawlId))
-            {
-                // If this human can be a YAWL participant, add them to the workflow provider
-                AddHuman(yawlId, human);
-                Log("AddHuman");
-            }
-        }
-
-        private void AddHuman(string yawlId, UnityHumanAvatar newHuman)
-        {
-            string workerId = _workflowProvider.YawlToWorker[yawlId];
-            newHuman.WorkId = workerId;
-
-            WorkAgent workAgent = _workflowProvider.AllParticipants[yawlId];
-            HumanWorkProvider workProvider = new HumanWorkProvider(newHuman, workAgent, _workflowProvider,
+            string agentID = _workflowProvider.GetAgentIdByFullName(e.Name);
+            WorkAgent workAgent = _workflowProvider.AllWorkAgents.FirstOrDefault(a => a.AgentID == agentID);
+            HumanWorkEnactor workEnactor = new HumanWorkEnactor(human, workAgent, _workflowProvider,
                 _workItemDecomp, _goalService);
-            newHuman.WorkProvider = workProvider;
+            human.WorkEnactor = workEnactor;
 
-            _workflowProvider.AddWorker(workerId, workProvider);
-            _humans.Add(newHuman);
+            _workflowProvider.AddWorkEnactor(workEnactor);
+            _avatarManager.Humans.Add(human);
         }
 
-        private void ReplaceNpc(UnityNPCAvatar oldNpc, UnityHumanAvatar newHuman)
+        private void ReplaceNpc(UnityBotAvatar oldNpc, UnityHumanAvatar newHuman)
         {
             //Log(oldNpc.WorkProvider.GetWorkAgent().ToString());
             //foreach (var workItem in oldNpc.WorkProvider.GetWorkAgent().ToString())
@@ -405,21 +377,21 @@ namespace Veis.Unity.Simulation
             //    Log(workItem.ToString());
             //}
             
-            HumanWorkProvider workProvider = NPCToHumanMapping.MapWorkProviderFromNPC(
-                oldNpc, newHuman, _goalService, _workItemDecomp);
-            newHuman.WorkProvider = workProvider;
-            newHuman.WorkId = oldNpc.Id;
-            bool successful = _workflowProvider.ReplaceWorker(newHuman.WorkId, workProvider);
-            if (successful)
-            {
-                //_npcModule.RemoveNPC(oldNpc.UUID);
-                _npcs.Remove(oldNpc);
-                _humans.Add(newHuman);
-            }
-            else
-            {
-                Log("Could not replace NPC with this user");
-            }
+            //HumanWorkEnactor workProvider = NPCToHumanMapping.MapWorkProviderFromNPC(
+            //    oldNpc, newHuman, _goalService, _workItemDecomp);
+            //newHuman.WorkEnactor = workProvider;
+            //newHuman.WorkId = oldNpc.Id;
+            //bool successful = _workflowProvider.ReplaceWorker(newHuman.WorkId, workProvider);
+            //if (successful)
+            //{
+            //    //_npcModule.RemoveNPC(oldNpc.UUID);
+            //    _npcs.Remove(oldNpc);
+            //    _humans.Add(newHuman);
+            //}
+            //else
+            //{
+            //    Log("Could not replace NPC with this user");
+            //}
         }
 
         /// <summary>
@@ -428,120 +400,78 @@ namespace Veis.Unity.Simulation
         /// a different kind of bot is created. 
         /// </summary>
         /// <param name="e">Contains information about the newly created workflow participant</param>
-        public void CreateParticipant(object sender, ParticipantEventArgs e)
+        public void CreateBotAvatar(object sender, AgentEventArgs e)
         {
-            // Make sure that the work agent and provider are compatible with this simulation
-            if (!CanCreateParticipant(e)) return;
+            Log("Adding bot avatar: " + e.Name);
 
-            // TODO: Retrieve a list of currently logged in agents and check if any match the participant descriptions
-
-            // Check if any of the registered agents match the given participant
-
-            CreateNPC(e);
-        }
-
-        private bool CanCreateParticipant(ParticipantEventArgs e)
-        {
-            if (e.WorkAgent.GetType() != typeof(YAWLAgent) ||
-                 e.WorkflowProvider.GetType() != typeof(YAWLWorkflowProvider))
+            if (!_avatarManager.Bots.Any(b => b.ID == e.ID))
             {
-                Log("This simulation requires YAWLAgents and a YAWLWorkflowProvider.");
-                return false;
-            }
+                UnityBotAvatar bot = new UnityBotAvatar(e.ID, e.Name, e.Role, _sceneService);
 
-            return true;
-        }
+                string agentID = _workflowProvider.GetAgentIdByFullName(e.Name);
+                WorkAgent workAgent = _workflowProvider.AllWorkAgents.FirstOrDefault(a => a.AgentID == agentID);
+                BotWorkEnactor workEnactor = new BotWorkEnactor(bot, _workflowProvider, workAgent, _npcWorkPlanner);
+                bot.WorkEnactor = workEnactor;
 
-        private bool CreateNPC(ParticipantEventArgs e)
-        {
-            // Create NPC via module
-            //UUID newNPCUUID = _npcModule.CreateNPC(e.FirstName, e.LastName,
-            //    _npcModule.GetDefaultStartingPosition(), _npcModule.GetAppearance(e.WorkAgent.Appearance));
-            UUID newNPCUUID = new UUID(Guid.NewGuid());
-            Log(newNPCUUID.ToString());
-
-            // TODO Handle concurrent executions of workflows, so don't create new NPCs each time & check for existence of the given UUID
-            if (newNPCUUID != UUID.Zero)
-            {
-                // Create new controlled NPC
-                UnityNPCAvatar newNPC = new UnityNPCAvatar(newNPCUUID, e.FirstName, e.LastName, _sceneService);
-                newNPC.Id = e.Id.ToString();
-
-
-                // Set up chat handlers
-                //OpenSimChatHandler openSimChat = new OpenSimChatHandler(newNPC, _npcModule.GetScene());
-                //WorkflowChatHandler workflowChat = new WorkflowChatHandler(e.WorkAgent, e.WorkflowProvider);
-                //YAWLChatHandler yawlChat = new YAWLChatHandler(e.WorkAgent as YAWLAgent, e.WorkflowProvider as YAWLWorkflowProvider);
-                //newNPC.ChatHandle.AddChatHandler(openSimChat);
-                //newNPC.ChatHandle.AddChatHandler(workflowChat);
-                //newNPC.ChatHandle.AddChatHandler(yawlChat);
-
-                // Set up work enactor and register it with the workflow provider
-                WorkProvider workProvider = new WorkProvider(newNPC, e.WorkflowProvider, e.WorkAgent, _npcWorkPlanner);
-                newNPC.WorkProvider = workProvider;
-                (e.WorkflowProvider as YAWLWorkflowProvider).AddWorker(newNPC.Id, workProvider);
-
-                //The last uuid string will be trigger by an on-scene object to change avatar apperance, do not remove it.
-                //newNPC.Say(String.Format("Hello, I am {0} {1}, {2}, {3}", newNPC.FirstName, newNPC.LastName, newNPC.Appearance, newNPCUUID));
-
-                _npcs.Add(newNPC);
-                return true;
+                _workflowProvider.AddWorkEnactor(workEnactor);
+                _avatarManager.Bots.Add(bot);
             }
             else
             {
-                Log(String.Format("Could not create NPC for {0} {1}", e.FirstName, e.LastName));
-                return false;
+                Log("That bot ID already exists");
             }
+
         }
 
         #endregion
 
         #region Data Requests
 
-        void GetDataRequested(RequestDataEventArgs e)
-        {
-            if (e.DataType.Equals("availablespecs", StringComparison.OrdinalIgnoreCase))
-            {
-                if (_workflowProvider != null)
-                {
-                    List<string> allSpecs = _workflowProvider.AllSpecifications.Select(s => s.Value).ToList();
-                    /*for (int i = 0; i < allSpecs.Count; i++ )
-                    {
-                        Log(i + " " + allSpecs[i]);
-                    }*/
-                    //_npcModule.SendData(allSpecs, true, UUID.Parse(e.Destination));
-                }
-            }
-            if (e.DataType.Equals("availableagents", StringComparison.OrdinalIgnoreCase))
-            {
-                if (_workflowProvider != null)
-                {
-                    List<string> allAgents = _workflowProvider.AllParticipants
-                        .Select(p => p.Value.FirstName + " " + p.Value.LastName).ToList();
+        //void GetDataRequested(RequestDataEventArgs e)
+        //{
+        //    if (e.DataType.Equals("availablespecs", StringComparison.OrdinalIgnoreCase))
+        //    {
+        //        if (_workflowProvider != null)
+        //        {
+        //            List<string> allSpecs = _workflowProvider.AllSpecifications.Select(s => s.Value).ToList();
+        //            for (int i = 0; i < allSpecs.Count; i++ )
+        //            {
+        //                Log(i + " " + allSpecs[i]);
+        //            }
+        //        }
+        //    }
+        //    if (e.DataType.Equals("availableagents", StringComparison.OrdinalIgnoreCase))
+        //    {
+        //        if (_workflowProvider != null)
+        //        {
+        //            List<string> allAgents = _workflowProvider.AllParticipants
+        //                .Select(p => p.Value.FirstName + " " + p.Value.LastName).ToList();
+        //            foreach (string agent in allAgents)
+        //            {
+        //                Log(agent);
+        //            }
+        //        }
+        //    }
+        //    if (e.DataType.Equals("methodsToExecute", StringComparison.OrdinalIgnoreCase))
+        //    {
+        //        // <Field>:<Value>+<Field>:<Value>+ ..etc
+        //        // npc:<npc UUID>+asset:<asset Name>
+        //        var npcUUID = e.DataFilter["npc"];
+        //        var assetName = e.DataFilter["asset"];
 
-                    //npcModule.SendData(allAgents, true, UUID.Parse(e.Destination));
-                }
-            }
-            if (e.DataType.Equals("methodsToExecute", StringComparison.OrdinalIgnoreCase))
-            {
-                // <Field>:<Value>+<Field>:<Value>+ ..etc
-                // npc:<npc UUID>+asset:<asset Name>
-                var npcUUID = e.DataFilter["npc"];
-                var assetName = e.DataFilter["asset"];
+        //        // get the npc
+        //        var npc = _avatarManager.Bots.Where(n => (string)n.UUID.ToString() == (string)npcUUID).FirstOrDefault();
+        //        if (npc == null) return;
+        //        // Get the executable action that the npc wants to run
+        //        var executeAction = npc.PopExecutableAction(assetName.ToString());
+        //        if (executeAction == null) return;
 
-                // get the npc
-                var npc = _npcs.Where(n => (string)n.UUID.ToString() == (string)npcUUID).FirstOrDefault();
-                if (npc == null) return;
-                // Get the executable action that the npc wants to run
-                var executeAction = npc.PopExecutableAction(assetName.ToString());
-                if (executeAction == null) return;
-
-                // user_key|<user_key>|method_name|<method_name>|<param name>|<param value|...      
-                //_npcModule.SendData(
-                //    new List<string> { StringFormattingExtensions.EncodeExecutableActionString(executeAction, npcUUID.ToString()) },
-                //    false, UUID.Parse(e.Destination));
-            }
-        }
+        //        // user_key|<user_key>|method_name|<method_name>|<param name>|<param value|...      
+        //        //_npcModule.SendData(
+        //        //    new List<string> { StringFormattingExtensions.EncodeExecutableActionString(executeAction, npcUUID.ToString()) },
+        //        //    false, UUID.Parse(e.Destination));
+        //    }
+        //}
 
         #endregion
 

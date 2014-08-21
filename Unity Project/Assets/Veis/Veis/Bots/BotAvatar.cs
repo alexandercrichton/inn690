@@ -6,7 +6,6 @@ using System.Timers;
 using Veis.Common.Math;
 using Veis.Chat;
 using Veis.Common;
-//using OpenMetaverse;
 using Vector3 = Veis.Common.Math.Vector3;
 
 
@@ -19,7 +18,7 @@ namespace Veis.Bots
     /// </summary>
     public abstract class BotAvatar : Avatar
     {
-        public WorkProvider WorkProvider { get; set; }
+        public BotWorkEnactor WorkEnactor { get; set; }
 
         public ChatProvider ChatHandle { get; set; } // Chat provider to interpret messages
 
@@ -223,11 +222,11 @@ namespace Veis.Bots
                         currentTask = "";
                         break;
                     case AvailableActions.STARTWORK:
-                        WorkProvider.StartWork(currentTask.Split(':')[1]);
+                        WorkEnactor.StartWork(currentTask.Split(':')[1]);
                         currentTask = "";
                         break;
                     case AvailableActions.COMPLETEWORK:
-                        WorkProvider.CompleteWork(currentTask.Split(':')[1]);
+                        WorkEnactor.CompleteWork(currentTask.Split(':')[1]);
                         currentTask = "";
                         break;
                     case AvailableActions.EXECUTEACTION:

@@ -134,6 +134,12 @@ namespace Veis.Data
             return DataAccess.Execute(cmd);
         }
 
+        protected void ExecuteProcedure(string procedure)
+        {
+            var command = DataAccess.CreateCommand("call " + procedure);
+            DataAccess.Execute(command);
+        }
+
         public abstract IEnumerable<T> Find(params Specification<T>[] specifications);
         public abstract int Insert(T item);
         public abstract int Insert(IEnumerable<T> items);

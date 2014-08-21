@@ -40,11 +40,11 @@ namespace Veis.Chat
                 case "COMPLETEWORKITEM":
                     if (answer.Split(':').Length == 3)
                     {
-                        WorkItem item = _workflow.GetWorkItemByName(answer.Split(':')[2]);
+                        WorkItem item = _workflow.AllWorkItems.FirstOrDefault(w => w.TaskName == answer.Split(':')[2]);
                         if (_workAgent.started.Contains(item) && _workAgent.processing.Contains(item))
                         {
                             _workAgent.Complete(item, _workflow);
-                            output = pre + "Completed " + item.taskName + post;
+                            output = pre + "Completed " + item.TaskName + post;
                         }
                         else
                         {
@@ -62,13 +62,13 @@ namespace Veis.Chat
                 case "DELEGATEWORKITEM":
                     if (answer.Split(':').Length == 4)
                     {
-                        WorkItem item = _workflow.GetWorkItemByName(answer.Split(':')[2]);
-                        WorkAgent other = _workflow.GetAgentByFirstName(answer.Split(':')[3]);
+                        WorkItem item = _workflow.AllWorkItems.FirstOrDefault(w => w.TaskName == answer.Split(':')[2]);
+                        WorkAgent other = _workflow.AllWorkAgents.FirstOrDefault(a => a.FirstName == answer.Split(':')[3]);
 
                         if (item != null && _workAgent.started.Contains(item) && other != null)
                         {
                             _workAgent.Delegate(item, other, _workflow);
-                            output = pre + "Delegated " + item.taskName + " to " + other.FirstName + post;
+                            output = pre + "Delegated " + item.TaskName + " to " + other.FirstName + post;
                         }
                         else if (item == null)
                         {
@@ -87,11 +87,11 @@ namespace Veis.Chat
                 case "SUSPENDWORKITEM":
                     if (answer.Split(':').Length == 3)
                     {
-                        WorkItem item = _workflow.GetWorkItemByName(answer.Split(':')[2]);
+                        WorkItem item = _workflow.AllWorkItems.FirstOrDefault(w => w.TaskName == answer.Split(':')[2]);
                         if (_workAgent.started.Contains(item))
                         {
                             _workAgent.Suspend(item, _workflow);
-                            output = pre + "Suspended " + item.taskName + post;
+                            output = pre + "Suspended " + item.TaskName + post;
                         }
                         else
                         {
@@ -109,11 +109,11 @@ namespace Veis.Chat
                 case "UNSUSPENDWORKITEM":
                     if (answer.Split(':').Length == 3)
                     {
-                        WorkItem item = _workflow.GetWorkItemByName(answer.Split(':')[2]);
+                        WorkItem item = _workflow.AllWorkItems.FirstOrDefault(w => w.TaskName == answer.Split(':')[2]);
                         if (_workAgent.suspended.Contains(item))
                         {
                             _workAgent.Unsuspend(item, _workflow);
-                            output = pre + "Unsuspended " + item.taskName + post;
+                            output = pre + "Unsuspended " + item.TaskName + post;
                         }
                         else
                         {

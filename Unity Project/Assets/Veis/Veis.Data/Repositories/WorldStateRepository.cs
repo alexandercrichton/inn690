@@ -29,6 +29,11 @@ namespace Veis.Data.Repositories
             };
         }
 
+        public void ResetAssetWorldStates()
+        {
+            ExecuteProcedure("reset_world_state");
+        }
+
         #region Specifications
 
         public class ByAssetSpecification : Specification<WorldState>

@@ -109,7 +109,7 @@ namespace Veis.Planning.HTN
 
         public HTNState ConjectureOneState(List<string> htnTaskIDList, SpecificationKnowledge wsk)
         {
-            List<string> postConditionAtoms = new List<string>();
+            //List<string> postConditionAtoms = new List<string>();
 
             List<HTNTask> htnTaskList = new List<HTNTask>();
 
@@ -119,10 +119,10 @@ namespace Veis.Planning.HTN
             }
 
             // TODO: WHAT IS THIS SUPPOSED TO BE. FFFFFFF
-            foreach (HTNTask htnTask in htnTaskList)
-            {
+            //foreach (HTNTask htnTask in htnTaskList)
+            //{
 
-            }
+            //}
 
             return new HTNState();
         }

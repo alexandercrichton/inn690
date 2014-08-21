@@ -77,7 +77,6 @@ namespace Veis.Simulation.WorldState.StateSources
         {
             if (StateUpdated != null)
                 StateUpdated();
-            Veis.Data.Logging.Logger.BroadcastMessage(this, "World State Updated");
         }
 
         public event StateUpdatedHandler StateUpdated;
