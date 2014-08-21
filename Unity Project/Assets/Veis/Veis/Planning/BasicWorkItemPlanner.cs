@@ -23,7 +23,7 @@ namespace Veis.Planning
         {
             PlanResult plan = new PlanResult();
 
-            string onlyText = input.taskName.ToLower().Remove(input.taskName.LastIndexOf("_"));
+            string onlyText = input.TaskName.ToLower().Remove(input.TaskName.LastIndexOf("_"));
             string highLevelTask = onlyText.Replace("_", " ").Trim();
 
             if (highLevelTask.Contains("walk to"))

@@ -38,11 +38,10 @@ namespace Veis.Simulation
     public abstract class Simulation : ISimulation, ILoggable
     {
         // Avatar fields
-        protected AvatarManager _avatarManager;
+        public AvatarManager _avatarManager;
 
         // Case fields
         protected bool _isRunningCase;    // If a case is already running, another cannot be launched (to combat complexity at this stage)
-        protected bool _isInitialised;
 
         // World state fields
         protected WorldStateService _worldStateService;
@@ -88,15 +87,15 @@ namespace Veis.Simulation
             _serviceRoutineService.AddServiceInvocationHandler(_abortHandler);
         }
         
-        public abstract void Run();
+        public abstract void Start();
         public abstract void End();
         public abstract void Initialise();
         public abstract void Log(string message);
-        public abstract void ResetAll();
-        public abstract bool RequestLaunchCase(string specificationName);
+        public abstract void Reset();
+        public abstract bool RequestLaunchCase(string uri);
         public abstract bool RequestCancelCase(string specificationName, int? caseNumber);
         public abstract void RequestCancelAllCases();
-        public abstract void RegisterUser(UserArgs user);
+        public abstract void AddUser(AgentEventArgs user);
         public abstract Avatar GetParticipantById(string id);
 
         public void PerformSimulationAction(SimulationActions action)
@@ -104,20 +103,12 @@ namespace Veis.Simulation
             switch (action)
             {
                 case SimulationActions.Reset:
-                    ResetAll();
-                    _isInitialised = false;
+                    Reset();
                     break;
                 case SimulationActions.Start:
-                    Initialise();
-                    _isInitialised = true;
-                    Run();
+                    Start();
                     break;
             }
-        }
-
-        public bool IsInitialised()
-        {
-            return _isInitialised;
         }
 
         public bool IsCaseRunning()

@@ -8,9 +8,12 @@ import java.net.Socket;
 import java.net.URLDecoder;
 import java.util.List;
 
+import org.yawlfoundation.yawl.engine.interfce.interfaceX.InterfaceX_ServiceSideClient;
+
 public class YAWLListenServer implements Runnable {
 	
 	protected int _port;	
+	protected InterfaceX_ServiceSideClient serviceSideClient;
 	
 	public YAWLListenServer(int port) {
 		this._port = port;
@@ -23,6 +26,8 @@ public class YAWLListenServer implements Runnable {
 
 		try {
 			serverSocket = new ServerSocket(_port);
+			serviceSideClient = new InterfaceX_ServiceSideClient("http://localhost:8080/yawl/ix");
+			serviceSideClient.addInterfaceXListener("http://localhost:" + _port);
 		} catch (IOException e) {
 			System.err.println("YAWLListenServer: Could not listen on port: " + _port);
 			System.exit(-1);
@@ -38,6 +43,7 @@ public class YAWLListenServer implements Runnable {
 
 		try {
 			serverSocket.close();
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -58,9 +64,9 @@ public class YAWLListenServer implements Runnable {
 				inputLine += (char)in.read();
 			}			
 			inputLine = URLDecoder.decode(inputLine, "UTF-8");
+			System.out.println("YAWL RECV: " + inputLine);
 			
 			if (inputLine != null && inputLine.length() > 0) {
-				System.out.println("YAWL RECV: " + inputLine);
 				List<String> replyMessages = null;
 				if (replyMessages != null) {
 					ClientHandler.SendToAll(replyMessages);

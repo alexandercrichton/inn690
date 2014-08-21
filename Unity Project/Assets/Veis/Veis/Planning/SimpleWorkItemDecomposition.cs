@@ -16,9 +16,9 @@ namespace Veis.Planning
         public List<Goal> Decompose(WorkItem input)
         {
             // The workitem should contain a list of goals in the goal "task variable"
-            if (!input.taskVariables.ContainsKey(GoalVariableName)) return new List<Goal>();
+            if (!input.tasksAndGoals.ContainsKey(GoalVariableName)) return new List<Goal>();
             
-            var goalVariable = input.taskVariables[GoalVariableName];
+            var goalVariable = input.tasksAndGoals[GoalVariableName];
             Goal newGoal = goalVariable.ExtractGoal();
             return new List<Goal> { newGoal };
         }

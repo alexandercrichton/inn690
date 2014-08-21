@@ -167,7 +167,7 @@ namespace Veis.Planning.HTN
 
             while (waitingTaskList.Count > 0)
             {
-                List<string> allocatedResourceIDList = new List<string>();
+                //List<string> allocatedResourceIDList = new List<string>();
                 List<string> allocatedTaskIDList = new List<string>();
                 List<bool> resourceAllocatedIndicator = new List<bool>();
 

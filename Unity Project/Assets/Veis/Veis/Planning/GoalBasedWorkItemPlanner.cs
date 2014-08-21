@@ -59,7 +59,7 @@ namespace Veis.Planning
                         parameters = FormulateMethodParameters(goalState, method);
                     }
 
-                     plan.Tasks.AddRange(FormulateNPCTasks(goalState.Asset, method, parameters));
+                    plan.Tasks.AddRange(FormulateNPCTasks(goalState.Asset, method, parameters));
                 }
             }
             return plan;
@@ -141,25 +141,25 @@ namespace Veis.Planning
             var tasks = new List<string>();
             
             // FIND asset [if it doesn't exist, do nothing]
-            Vector3 location = _sceneService.GetPositionOfObject(asset);
-            if (location == null) return tasks;
+            //Vector3 location = _sceneService.GetPositionOfObject(asset);
+            //if (location == null) return tasks;
 
             // MOVE to object (if exists)
-            tasks.Add(AvailableActions.WALKTO + ":" + location.ToString());
+            //tasks.Add(AvailableActions.WALKTO + ":" + location.ToString());
 
             // FIND SITTABLE OBJECT (named <asset> chair)
-            var chairName = asset + " chair";
-            Vector3 chairLocation = _sceneService.GetPositionOfObject(chairName);
-            if (chairLocation != null)
-            {
-                // Sit if exists
-                tasks.Add(AvailableActions.SIT + ":" + chairName);             
-            }
+            //var chairName = asset + " chair";
+            //Vector3 chairLocation = _sceneService.GetPositionOfObject(chairName);
+            //if (chairLocation != null)
+            //{
+            //    // Sit if exists
+            //    tasks.Add(AvailableActions.SIT + ":" + chairName);             
+            //}
 
             // TODO: When animation reference system is in place, perform any necessary animations
 
             // WAIT for a short time (2 seconds)
-            tasks.Add(AvailableActions.WAIT + ":" + PAUSE_TIME);
+            //tasks.Add(AvailableActions.WAIT + ":" + PAUSE_TIME);
 
             // EXECUTE METHOD on OBJECT
             tasks.Add(AvailableActions.EXECUTEACTION + ":" + asset + ":" + method.Name + ":" + StringFormattingExtensions.EncodeParameterString(methodParameters));
@@ -167,7 +167,7 @@ namespace Veis.Planning
             // TOUCH OBJECT (which should  be scripted)
             // NOTE: In OpenSim, the object will be scripted to exectute the action via php
             // Other implemenations may do something different when the "EXECUTEACTION" occurs.
-            tasks.Add(AvailableActions.TOUCH + ":" + asset);
+            //tasks.Add(AvailableActions.TOUCH + ":" + asset);
 
             return tasks;
         }

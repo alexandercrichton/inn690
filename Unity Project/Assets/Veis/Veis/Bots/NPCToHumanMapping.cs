@@ -10,22 +10,22 @@ namespace Veis.Bots
 {
     public class NPCToHumanMapping
     {
-        public static HumanWorkProvider MapWorkProviderFromNPC(BotAvatar npc, HumanAvatar human, 
+        public static HumanWorkEnactor MapWorkProviderFromNPC(BotAvatar npc, HumanAvatar human, 
             GoalService goalService, IDecompositionService<WorkItem> decompService)
         {   
-            HumanWorkProvider worker = new HumanWorkProvider
-                (human, npc.WorkProvider.GetWorkAgent(), npc.WorkProvider.GetWorkflowProvider(),
+            HumanWorkEnactor worker = new HumanWorkEnactor
+                (human, npc.WorkEnactor.GetWorkAgent(), npc.WorkEnactor.GetWorkflowProvider(),
                 decompService, goalService);
 
             // Any currently processing tasks, remove
-            npc.WorkProvider.GetWorkAgent().processing.Clear();
+            npc.WorkEnactor.GetWorkAgent().processing.Clear();
             Veis.Data.Logging.Logger.BroadcastMessage(new object(), "here");
             // Now add all the tasks that had been started to the worker
             //foreach (var workItem in npc.WorkProvider.GetWorkAgent().started)
             //{
             //    worker.AddWork(workItem);
             //}
-            List<WorkItem> workItems = npc.WorkProvider.GetWorkAgent().started;
+            List<WorkItem> workItems = npc.WorkEnactor.GetWorkAgent().started;
             for (int i = 0; i < workItems.Count; i++)
             {
                 worker.AddWork(workItems[i]);

@@ -8,24 +8,28 @@ namespace Veis.Workflow
 {
     public class WorkItem
     {
-        public String taskName = "";
-        public String taskID = "";
-        public String participant = "";
-        public String taskQueue = "0";
+        public string CaseID = "";
+        public string SpecificationID = "";
+        public string UniqueID = "";
+        public string WorkItemID = "";
+        public string TaskID = "";
+        public string TaskName = "";
+        public string AgentID = "";
+        public string TaskQueue = "0";
 
         // Task variables are a list of various task variables that can be 
         // transferred from the process model specification
         // eg. Goals, Tasks, etc...
-        public Dictionary<string, string> taskVariables;
+        public Dictionary<string, string> tasksAndGoals;
 
         public WorkItem()
         {
-            taskVariables = new Dictionary<string, string>();
+            tasksAndGoals = new Dictionary<string, string>();
         }
 
         public override string ToString()
         {
-            return taskID;
+            return TaskID;
         }
     }
 
@@ -36,7 +40,7 @@ namespace Veis.Workflow
         {
             if (y is WorkItem && x is WorkItem)
             {
-                return ((new CaseInsensitiveComparer()).Compare((y as WorkItem).taskID, (x as WorkItem).taskID));
+                return ((new CaseInsensitiveComparer()).Compare((y as WorkItem).TaskID, (x as WorkItem).TaskID));
             }
             else
             {

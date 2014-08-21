@@ -11,10 +11,10 @@ namespace Veis.Simulation
     /// </summary>
     public interface ISimulation
     {
-        void Run();
+        void Start();
         void End();
         void Initialise();
-        void ResetAll();
+        void Reset();
         void PerformSimulationAction(SimulationActions action);
     }
 }

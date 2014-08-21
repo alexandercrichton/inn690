@@ -13,52 +13,20 @@ namespace Veis.Simulation.AvatarManagement
     /// </summary>
     public class AvatarManager
     {
-        public List<BotAvatar> AllBots { get; private set; }
+        public List<BotAvatar> Bots { get; private set; }
 
-        public List<HumanAvatar> AllHumans { get; private set; }
+        public List<HumanAvatar> Humans { get; private set; }
 
         public AvatarManager()
         {
-            AllBots = new List<BotAvatar>();
-            AllHumans = new List<HumanAvatar>();
+            Bots = new List<BotAvatar>();
+            Humans = new List<HumanAvatar>();
         }
 
-        /// <summary>
-        /// Attempts to add a human to this list. If a human of this same name
-        /// already exists, the human is not added. If a bot of this same name
-        /// already exists, it is replaced based on the "replaceBot" parameter.
-        /// </summary>
-        /// <param name="replaceBot"></param>
-        /// <returns>True if the human was added</returns>
-        public bool AddHuman(bool replaceBot)
+        public void Clear()
         {
-            throw new NotImplementedException();
+            Bots.Clear();
+            Humans.Clear();
         }
-
-        public bool AddBot(bool replaceHuman)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool ReplaceHuman()
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool ReplaceBot()
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool RemoveHuman(bool replaceWithBot)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool RemoveBot(bool replaceWithHuman)
-        {
-            throw new NotImplementedException();
-        }
-
     }
 }

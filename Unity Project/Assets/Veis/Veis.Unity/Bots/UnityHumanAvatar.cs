@@ -9,15 +9,23 @@ namespace Veis.Unity.Bots
 {
     public class UnityHumanAvatar : HumanAvatar
     {
-        public UUID UUID { get; set; }
-        public string UserName { get; set; }
-        public string RoleName { get; set; }
+        //public UUID UUID { get; set; }
+        //public string UserName { get; set; }
+        //public string RoleName { get; set; }
 
-        public UnityHumanAvatar(UUID uuid, string userName, string roleName)
+        public UnityHumanAvatar(string id)
         {
-            this.UUID = uuid;
-            this.UserName = userName;
-            this.RoleName = roleName;
+            this.ID = id;
+            this.Name = "NoName";
+            this.Role = "NoRole";
+        }
+
+        public UnityHumanAvatar(string id, string name, string role)
+        {
+            //this.UUID = uuid;
+            this.ID = id;
+            this.Name = name;
+            this.Role = role;
         }
 
         public override void NotifyUser(string message)
