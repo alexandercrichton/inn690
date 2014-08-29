@@ -46,12 +46,17 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Locomotion\Scripts\Locomotion.cs" />
+     <Compile Include="Assets\Scripts\AgentController.cs" />
      <Compile Include="Assets\Scripts\AgentScript.cs" />
      <Compile Include="Assets\Scripts\Asset.cs" />
-     <Compile Include="Assets\Scripts\BotMovingScript.cs" />
      <Compile Include="Assets\Scripts\PlaceMarker.cs" />
+     <Compile Include="Assets\Scripts\Samoflange.cs" />
+     <Compile Include="Assets\Scripts\SpectatorController.cs" />
+     <Compile Include="Assets\Scripts\ThirdPersonCamera.cs" />
+     <Compile Include="Assets\Scripts\UserCamera.cs" />
      <Compile Include="Assets\Scripts\UserInteraction.cs" />
-     <Compile Include="Assets\Scripts\WowCamera.cs" />
+     <Compile Include="Assets\Scripts\navAgent.cs" />
      <Compile Include="Assets\Veis\Veis.Data\CommonRepository.cs" />
      <Compile Include="Assets\Veis\Veis.Data\DataAccess.cs" />
      <Compile Include="Assets\Veis\Veis.Data\Entities\AccessRecord.cs" />
@@ -76,20 +81,20 @@
      <Compile Include="Assets\Veis\Veis.Data\WorldKnowledgeDataAccess.cs" />
      <Compile Include="Assets\Veis\Veis.Data\WorldStateDataAccess.cs" />
      <Compile Include="Assets\Veis\Veis.Unity\Bots\UUID.cs" />
+     <Compile Include="Assets\Veis\Veis.Unity\Bots\UnityBotAvatar.cs" />
      <Compile Include="Assets\Veis\Veis.Unity\Bots\UnityHumanAvatar.cs" />
-     <Compile Include="Assets\Veis\Veis.Unity\Bots\UnityNPCAvatar.cs" />
      <Compile Include="Assets\Veis\Veis.Unity\Logging\UnityLogger.cs" />
-     <Compile Include="Assets\Veis\Veis.Unity\Services\SceneService.cs" />
+     <Compile Include="Assets\Veis\Veis.Unity\Services\UnitySceneService.cs" />
      <Compile Include="Assets\Veis\Veis.Unity\Simulation\RequestDataEventArgs.cs" />
      <Compile Include="Assets\Veis\Veis.Unity\Simulation\UnitySimulation.cs" />
      <Compile Include="Assets\Veis\Veis\Bots\AvailableActions.cs" />
      <Compile Include="Assets\Veis\Veis\Bots\Avatar.cs" />
      <Compile Include="Assets\Veis\Veis\Bots\BotAvatar.cs" />
+     <Compile Include="Assets\Veis\Veis\Bots\BotWorkEnactor.cs" />
      <Compile Include="Assets\Veis\Veis\Bots\ExecutableAction.cs" />
      <Compile Include="Assets\Veis\Veis\Bots\HumanAvatar.cs" />
-     <Compile Include="Assets\Veis\Veis\Bots\HumanWorkProvider.cs" />
+     <Compile Include="Assets\Veis\Veis\Bots\HumanWorkEnactor.cs" />
      <Compile Include="Assets\Veis\Veis\Bots\NPCToHumanMapping.cs" />
-     <Compile Include="Assets\Veis\Veis\Bots\WorkProvider.cs" />
      <Compile Include="Assets\Veis\Veis\Chat\AimlChatProvider.cs" />
      <Compile Include="Assets\Veis\Veis\Chat\ChatHandler.cs" />
      <Compile Include="Assets\Veis\Veis\Chat\ChatMessage.cs" />
@@ -97,7 +102,6 @@
      <Compile Include="Assets\Veis\Veis\Chat\SimulationChatHandler.cs" />
      <Compile Include="Assets\Veis\Veis\Chat\WorkflowChatHandler.cs" />
      <Compile Include="Assets\Veis\Veis\Chat\YAWLChatHandler.cs" />
-     <Compile Include="Assets\Veis\Veis\Common\ExecutableAction.cs" />
      <Compile Include="Assets\Veis\Veis\Common\ILoggable.cs" />
      <Compile Include="Assets\Veis\Veis\Common\Math\Vector3.cs" />
      <Compile Include="Assets\Veis\Veis\Common\StringFormattingExtensions.cs" />
@@ -130,11 +134,11 @@
      <Compile Include="Assets\Veis\Veis\Services\Interfaces\IParallelisationService.cs" />
      <Compile Include="Assets\Veis\Veis\Services\Interfaces\ISceneService.cs" />
      <Compile Include="Assets\Veis\Veis\Services\ParallelisationService.cs" />
+     <Compile Include="Assets\Veis\Veis\Simulation\AgentEventArgs.cs" />
      <Compile Include="Assets\Veis\Veis\Simulation\AvatarManagement\AvatarManager.cs" />
      <Compile Include="Assets\Veis\Veis\Simulation\ISimulation.cs" />
      <Compile Include="Assets\Veis\Veis\Simulation\Simulation.cs" />
      <Compile Include="Assets\Veis\Veis\Simulation\SimulationActions.cs" />
-     <Compile Include="Assets\Veis\Veis\Simulation\UserArgs.cs" />
      <Compile Include="Assets\Veis\Veis\Simulation\WorldState\Goal.cs" />
      <Compile Include="Assets\Veis\Veis\Simulation\WorldState\GoalService.cs" />
      <Compile Include="Assets\Veis\Veis\Simulation\WorldState\IServiceInvocationHandler.cs" />
@@ -147,13 +151,12 @@
      <Compile Include="Assets\Veis\Veis\Simulation\WorldState\WorldStateService.cs" />
      <Compile Include="Assets\Veis\Veis\Workflow\Case.cs" />
      <Compile Include="Assets\Veis\Veis\Workflow\CaseStateEventArgs.cs" />
-     <Compile Include="Assets\Veis\Veis\Workflow\IWorkEnactor.cs" />
-     <Compile Include="Assets\Veis\Veis\Workflow\ParticipantEventArgs.cs" />
      <Compile Include="Assets\Veis\Veis\Workflow\WorkAgent.cs" />
+     <Compile Include="Assets\Veis\Veis\Workflow\WorkEnactor.cs" />
      <Compile Include="Assets\Veis\Veis\Workflow\WorkItem.cs" />
      <Compile Include="Assets\Veis\Veis\Workflow\WorkflowProvider.cs" />
-     <Compile Include="Assets\Veis\Veis\Workflow\YAWL\YAWLAgent.cs" />
      <Compile Include="Assets\Veis\Veis\Workflow\YAWL\YAWLFormattingExtensions.cs" />
+     <Compile Include="Assets\Veis\Veis\Workflow\YAWL\YAWLWorkAgent.cs" />
      <Compile Include="Assets\Veis\Veis\Workflow\YAWL\YAWLWorkflowProvider.cs" />
  <Reference Include="AIMLbot">
  <HintPath>Assets\Plugins\AIMLbot.dll</HintPath>
