@@ -43,6 +43,7 @@ namespace Veis.Unity.Simulation
 
         public UnitySimulation()
         {
+            MainThread.Initialise();
             _avatarManager = new AvatarManager();
             _workflowProvider = new YAWLWorkflowProvider();
             //_humans = new List<UnityHumanAvatar>();
@@ -145,6 +146,7 @@ namespace Veis.Unity.Simulation
         public void UnityMainThreadUpdate()
         {
             _sceneService.HandleAssetServiceRoutines();
+            MainThread.DoActions();
         }
 
         #endregion
@@ -415,6 +417,8 @@ namespace Veis.Unity.Simulation
 
                 _workflowProvider.AddWorkEnactor(workEnactor);
                 _avatarManager.Bots.Add(bot);
+
+                
             }
             else
             {

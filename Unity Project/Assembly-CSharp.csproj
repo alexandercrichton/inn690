@@ -82,6 +82,7 @@
      <Compile Include="Assets\Veis\Veis.Unity\Bots\UnityHumanAvatar.cs" />
      <Compile Include="Assets\Veis\Veis.Unity\Logging\UnityLogger.cs" />
      <Compile Include="Assets\Veis\Veis.Unity\Services\UnitySceneService.cs" />
+     <Compile Include="Assets\Veis\Veis.Unity\Simulation\MainThread.cs" />
      <Compile Include="Assets\Veis\Veis.Unity\Simulation\RequestDataEventArgs.cs" />
      <Compile Include="Assets\Veis\Veis.Unity\Simulation\UnitySimulation.cs" />
      <Compile Include="Assets\Veis\Veis\Bots\AvailableActions.cs" />

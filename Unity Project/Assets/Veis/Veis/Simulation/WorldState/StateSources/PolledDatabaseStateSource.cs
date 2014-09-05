@@ -5,6 +5,7 @@ using System.Text;
 using Veis.Data;
 using Veis.Data.Entities;
 using System.Timers;
+using UnityEngine;
 
 namespace Veis.Simulation.WorldState.StateSources
 {
@@ -41,6 +42,20 @@ namespace Veis.Simulation.WorldState.StateSources
         {
             try
             {
+                Veis.Data.Logging.Logger.BroadcastMessage(this, "Queueing action");
+
+                // This is how you add an Action to be run by the main thread
+                MainThread.QueueAction(() => GameObject.Find("Capsule").transform.position = Vector3.zero);
+
+                // If you use braces you can just write it like any other method
+                MainThread.QueueAction(() =>
+                {
+                    GameObject gObject = GameObject.Find("Capsule");
+                    float random = UnityEngine.Random.Range(-5f, 5f);
+                    gObject.transform.position = new Vector3(random, random, 0f);
+                    gObject.renderer.enabled = !gObject.renderer.enabled;
+                });
+
                 AccessRecord lastAccess = _accessRecordRepository.Find().FirstOrDefault();
 
                 // If changes were made since the last time
