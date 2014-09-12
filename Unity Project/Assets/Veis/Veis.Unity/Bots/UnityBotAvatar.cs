@@ -87,7 +87,7 @@ namespace Veis.Unity.Bots
 
         public override void WalkTo(string areaName)
         {
-			botAgentMovement.SetTarget(GameObject.Find(areaName).transform.position);
+			botAgentMovement.SetTarget(GameObject.Find(areaName));
             throw new NotImplementedException();
         }
 
