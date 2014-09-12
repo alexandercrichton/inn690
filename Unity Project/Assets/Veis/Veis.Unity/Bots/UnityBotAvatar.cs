@@ -4,12 +4,15 @@ using System.Linq;
 using System.Text;
 using Veis.Bots;
 using Veis.Unity.Scene;
+using UnityEngine;
+using Veis.Unity.Simulation;
 
 namespace Veis.Unity.Bots
 {
     public class UnityBotAvatar : BotAvatar
     {
 
+		navAgent botAgentMovement;
         //public UUID UUID { get; set; }
         //public string Id { get; set; }
         //public string FirstName { get; set; }
@@ -84,6 +87,7 @@ namespace Veis.Unity.Bots
 
         public override void WalkTo(string areaName)
         {
+			botAgentMovement.SetTarget(GameObject.Find(areaName).transform.position);
             throw new NotImplementedException();
         }
 

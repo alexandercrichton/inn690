@@ -39,9 +39,10 @@ namespace Veis.Simulation.WorldState.StateSources
         }
 
         private void CheckForUpdates(object sender, ElapsedEventArgs e)
-        {
+        {/*
             try
             {
+			
                 Veis.Data.Logging.Logger.BroadcastMessage(this, "Queueing action");
 
                 // This is how you add an Action to be run by the main thread
@@ -70,7 +71,7 @@ namespace Veis.Simulation.WorldState.StateSources
             {
                 Veis.Data.Logging.Logger.BroadcastMessage(this, exception.Message);
             }
-            
+            */
         }
 
         public List<State> GetAll()

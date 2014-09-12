@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Veis.Unity.Bots;
+
 
 public class navAgent : MonoBehaviour {
 
@@ -7,10 +9,15 @@ public class navAgent : MonoBehaviour {
 
 	public GameObject pinPoint;
 	public NavMeshAgent agent;
+
+
 	protected Animator animator;
 
 	protected Locomotion locomotion;
 	protected Object pointClone;
+
+	UnityBotAvatar botAvatar;
+
 
 	// Use this for initialization
 	void Start () {
@@ -68,7 +75,7 @@ public class navAgent : MonoBehaviour {
 		transform.rotation = animator.rootRotation;
 	}
 
-	void SetTarget(GameObject location ) {
+	public void SetTarget(GameObject location ) {
 		agent.destination = location.transform.position;
 	}
 
