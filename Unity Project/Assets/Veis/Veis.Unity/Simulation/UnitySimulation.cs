@@ -43,7 +43,6 @@ namespace Veis.Unity.Simulation
 
         public UnitySimulation()
         {
-            MainThread.Initialise();
             _avatarManager = new AvatarManager();
             _workflowProvider = new YAWLWorkflowProvider();
             //_humans = new List<UnityHumanAvatar>();
