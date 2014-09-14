@@ -1,0 +1,7 @@
+WARNING=DO NOT MODIFY THIS FILE IF YOU DON'T UNDERSTAND
+defaultDestination=C\:/Program Files (x86)/YAWL/engine/apache-tomcat-7.0.55/webapps/yawlRelay
+defaultVariables=
+eclipse.preferences.version=1
+includeTeamPrivateFiles=false
+map|0=WebContent|,|,|,|,
+useCurrentDateForDestinationFiles=false
