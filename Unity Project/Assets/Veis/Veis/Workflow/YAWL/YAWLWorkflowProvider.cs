@@ -18,6 +18,8 @@ namespace Veis.Workflow.YAWL
     /// </summary>
     public class YAWLWorkflowProvider : WorkflowProvider
     {
+        #region Class Members
+
         // The purpose of this event is to allow a simulation program to
         // create bots or users or some THING to handle work items.
         public event AgentCreatedEventHandler AgentCreated;
@@ -67,22 +69,14 @@ namespace Veis.Workflow.YAWL
             StartedCases.Clear();
         }
 
+        #endregion
+
+        #region Work Enactors
+
         public void AddWorkEnactor(WorkEnactor workEnactor)
         {
             WorkEnactors.Add(workEnactor);
             //GetTaskQueuesForWorkEnactor(workEnactor);
-        }
-
-        public void GetTaskQueuesForWorkEnactor(WorkEnactor workEnactor)
-        {
-            if (WorkEnactors.Contains(workEnactor)) 
-            {
-                string agentID = workEnactor.WorkAgent.AgentID;
-                Send("GetTaskQueue " + WorkAgent.OFFERED + " " + agentID);
-                Send("GetTaskQueue " + WorkAgent.ALLOCATED + " " + agentID);
-                Send("GetTaskQueue " + WorkAgent.STARTED + " " + agentID);
-                Send("GetTaskQueue " + WorkAgent.SUSPENDED + " " + agentID);
-            }
         }
 
         public bool ReplaceWorker(String workerId, WorkEnactor newWorker)
@@ -114,32 +108,29 @@ namespace Veis.Workflow.YAWL
             //    return true;
             //}
             return false; 
-        } 
-
-        public override void EndWorkItem(WorkAgent agent, WorkItem workItem)
-        {
-            Send("WorkItemAction Complete " + agent.AgentID + " " + workItem.WorkItemID + " "
-                + workItem.CaseID + " " + workItem.SpecificationID);
-            Thread.Sleep(2000);
-            // Before requesting the next task, make sure that th
-            //if (_oThread.ThreadState == ThreadState.Stopped)
-            //    _oThread.Start();
-            //else if (_oThread.ThreadState == ThreadState.Suspended)
-            //    _oThread.Resume();
-            //else if (_oThread.ThreadState == ThreadState.WaitSleepJoin)
-            //    _oThread.Interrupt();
-
-
-            Send("GetTaskQueue " + WorkAgent.STARTED + " " + agent.AgentID);
-            Send("GetTaskQueue " + WorkAgent.OFFERED + " " + agent.AgentID);
         }
 
-        public override void Send(string msg) {
-            if (!_externalProcessor.Connected) return;
-            byte[] bytes = Encoding.GetBytes(msg + "\n");
-            _externalProcessor.Send(bytes);
-            System.Diagnostics.Debug.WriteLine("SEND: " + msg);
-            Logger.BroadcastMessage(this, "SEND: " + msg);
+        #endregion
+
+        #region YAWL Relay Connection
+
+        public override bool Connect()
+        {
+            try
+            {
+                _externalProcessor.Connect(WorkflowConnectionUrl, WorkflowConnectionPort);
+                _oThread.Start();
+                Console.WriteLine("connected");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Could not connect to YAWL Workflow service: " + e.Message);
+                IsConnected = false;
+                return false;
+            }
+
+            IsConnected = true;
+            return true;
         }
 
         public override void Close() {
@@ -157,32 +148,9 @@ namespace Veis.Workflow.YAWL
             IsConnected = false;
         }
 
-        public override bool Connect()
-        {
-            try
-            {
-                _externalProcessor.Connect(WorkflowConnectionUrl, WorkflowConnectionPort);              
-                _oThread.Start();
-                Console.WriteLine("connected");
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Could not connect to YAWL Workflow service: " + e.Message);
-                IsConnected = false;
-                return false;
-            }
+        #endregion
 
-            IsConnected = true;
-            return true;
-        }
-
-        public override void SyncAll() {
-            //Console.WriteLine("==========SyncAll=========");
-            Send("GetAllAgents");
-            Send("GetActiveAgents");
-            Send("GetAllSpecifications");
-            //WorkEnactors.ForEach(w => GetTaskQueuesForWorkEnactor(w));
-        }
+        #region Send Messages to YAWL
 
         public override void LaunchCase(string specificationName)
         {
@@ -198,6 +166,60 @@ namespace Veis.Workflow.YAWL
             }
             StartedCases.Clear();
         }
+
+        public void GetTaskQueuesForWorkEnactor(WorkEnactor workEnactor)
+        {
+            if (WorkEnactors.Contains(workEnactor))
+            {
+                string agentID = workEnactor.WorkAgent.AgentID;
+                Send("GetTaskQueue " + WorkAgent.OFFERED + " " + agentID);
+                Send("GetTaskQueue " + WorkAgent.ALLOCATED + " " + agentID);
+                Send("GetTaskQueue " + WorkAgent.STARTED + " " + agentID);
+                Send("GetTaskQueue " + WorkAgent.SUSPENDED + " " + agentID);
+            }
+        }
+
+        public override void EndWorkItem(WorkAgent agent, WorkItem workItem)
+        {
+            //Send("WorkItemAction Complete " + agent.AgentID + " " + workItem.WorkItemID + " "
+            //    + workItem.CaseID + " " + workItem.SpecificationID);
+            Send("WorkItemAction CheckIn " + agent.AgentID + " " + workItem.WorkItemID + " "
+                + workItem.CaseID + " " + workItem.SpecificationID);
+            //Thread.Sleep(2000);
+            // Before requesting the next task, make sure that th
+            //if (_oThread.ThreadState == ThreadState.Stopped)
+            //    _oThread.Start();
+            //else if (_oThread.ThreadState == ThreadState.Suspended)
+            //    _oThread.Resume();
+            //else if (_oThread.ThreadState == ThreadState.WaitSleepJoin)
+            //    _oThread.Interrupt();
+
+
+            //Send("GetTaskQueue " + WorkAgent.STARTED + " " + agent.AgentID);
+            //Send("GetTaskQueue " + WorkAgent.OFFERED + " " + agent.AgentID);
+        }
+
+        public override void SyncAll()
+        {
+            //Console.WriteLine("==========SyncAll=========");
+            Send("GetAllAgents");
+            Send("GetActiveAgents");
+            Send("GetAllSpecifications");
+            //WorkEnactors.ForEach(w => GetTaskQueuesForWorkEnactor(w));
+        }
+
+        public override void Send(string msg)
+        {
+            if (!_externalProcessor.Connected) return;
+            byte[] bytes = Encoding.GetBytes(msg + "\n");
+            _externalProcessor.Send(bytes);
+            System.Diagnostics.Debug.WriteLine("SEND: " + msg);
+            Logger.BroadcastMessage(this, "SEND: " + msg);
+        }
+
+        #endregion
+
+        #region Receive Messages from YAWL
 
         private void ReadMessages() {
             char[] sep = { ' ' };
@@ -438,8 +460,8 @@ namespace Veis.Workflow.YAWL
                                             CaseID = caseId,
                                             SpecificationID = specificationID
                                         });
-                                        SyncAll(); // TODO: do this in the event handler listener
-                                        WorkEnactors.ForEach(w => GetTaskQueuesForWorkEnactor(w));
+                                        //SyncAll(); // TODO: do this in the event handler listener
+                                        //WorkEnactors.ForEach(w => GetTaskQueuesForWorkEnactor(w));
                                     }
                                 }
 
@@ -493,6 +515,8 @@ namespace Veis.Workflow.YAWL
                 }
             }
         }
+
+        #endregion
 
         protected void AddYAWLWorkAgent(string agentID)
         {

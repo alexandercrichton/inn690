@@ -148,6 +148,11 @@ namespace Veis.Unity.Simulation
             MainThread.DoActions();
         }
 
+        public void OnUnityApplicationClose()
+        {
+
+        }
+
         #endregion
 
         #region Process Script Commands
@@ -243,7 +248,7 @@ namespace Veis.Unity.Simulation
             // A case has been successfully launched
             _isRunningCase = true;
             Log("Running case.");
-            _workflowProvider.SyncAll();
+            //_workflowProvider.SyncAll();
             //_polledWorldState.Start();
             //_sceneService.ShowResponse("Make sense 123!", true);
         }

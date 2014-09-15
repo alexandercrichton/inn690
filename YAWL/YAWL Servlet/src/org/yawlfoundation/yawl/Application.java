@@ -13,8 +13,6 @@ public class Application {
 	public static void main(String[] args) {
 		try {
 			Log("Application main");
-//			Executor.execute(new ClientListenServer(CLIENT_PORT));
-//			Executor.execute(new YAWLListenServer(YAWL_PORT));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -24,7 +22,6 @@ public class Application {
 		try {
 			Log("Application initialized");
 			Executor.execute(new ClientListenServer(CLIENT_PORT));
-//			Executor.execute(new YAWLListenServer(YAWL_PORT));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

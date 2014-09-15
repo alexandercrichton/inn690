@@ -44,7 +44,13 @@ public class YAWLInterface extends InterfaceBWebsideController {
 	
 	public YAWLInterface() {
 		if (Instance == null) {
+			Application.Log("Setting YAWLInterface.Instance");
 			Instance = this;			
+		}
+		try {
+			ensureConnection();
+		} catch (Exception e) {
+			Application.Log(e.getMessage());
 		}
 	}
 
@@ -208,25 +214,40 @@ public class YAWLInterface extends InterfaceBWebsideController {
 
 	}
 
-	public synchronized List<String> WorkItemAction(String inputLine) throws IOException, ResourceGatewayException {
+	public synchronized List<String> WorkItemAction(String inputLine) {
 		List<String> messageList = new ArrayList<String>();
-		String action = inputLine.split(" ")[1];
-		String agentID = inputLine.split(" ")[2];
-		String workItemID = inputLine.split(" ")[3];
-		String caseIdentifier = inputLine.split(" ")[4].split("\\.")[0];
-		String caseSpecificationID = inputLine.split(" ")[5];
 		
-		if (action.equalsIgnoreCase("Complete")) {
-			if (completeWorkItem(agentID, workItemID)) {
-				messageList.add(EndTask(agentID, workItemID));
-				if (isCaseCompleted(caseIdentifier)) {
-					messageList.add(completeCase(caseIdentifier, caseSpecificationID));
+		try {
+			String action = inputLine.split(" ")[1];
+			String agentID = inputLine.split(" ")[2];
+			String workItemID = inputLine.split(" ")[3];
+			String caseIdentifier = inputLine.split(" ")[4].split("\\.")[0];
+			String caseSpecificationID = inputLine.split(" ")[5];
+			
+			if (action.equalsIgnoreCase("Complete")) {
+				if (completeWorkItem(agentID, workItemID)) {
+					messageList.add(EndTask(agentID, workItemID));
+					if (isCaseCompleted(caseIdentifier)) {
+						messageList.add(completeCase(caseIdentifier, caseSpecificationID));
+					}
 				}
+				
+			} else if (action.equalsIgnoreCase("CheckIn")) {
+				
 			}
+			
+		} catch (Exception e) {
+			Application.Log(e.getMessage());
 		}
-
 		
 		return messageList;
+	}
+	
+	protected synchronized boolean CheckInWorkItem(String inputLine) {
+		return true;
+		
+//		Application.Log(_interfaceBClient.checkInWorkItem(record.getID(), JDOMUtil.elementToString(getOutputData(record.getTaskID(), "result")), null, handleB));
+
 	}
 	
 	protected Boolean completeWorkItem(String agentID, String workItemID) throws IOException, ResourceGatewayException {
@@ -243,22 +264,28 @@ public class YAWLInterface extends InterfaceBWebsideController {
 		return "TASKEND " + agentID + " " + workItemID;
 	}
 	
-	/**
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/**************************************************************************
 	 * 
 	 * 
 	 * YAWL Custom Service override methods
 	 * 
 	 * 
-	 */
+	 **************************************************************************/
 	
 	
 	
 	public void handleStartCaseEvent(YSpecificationID specID, String caseID, String launchingService, boolean delayed) {
-		Application.Log("CASE STARTED");
-		Application.Log("Identifier: " + specID.getIdentifier());
-		Application.Log("Version: " + specID.getVersionAsString());
-		Application.Log("URI: " + specID.getUri());
-		Application.Log(_interfaceBClient.getBackEndURI());
+		Application.Log(String.format("CASE STARTED: %s, by: %s", caseID, launchingService));
 	}
 	
 	public void handleCancelledCaseEvent(String caseID)  {
@@ -272,10 +299,23 @@ public class YAWLInterface extends InterfaceBWebsideController {
 	public void handleEnabledWorkItemEvent(WorkItemRecord record) {
 		try {
 			ensureConnection();
-			record = checkOut(record.getID(), handleB);
+			
+			String[] queues = { "0", "1", "2", "3", "4", "5" };
+			for (Participant participant : getAgents()) {
+				String userID = participant.getID();
+				for (String queue : queues) {
+					String inputLine = String.format("%s %s %s", "GetTaskQueue", queue, userID);
+					for (String message : GetTaskQueue(inputLine)) {
+						Application.Log(message);
+					}
+				}
+				
+			}
+//			record = checkOut(record.getID(), handleB);
 
 			Application.Log("Work item enabled: " + record.getTaskID());
-			Application.Log(_interfaceBClient.checkInWorkItem(record.getID(), JDOMUtil.elementToString(getOutputData(record.getTaskID(), "result")), null, handleB));
+			Application.Log(record.toXML());
+//			Application.Log(_interfaceBClient.checkInWorkItem(record.getID(), JDOMUtil.elementToString(getOutputData(record.getTaskID(), "result")), null, handleB));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -286,15 +326,24 @@ public class YAWLInterface extends InterfaceBWebsideController {
 			if (handleB == null || !checkConnection(handleB)) {
 				handleB = connect(name, password);
 			}
-			if (handleA == null) {
+			if (handleA == null || !interfaceA.checkConnection(handleA).equals("true")) {
+				Application.Log("interfaceA.checkConnection() != true");
 				handleA = interfaceA.connect(name, password);
 			}
-			if (handleRG == null) {
+			if (handleRG == null || !resourceGateway.checkConnection(handleRG)) {
+				Application.Log("resourceGateway.checkConnection() != true");
 				handleRG = resourceGateway.connect(name, password);
 			}
-			if (handleWQG == null) {
+			if (handleWQG == null || !workQueueGateway.checkConnection(handleWQG)) {
+				Application.Log("workQueueGateway.checkConnection() != true");
 				handleWQG = workQueueGateway.connect(name, password);
 			}
+//			if (handleRG == null || !checkConnection(handleB)) {
+//				handleRG = resourceGateway.connect(name, password);
+//			}
+//			if (handleWQG == null || !checkConnection(handleB)) {
+//				handleWQG = workQueueGateway.connect(name, password);
+//			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -305,7 +354,7 @@ public class YAWLInterface extends InterfaceBWebsideController {
 	}
 	
 	public synchronized void LaunchCase() {
-		YSpecificationID ySpec = new YSpecificationID("UID_0ad53bd4-6f76-4bd5-86e3-197be62c26e5", "0.1", "TramaCentreA_NEW");
+		YSpecificationID ySpec = new YSpecificationID("UID_0ad53bd4-6f76-4bd5-86e3-197be62c26e5", "0.2", "TramaCentreA_NEW");
 		try {
 			_interfaceBClient.launchCase(ySpec, null, handleB, new YLogDataItemList(), _interfaceBClient.getBackEndURI());
 		} catch (IOException e) {

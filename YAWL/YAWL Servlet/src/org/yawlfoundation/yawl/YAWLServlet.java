@@ -31,7 +31,7 @@ public class YAWLServlet extends HttpServlet implements ServletContextListener {
 	public void contextDestroyed(ServletContextEvent arg0) {
 		// TODO Auto-generated method stub
 //		MAKE SURE ALL THREADS DIE PROPERLY
-		
+//		Application.Executor.shutdownNow();
 	}
 
 	@Override
