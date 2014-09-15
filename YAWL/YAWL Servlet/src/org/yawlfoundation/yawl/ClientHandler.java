@@ -34,7 +34,6 @@ public class ClientHandler implements Runnable {
 	public void run() {
 		Application.Log("Client connected to socket: "
 				+ _clientSocket.toString());
-		Application.Log(YAWLInterface.Instance.handleB);
 
 		try {
 			_out = new PrintWriter(_clientSocket.getOutputStream(), true);
@@ -73,6 +72,7 @@ public class ClientHandler implements Runnable {
 	}
 
 	protected List<String> processInput(String inputLine) throws IOException, ResourceGatewayException {
+		System.out.println("processInput())");
 		YAWLInterface.Instance.ensureConnection();
 		
 		List<String> replyMessages = new ArrayList<>();

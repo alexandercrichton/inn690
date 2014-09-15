@@ -20,11 +20,10 @@ public class YAWLServlet extends HttpServlet implements ServletContextListener {
 	@Override
 	public void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		
+//		YAWLInterface.Instance.PrintAllTaskQueues();
 		response.getWriter().write(Application.GetLog());
 //		YAWLInterface.Instance.ensureConnection();
-//		YAWLInterface.Log(YAWLInterface.Instance.handle);
-//		YAWLInterface.LaunchCase();
+		Application.Log(YAWLInterface.Instance.handleB);
 	}
 
 	@Override

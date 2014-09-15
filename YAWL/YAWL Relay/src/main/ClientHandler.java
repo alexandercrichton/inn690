@@ -112,6 +112,7 @@ public class ClientHandler implements Runnable {
 	}
 	
 	public static synchronized void SendToAll(List<String> replyMessages) {
+		System.out.println(String.format("SENDTOALL: %d messages", replyMessages.size()));
 		for (ClientHandler client : Clients) {
 			client.send(replyMessages);
 		}

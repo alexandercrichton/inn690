@@ -51,76 +51,36 @@ namespace Veis.Unity.Simulation
             _npcWorkPlanner = new SmartWorkItemPlanner(
                 new BasicWorkItemPlanner(_sceneService),
                 new GoalBasedWorkItemPlanner(_workItemDecomp, _activityMethodService, _worldStateRepos, _sceneService));
-            _serviceRoutineService.AddServiceInvocationHandler(new MoveObjectHandler(_sceneService));
+            _serviceRoutineService.AddServiceInvocationHandler(new MoveObjectHandler(_sceneService)); 
+            _polledWorldState = new PolledDatabaseStateSource(2000, _worldStateRepos, _accessRecordRepos);
+			_worldStateService.AddStateSource(_polledWorldState);
+			_workflowProvider.Connect();
+            _workflowProvider.SyncAll();
 
-            Reset();
+            _workflowProvider.AgentCreated += CreateBotAvatar;
+            _workflowProvider.CaseCompleted += CompleteCase;
+            _workflowProvider.CaseStarted += StartCase;
+            _worldStateService.WorldStateUpdated += OnWorldStateUpdated;
         }
 
         #region Simulation Actions
 
         public override void Reset()
         {
-            RequestCancelAllCases();
-
             Log("Resetting simulation state");
+            _isRunningCase = false;
             _avatarManager.Clear();
-            if (_workflowProvider != null && _workflowProvider.IsConnected)
-            {
-                _workflowProvider.ResetAll();
-                _workflowProvider.AllWorkItems.Clear();
-                _workflowProvider.AllWorkAgents.Clear();
-            }
-            if (_polledWorldState != null)
-            {
-                _polledWorldState.Stop();
-                _polledWorldState = null;
-                _worldStateService.ClearStateSources();
-                _goalService.ClearGoals();
-            }
-
-            Initialise();
+            _workflowProvider.ResetAll();
+            _polledWorldState.Stop();
+            _goalService.ClearGoals();
             _sceneService.ResetAllAssetPositions();
             _worldStateRepos.ResetAssetWorldStates();
-        }
-
-        public override void Initialise()
-        {
-            if (!_workflowProvider.IsConnected)
-            {
-                Log("Trying to connect to workflow provider");
-                bool connected = _workflowProvider.Connect();
-                if (connected) // Hook up events
-                {
-                    Log("Connected to workflow provider");
-                    _workflowProvider.AgentCreated += CreateBotAvatar;
-                    _workflowProvider.CaseCompleted += CompleteCase;
-                    _workflowProvider.CaseStarted += StartCase;
-                    //_webInterfaceModule.Initialise(_workflowProvider);
-                }
-                else // Mark as un-initialised
-                {
-                    // _workflowProvider = null;
-                    Log("[YAWLSimulation]: Cannot connect to YAWL Service");
-                }
-            }
-
-            if (_polledWorldState == null)
-            {
-                _polledWorldState = new PolledDatabaseStateSource(2000, _worldStateRepos, _accessRecordRepos);
-                _worldStateService.AddStateSource(_polledWorldState);
-                _polledWorldState.Start(); // TODO: put this back in StartCase
-                _worldStateService.WorldStateUpdated += OnWorldStateUpdated;
-            }
-
-            if (_workflowProvider != null && _workflowProvider.IsConnected)
-            {
-                _workflowProvider.SyncAll();
-            }
         }
 
         public override void Start() 
         {
             RequestLaunchCase(_workflowProvider.AllCases[0].SpecificationName);
+            _polledWorldState.Start();
         }
 
         public override void End() 

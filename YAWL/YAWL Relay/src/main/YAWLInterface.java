@@ -177,10 +177,13 @@ public class YAWLInterface {
 	// WORK ITEM METHODS
 
 	public static synchronized List<String> GetTaskQueue(String inputLine) {
-		List<String> messageList = new ArrayList<String>();
 		int queueID = Integer.parseInt(inputLine.split(" ")[1]);
-		String participant = inputLine.split(" ")[2];
-		
+		String participant = inputLine.split(" ")[2];		
+		return getTaskQueueForParticipant(participant, queueID);
+	}
+	
+	protected static synchronized List<String> getTaskQueueForParticipant(String participant, Integer queueID) {
+		List<String> messageList = new ArrayList<String>();
 		try {
 			for (WorkItemRecord workItemRecord : (workQueueGateway.getQueuedWorkItems(participant, queueID, handleWorkQueueGateway))) {
 				String caseID = workItemRecord.getCaseID();
@@ -217,8 +220,20 @@ public class YAWLInterface {
 	}
 
 	public static synchronized List<String> GetAllWorkItems() {
-		return null;
-
+		List<String> messageList = new ArrayList<String>();
+		try {
+			List<Participant> participants = getAgents();
+			Integer[] queueIDs = { 0, 1, 2, 3, 4, 5 };
+			
+			for (Participant participant : participants) {
+				for (Integer queueID : queueIDs) {
+					messageList.addAll(getTaskQueueForParticipant(participant.getID(), queueID));
+				}
+			}
+		} catch (IOException | ResourceGatewayException e) {
+			e.printStackTrace();
+		}
+		return messageList;
 	}
 
 	public static synchronized List<String> WorkItemAction(String inputLine) throws IOException, ResourceGatewayException {

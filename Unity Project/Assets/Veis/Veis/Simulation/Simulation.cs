@@ -89,7 +89,6 @@ namespace Veis.Simulation
         
         public abstract void Start();
         public abstract void End();
-        public abstract void Initialise();
         public abstract void Log(string message);
         public abstract void Reset();
         public abstract bool RequestLaunchCase(string uri);

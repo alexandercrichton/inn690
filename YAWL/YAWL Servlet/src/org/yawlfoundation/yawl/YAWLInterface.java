@@ -44,7 +44,6 @@ public class YAWLInterface extends InterfaceBWebsideController {
 	
 	public YAWLInterface() {
 		if (Instance == null) {
-			Application.Log("Setting YAWLInterface.Instance");
 			Instance = this;			
 		}
 		try {
@@ -163,7 +162,7 @@ public class YAWLInterface extends InterfaceBWebsideController {
 		return messageList;
 	}
 	
-	private List<Participant> getAgents() throws IOException, ResourceGatewayException {
+	private List<Participant> getAgents() throws Exception {
 		return resourceGateway.getParticipants(handleRG);
 	}
 
@@ -207,6 +206,25 @@ public class YAWLInterface extends InterfaceBWebsideController {
 		}
 		
 		return messageList;
+	}
+	
+	public synchronized void PrintAllTaskQueues() {
+		try {
+			String[] queues = { "0", "1", "2", "3", "4", "5" };
+			for (Participant participant : getAgents()) {
+				String userID = participant.getID();
+				for (String queue : queues) {
+					String inputLine = String.format("%s %s %s", "GetTaskQueue", queue, userID);
+					for (String message : GetTaskQueue(inputLine)) {
+						Application.Log(message);
+					}
+				}
+				
+			}
+		} catch (Exception e) {
+			Application.Log(e.getMessage());
+		}
+		
 	}
 
 	public synchronized List<String> GetAllWorkItems() {
@@ -286,6 +304,8 @@ public class YAWLInterface extends InterfaceBWebsideController {
 	
 	public void handleStartCaseEvent(YSpecificationID specID, String caseID, String launchingService, boolean delayed) {
 		Application.Log(String.format("CASE STARTED: %s, by: %s", caseID, launchingService));
+		ensureConnection();
+		Application.Log(handleB);
 	}
 	
 	public void handleCancelledCaseEvent(String caseID)  {
@@ -300,17 +320,7 @@ public class YAWLInterface extends InterfaceBWebsideController {
 		try {
 			ensureConnection();
 			
-			String[] queues = { "0", "1", "2", "3", "4", "5" };
-			for (Participant participant : getAgents()) {
-				String userID = participant.getID();
-				for (String queue : queues) {
-					String inputLine = String.format("%s %s %s", "GetTaskQueue", queue, userID);
-					for (String message : GetTaskQueue(inputLine)) {
-						Application.Log(message);
-					}
-				}
-				
-			}
+			
 //			record = checkOut(record.getID(), handleB);
 
 			Application.Log("Work item enabled: " + record.getTaskID());
@@ -327,7 +337,7 @@ public class YAWLInterface extends InterfaceBWebsideController {
 				handleB = connect(name, password);
 			}
 			if (handleA == null || !interfaceA.checkConnection(handleA).equals("true")) {
-				Application.Log("interfaceA.checkConnection() != true");
+				Application.Log("interfaceA.checkConnection() == " + interfaceA.checkConnection(handleA));
 				handleA = interfaceA.connect(name, password);
 			}
 			if (handleRG == null || !resourceGateway.checkConnection(handleRG)) {
