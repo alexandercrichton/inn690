@@ -134,6 +134,7 @@ namespace Veis.Bots
 
             if (currentTask != "")
             {
+                Say(currentTask); // TODO: Remove this because it is a debugging message
 
                 string action = currentTask.Split(':')[0];
 
