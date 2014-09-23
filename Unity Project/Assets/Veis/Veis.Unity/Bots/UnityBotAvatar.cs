@@ -88,8 +88,11 @@ namespace Veis.Unity.Bots
         public override void WalkTo(string areaName)
         {
 			MainThread.QueueAction(()=> {
-			Veis.Unity.Logging.UnityLogger.BroadcastMesage(this, "Current object: " + this.ToString());
-			botAgentMovement.SetTarget(GameObject.Find(areaName));
+				bool targetMet = false;
+				Veis.Unity.Logging.UnityLogger.BroadcastMesage(this, "Current object: " + this.ToString());
+
+					botAgentMovement.SetTarget(GameObject.Find(areaName));
+
 			});
         }
 
