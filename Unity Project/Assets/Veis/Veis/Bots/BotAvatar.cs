@@ -114,7 +114,8 @@ namespace Veis.Bots
         }
 
         private void ProcessNextTask()
-        {
+		{
+
             if (currentTask != "") return;
 
             lock (taskQueue)
@@ -154,16 +155,12 @@ namespace Veis.Bots
                         StopAnimation();
                         currentTask = "";
                         break;
-                    case AvailableActions.GOTO:
+                    case AvailableActions.WALKTO:
                         WalkTo(currentTask.Split(':')[1]);
                         currentTask = "";
                         break;
                     case AvailableActions.FLYTO:
                         FlyToLocation(Vector3.Parse(currentTask.Split(':')[1]));
-                        currentTask = "";
-                        break;
-                    case AvailableActions.WALKTO:
-                        WalkToLocation(Vector3.Parse(currentTask.Split(':')[1]));
                         currentTask = "";
                         break;
                     case AvailableActions.SAY:
@@ -182,15 +179,6 @@ namespace Veis.Bots
                         break;
                     case AvailableActions.TOUCH:
                         Touch(currentTask.Split(':')[1]);
-                        currentTask = "";
-                        break;
-                    case AvailableActions.PICKUP:
-                    case AvailableActions.GRAB:
-                        PickUp(currentTask.Split(':')[1]);
-                        currentTask = "";
-                        break;
-                    case AvailableActions.DROP:
-                        Drop();
                         currentTask = "";
                         break;
                     case AvailableActions.STARTLOOP:

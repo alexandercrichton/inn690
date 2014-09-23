@@ -328,6 +328,9 @@ namespace Veis.Workflow.YAWL
                                         Logger.BroadcastMessage(this, "Adding to queue");
                                         agent.AddToQueue(taskQueue, workItem);
 
+										Veis.Unity.Logging.UnityLogger.BroadcastMesage(this, (workItem.TaskQueue == WorkAgent.STARTED).ToString());
+										Veis.Unity.Logging.UnityLogger.BroadcastMesage(this, (!agent.GetQueueById(WorkAgent.COMPLETED).Any(w => w.TaskID == taskID)).ToString());
+
                                         // Add the work if it has not been completed already
                                         if (workItem.TaskQueue == WorkAgent.STARTED
                                             && !agent.GetQueueById(WorkAgent.COMPLETED).Any(w => w.TaskID == taskID))

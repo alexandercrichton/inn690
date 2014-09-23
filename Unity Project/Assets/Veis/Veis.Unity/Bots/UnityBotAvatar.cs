@@ -12,7 +12,7 @@ namespace Veis.Unity.Bots
     public class UnityBotAvatar : BotAvatar
     {
 
-		navAgent botAgentMovement;
+		public navAgent botAgentMovement;
         //public UUID UUID { get; set; }
         //public string Id { get; set; }
         //public string FirstName { get; set; }
@@ -87,8 +87,10 @@ namespace Veis.Unity.Bots
 
         public override void WalkTo(string areaName)
         {
+			MainThread.QueueAction(()=> {
+			Veis.Unity.Logging.UnityLogger.BroadcastMesage(this, "Current object: " + this.ToString());
 			botAgentMovement.SetTarget(GameObject.Find(areaName));
-            throw new NotImplementedException();
+			});
         }
 
         public override void WalkToLocation(Common.Math.Vector3 position)

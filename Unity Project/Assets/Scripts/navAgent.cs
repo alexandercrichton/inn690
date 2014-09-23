@@ -92,7 +92,6 @@ public class navAgent : MonoBehaviour {
 		/*if (Input.GetButtonDown ("Fire1")) {
 			SetDestination();
 		}*/
-		SetTarget (targetPoint);
 
 		SetupAgentLocomotion();
 
