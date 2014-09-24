@@ -54,7 +54,7 @@ namespace Veis.Unity.Simulation
             _serviceRoutineService.AddServiceInvocationHandler(new MoveObjectHandler(_sceneService)); 
             _polledWorldState = new PolledDatabaseStateSource(2000, _worldStateRepos, _accessRecordRepos);
 			_worldStateService.AddStateSource(_polledWorldState);
-			_workflowProvider.Connect();
+			_workflowProvider.Start();
             _workflowProvider.SyncAll();
 
             _workflowProvider.AgentCreated += CreateBotAvatar;
@@ -89,7 +89,7 @@ namespace Veis.Unity.Simulation
             _avatarManager.Clear();
 
             Log("\nClosing connection to YAWL...");
-            _workflowProvider.Close();
+            _workflowProvider.End();
             _polledWorldState.Stop();
         }
 

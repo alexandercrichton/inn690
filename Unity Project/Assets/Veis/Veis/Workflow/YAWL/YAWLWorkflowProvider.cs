@@ -117,7 +117,7 @@ namespace Veis.Workflow.YAWL
 
         #region YAWL Relay Connection
 
-        public override bool Connect()
+        public override bool Start()
         {
             try
             {
@@ -136,7 +136,7 @@ namespace Veis.Workflow.YAWL
             return true;
         }
 
-        public override void Close()
+        public override void End()
         {
             EndAllCases();
             Send("EndSession");
@@ -223,257 +223,235 @@ namespace Veis.Workflow.YAWL
 
                 try
                 {
-                    while (_yawlSocket != null && _yawlSocket.Available == 0)
+                    _yawlSocket.Receive(bytes);
+
+                    string[] strings = Encoding.GetString(bytes).Split('\n');
+
+                    foreach (string xi in strings)
                     {
-                        Thread.Sleep(16);
-                    }
-
-                    if (_yawlSocket != null && _yawlSocket.Available > 0)
-                    {
-                        _yawlSocket.Receive(bytes);
-
-                        string[] strings = Encoding.GetString(bytes).Split('\n');
-
-                        foreach (string xi in strings)
+                        string x = xi.Replace("\r", "");
+                        String action = x.Split(' ')[0];
+                        int totalParams = x.Split(' ').Length;
+                        if (action.Length > 5)
                         {
-                            string x = xi.Replace("\r", "");
-                            String action = x.Split(' ')[0];
-                            int totalParams = x.Split(' ').Length;
-                            if (action.Length > 5)
+                            Logger.BroadcastMessage(this, "RECV: " + x);
+                        }
+
+                        #region Agents
+                        // If a new active (bot-based) agent needs to be created, notify someone of this
+                        if (action == "ACTIVEAGENT")
+                        {
+                            String first = x.Split(sep)[1];
+                            String last = x.Split(sep)[2];
+                            String agentID = x.Split(sep)[3];
+
+                            if (AllWorkAgents.Any(a => a.AgentID == agentID))
                             {
-                                Logger.BroadcastMessage(this, "RECV: " + x);
+
+                                OnAgentCreated(new AgentEventArgs
+                                {
+                                    Name = first + " " + last,
+                                    ID = agentID
+                                });
                             }
-
-                            try
-                            { // Try - catch to process string processing errors, to not break the flow of the program
-
-                                #region Agents
-                                // If a new active (bot-based) agent needs to be created, notify someone of this
-                                if (action == "ACTIVEAGENT")
-                                {
-                                    String first = x.Split(sep)[1];
-                                    String last = x.Split(sep)[2];
-                                    String agentID = x.Split(sep)[3];
-
-                                    if (AllWorkAgents.Any(a => a.AgentID == agentID))
-                                    {
-
-                                        OnAgentCreated(new AgentEventArgs
-                                        {
-                                            Name = first + " " + last,
-                                            ID = agentID
-                                        });
-                                    }
-                                    else
-                                    {
-                                        throw new Exception("No Agent Exists with this ID!");
-                                    }
-                                }
-
-                                // A new non-bot agent needs to be created.
-                                else if (action == "AGENT")
-                                {
-                                    String agentID = x.Split(sep)[3];
-                                    String first = x.Split(sep)[1];
-                                    String last = x.Split(sep)[2];
-
-                                    AddYAWLWorkAgent(agentID);
-                                    WorkAgent workAgent = AllWorkAgents.FirstOrDefault(a => a.AgentID == agentID);
-                                    workAgent.FirstName = first;
-                                    workAgent.LastName = last;
-
-                                    Logger.BroadcastMessage(this, "Updating YAWLWorkAgent: " + first + " " + last);
-                                }
-
-                                // There is a role being applied to an agent
-                                else if (action == "AGENTROLE")
-                                {
-                                    String agentID = x.Split(sep)[1];
-                                    String role = x.Split(sep, 3)[2];
-
-                                    AddYAWLWorkAgent(agentID);
-                                    WorkAgent workAgent = AllWorkAgents.FirstOrDefault(a => a.AgentID == agentID);
-
-                                    workAgent.Appearance = role;
-                                    workAgent.AddRole(role);
-                                    Logger.BroadcastMessage(this, "Updating YAWLWorkAgent: " + role);
-                                }
-
-                                // There is a capabality being applied to an agent
-                                else if (action == "AGENTCAPABILITY")
-                                {
-                                    String agentID = x.Split(sep)[1];
-                                    String capability = x.Split(sep, 3)[2];
-
-                                    AddYAWLWorkAgent(agentID);
-
-                                    AllWorkAgents.FirstOrDefault(a => a.AgentID == agentID).AddCapability(capability);
-                                    Logger.BroadcastMessage(this, "Updating YAWLWorkAgent: " + capability);
-                                }
-
-                                #endregion
-
-                                #region Work Items
-
-                                // A workitem is being added to a queue
-                                else if (action == "WORKITEM")
-                                {
-                                    string taskID = x.Split(sep)[5];
-                                    string agentID = x.Split(sep)[6];
-                                    string taskQueue = x.Split(sep)[7];
-                                    WorkItem workItem;
-                                    if (!AllWorkItems.Any(w => w.TaskID == taskID))
-                                    {
-                                        workItem = new WorkItem();
-                                        workItem.TaskID = taskID;
-                                        AllWorkItems.Add(workItem);
-                                    }
-                                    else
-                                    {
-                                        workItem = AllWorkItems.FirstOrDefault(w => w.TaskID == taskID);
-                                        AllWorkAgents.FirstOrDefault(a => a.AgentID == agentID)
-                                            .GetQueueById(taskQueue)
-                                            .Remove(workItem);
-                                    }
-                                    workItem.CaseID = x.Split(sep)[1];
-                                    workItem.SpecificationID = x.Split(sep)[2];
-                                    workItem.UniqueID = x.Split(sep)[3];
-                                    workItem.WorkItemID = x.Split(sep)[4];
-                                    workItem.TaskID = taskID;
-                                    workItem.TaskName = taskID;
-                                    workItem.AgentID = agentID;
-                                    workItem.TaskQueue = taskQueue;
-                                    workItem.tasksAndGoals.Add("Tasks", x.Split(sep)[8]);
-                                    workItem.tasksAndGoals.Add("Goals", x.Split(sep)[9]);
-
-                                    // Add work to queue if work item doesnt exist in the queue already
-                                    WorkAgent agent = AllWorkAgents.FirstOrDefault(a => a.AgentID == agentID);
-                                    if (agent != null && !agent.GetQueueById(taskQueue).Any(w => w.TaskID == taskID))
-                                    {
-                                        Logger.BroadcastMessage(this, "Adding to queue");
-                                        agent.AddToQueue(taskQueue, workItem);
-
-                                        // Add the work if it has not been completed already
-                                        if (workItem.TaskQueue == WorkAgent.STARTED
-                                            && !agent.GetQueueById(WorkAgent.COMPLETED).Any(w => w.TaskID == taskID))
-                                        {
-                                            Logger.BroadcastMessage(this, "Starting item");
-                                            WorkEnactors.FirstOrDefault(w => w.WorkAgent.AgentID == workItem.AgentID).AddWork(workItem);
-                                        }
-                                    }
-
-
-                                }
-
-                                // A work item name is being applied to a work item
-                                else if (action == "WORKITEMNAME")
-                                {
-                                    String taskID = x.Split(sep)[1];
-                                    String taskName = x.Split(sep, 3)[2];
-
-                                    if (!AllWorkItems.Any(w => w.TaskID == taskID))
-                                    {
-                                        WorkItem workItem = new WorkItem();
-                                        workItem.TaskID = taskID;
-                                        AllWorkItems.Add(workItem);
-                                    }
-
-                                    AllWorkItems.FirstOrDefault(w => w.TaskID == taskID).TaskName = taskName;
-                                }
-
-                                // A work item is being signalled to end
-                                else if (action == "TASKEND")
-                                {
-                                    String agentID = x.Split(sep)[1];
-                                    String workItemID = x.Split(sep)[2];
-                                    WorkItem workItem = AllWorkItems.FirstOrDefault(w => w.WorkItemID == workItemID && w.AgentID == agentID);
-                                    WorkAgent workAgent = AllWorkAgents.FirstOrDefault(a => a.AgentID == agentID);
-
-                                    if (workItem != null && workAgent != null)
-                                    {
-                                        workAgent.GetQueueById(workItem.TaskQueue).Remove(workItem);
-                                        if (workItem.TaskQueue == WorkAgent.STARTED)
-                                        {
-                                            WorkEnactors.FirstOrDefault(w => w.WorkAgent.AgentID == agentID).StopTaskIfStarted(workItem);
-                                        }
-                                        AllWorkItems.Remove(workItem);
-                                    }
-
-                                    WorkEnactors.ForEach(w => GetTaskQueuesForWorkEnactor(w));
-                                }
-
-                                #endregion
-
-                                #region Cases
-                                // A new case has been launched
-                                else if (action == "CASE")
-                                {
-                                    string identifier = x.Split(sep)[1];
-                                    string caseID = x.Split(sep)[1];
-                                    string specificationID = x.Split(sep)[2];
-                                    string specificationName = string.Empty;
-
-                                    if (!StartedCases.Any(c => c.CaseID.Equals(caseID)))
-                                    {
-                                        // Add it to the list of started cases and "begin" the simulation
-                                        // with a SyncAll() call
-                                        CurrentCase = AllCases.FirstOrDefault(c => c.SpecificationID == specificationID);
-                                        CurrentCase.CaseID = caseID;
-                                        StartedCases.Add(CurrentCase);
-                                        //OnCaseStateChanged(new CaseStateEventArgs
-                                        //{
-                                        //    State = CaseState.STARTED,
-                                        //    CaseID = caseID,
-                                        //    SpecificationID = specificationID
-                                        //});
-                                        //SyncAll(); // TODO: do this in the event handler listener
-                                        WorkEnactors.ForEach(w => GetTaskQueuesForWorkEnactor(w));
-                                    }
-                                }
-
-                                else if (action == "CASEEND")
-                                {
-                                    string caseId = x.Split(sep)[1];
-                                    string specificationId = x.Split(sep)[2];
-                                    if (StartedCases.Any(c => c.SpecificationID == specificationId))
-                                    {
-                                        StartedCases.Remove(StartedCases.FirstOrDefault(c => c.SpecificationID == specificationId));
-                                        OnCaseStateChanged(new CaseStateEventArgs
-                                        {
-                                            State = CaseState.COMPLETED,
-                                            CaseID = caseId,
-                                            SpecificationID = specificationId
-                                        });
-                                    }
-                                }
-
-                                else if (action == "SPECIFICATION")
-                                {
-                                    string specificationID = x.Split(sep)[3];
-                                    if (!AllCases.Any(c => c.SpecificationID == specificationID))
-                                    {
-                                        AllCases.Add(new Case
-                                        {
-                                            Identifier = x.Split(sep)[1],
-                                            Version = x.Split(sep)[2],
-                                            SpecificationID = specificationID,
-                                            SpecificationName = x.Split(sep)[4]
-                                        });
-                                    }
-                                }
-                                #endregion
-
-
-                                else if (x.Length > 1)
-                                {
-                                    // Console.WriteLine("Unknown command " + x);
-                                }
-                            }
-                            catch (KeyNotFoundException e)
+                            else
                             {
-                                System.Diagnostics.Debug.WriteLine(e.Message);
+                                throw new Exception("No Agent Exists with this ID!");
                             }
                         }
+
+                        // A new non-bot agent needs to be created.
+                        else if (action == "AGENT")
+                        {
+                            String agentID = x.Split(sep)[3];
+                            String first = x.Split(sep)[1];
+                            String last = x.Split(sep)[2];
+
+                            AddYAWLWorkAgent(agentID);
+                            WorkAgent workAgent = AllWorkAgents.FirstOrDefault(a => a.AgentID == agentID);
+                            workAgent.FirstName = first;
+                            workAgent.LastName = last;
+
+                            Logger.BroadcastMessage(this, "Updating YAWLWorkAgent: " + first + " " + last);
+                        }
+
+                        // There is a role being applied to an agent
+                        else if (action == "AGENTROLE")
+                        {
+                            String agentID = x.Split(sep)[1];
+                            String role = x.Split(sep, 3)[2];
+
+                            AddYAWLWorkAgent(agentID);
+                            WorkAgent workAgent = AllWorkAgents.FirstOrDefault(a => a.AgentID == agentID);
+
+                            workAgent.Appearance = role;
+                            workAgent.AddRole(role);
+                            Logger.BroadcastMessage(this, "Updating YAWLWorkAgent: " + role);
+                        }
+
+                        // There is a capabality being applied to an agent
+                        else if (action == "AGENTCAPABILITY")
+                        {
+                            String agentID = x.Split(sep)[1];
+                            String capability = x.Split(sep, 3)[2];
+
+                            AddYAWLWorkAgent(agentID);
+
+                            AllWorkAgents.FirstOrDefault(a => a.AgentID == agentID).AddCapability(capability);
+                            Logger.BroadcastMessage(this, "Updating YAWLWorkAgent: " + capability);
+                        }
+
+                        #endregion
+
+                        #region Work Items
+
+                        // A workitem is being added to a queue
+                        else if (action == "WORKITEM")
+                        {
+                            string taskID = x.Split(sep)[5];
+                            string agentID = x.Split(sep)[6];
+                            string taskQueue = x.Split(sep)[7];
+                            WorkItem workItem;
+                            if (!AllWorkItems.Any(w => w.TaskID == taskID))
+                            {
+                                workItem = new WorkItem();
+                                workItem.TaskID = taskID;
+                                AllWorkItems.Add(workItem);
+                            }
+                            else
+                            {
+                                workItem = AllWorkItems.FirstOrDefault(w => w.TaskID == taskID);
+                                AllWorkAgents.FirstOrDefault(a => a.AgentID == agentID)
+                                    .GetQueueById(taskQueue)
+                                    .Remove(workItem);
+                            }
+                            workItem.CaseID = x.Split(sep)[1];
+                            workItem.SpecificationID = x.Split(sep)[2];
+                            workItem.UniqueID = x.Split(sep)[3];
+                            workItem.WorkItemID = x.Split(sep)[4];
+                            workItem.TaskID = taskID;
+                            workItem.TaskName = taskID;
+                            workItem.AgentID = agentID;
+                            workItem.TaskQueue = taskQueue;
+                            workItem.tasksAndGoals.Add("Tasks", x.Split(sep)[8]);
+                            workItem.tasksAndGoals.Add("Goals", x.Split(sep)[9]);
+
+                            // Add work to queue if work item doesnt exist in the queue already
+                            WorkAgent agent = AllWorkAgents.FirstOrDefault(a => a.AgentID == agentID);
+                            if (agent != null && !agent.GetQueueById(taskQueue).Any(w => w.TaskID == taskID))
+                            {
+                                Logger.BroadcastMessage(this, "Adding to queue");
+                                agent.AddToQueue(taskQueue, workItem);
+
+                                // Add the work if it has not been completed already
+                                if (workItem.TaskQueue == WorkAgent.STARTED
+                                    && !agent.GetQueueById(WorkAgent.COMPLETED).Any(w => w.TaskID == taskID))
+                                {
+                                    Logger.BroadcastMessage(this, "Starting item");
+                                    WorkEnactors.FirstOrDefault(w => w.WorkAgent.AgentID == workItem.AgentID).AddWork(workItem);
+                                }
+                            }
+
+
+                        }
+
+                        // A work item name is being applied to a work item
+                        else if (action == "WORKITEMNAME")
+                        {
+                            String taskID = x.Split(sep)[1];
+                            String taskName = x.Split(sep, 3)[2];
+
+                            if (!AllWorkItems.Any(w => w.TaskID == taskID))
+                            {
+                                WorkItem workItem = new WorkItem();
+                                workItem.TaskID = taskID;
+                                AllWorkItems.Add(workItem);
+                            }
+
+                            AllWorkItems.FirstOrDefault(w => w.TaskID == taskID).TaskName = taskName;
+                        }
+
+                        // A work item is being signalled to end
+                        else if (action == "TASKEND")
+                        {
+                            String agentID = x.Split(sep)[1];
+                            String workItemID = x.Split(sep)[2];
+                            WorkItem workItem = AllWorkItems.FirstOrDefault(w => w.WorkItemID == workItemID && w.AgentID == agentID);
+                            WorkAgent workAgent = AllWorkAgents.FirstOrDefault(a => a.AgentID == agentID);
+
+                            if (workItem != null && workAgent != null)
+                            {
+                                workAgent.GetQueueById(workItem.TaskQueue).Remove(workItem);
+                                if (workItem.TaskQueue == WorkAgent.STARTED)
+                                {
+                                    WorkEnactors.FirstOrDefault(w => w.WorkAgent.AgentID == agentID).StopTaskIfStarted(workItem);
+                                }
+                                AllWorkItems.Remove(workItem);
+                            }
+
+                            WorkEnactors.ForEach(w => GetTaskQueuesForWorkEnactor(w));
+                        }
+
+                        #endregion
+
+                        #region Cases
+                        // A new case has been launched
+                        else if (action == "CASE")
+                        {
+                            string identifier = x.Split(sep)[1];
+                            string caseID = x.Split(sep)[1];
+                            string specificationID = x.Split(sep)[2];
+                            string specificationName = string.Empty;
+
+                            if (!StartedCases.Any(c => c.CaseID.Equals(caseID)))
+                            {
+                                // Add it to the list of started cases and "begin" the simulation
+                                // with a SyncAll() call
+                                CurrentCase = AllCases.FirstOrDefault(c => c.SpecificationID == specificationID);
+                                CurrentCase.CaseID = caseID;
+                                StartedCases.Add(CurrentCase);
+                                //OnCaseStateChanged(new CaseStateEventArgs
+                                //{
+                                //    State = CaseState.STARTED,
+                                //    CaseID = caseID,
+                                //    SpecificationID = specificationID
+                                //});
+                                //SyncAll(); // TODO: do this in the event handler listener
+                                WorkEnactors.ForEach(w => GetTaskQueuesForWorkEnactor(w));
+                            }
+                        }
+
+                        else if (action == "CASEEND")
+                        {
+                            string caseId = x.Split(sep)[1];
+                            string specificationId = x.Split(sep)[2];
+                            if (StartedCases.Any(c => c.SpecificationID == specificationId))
+                            {
+                                StartedCases.Remove(StartedCases.FirstOrDefault(c => c.SpecificationID == specificationId));
+                                OnCaseStateChanged(new CaseStateEventArgs
+                                {
+                                    State = CaseState.COMPLETED,
+                                    CaseID = caseId,
+                                    SpecificationID = specificationId
+                                });
+                            }
+                        }
+
+                        else if (action == "SPECIFICATION")
+                        {
+                            string specificationID = x.Split(sep)[3];
+                            if (!AllCases.Any(c => c.SpecificationID == specificationID))
+                            {
+                                AllCases.Add(new Case
+                                {
+                                    Identifier = x.Split(sep)[1],
+                                    Version = x.Split(sep)[2],
+                                    SpecificationID = specificationID,
+                                    SpecificationName = x.Split(sep)[4]
+                                });
+                            }
+                        }
+                        #endregion
                     }
                 }
                 catch (Exception e)

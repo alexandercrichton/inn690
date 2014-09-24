@@ -57,12 +57,12 @@ namespace Veis.Workflow
         /// <summary>
         /// Shuts down the workflow provider
         /// </summary>
-        public abstract void Close();
+        public abstract void End();
 
         /// <summary>
         /// Checks if the 
         /// </summary>
-        public abstract bool Connect();
+        public abstract bool Start();
         public bool IsConnected { get; protected set; }
 
         /// <summary>
