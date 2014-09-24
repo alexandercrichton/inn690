@@ -39,4 +39,17 @@ ProjectSettings
 /Unity Project/Assembly-CSharp.csproj
 /Unity Project/Assembly-CSharp-vs.csproj
 /Unity Project/Assembly-UnityScript.unityproj
-/3 YAWL Relay - Shortcut.lnk
+Unity Project-csharp.sln
+Library
+ProjectSettings
+Temp
+Assembly-CSharp.csproj
+Assembly-CSharp-firstpass.csproj
+Assembly-CSharp-firstpass-vs.csproj
+Assembly-CSharp-vs.csproj
+Assembly-UnityScript.unityproj
+Assembly-UnityScript-firstpass.unityproj
+Assembly-UnityScript-firstpass-vs.unityproj
+Assembly-UnityScript-vs.unityproj
+Unity Project.sln
+Unity Project.userprefs

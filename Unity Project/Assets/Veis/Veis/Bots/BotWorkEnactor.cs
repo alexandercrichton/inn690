@@ -40,7 +40,7 @@ namespace Veis.Bots
 
         public void StartWork(string workItemId)
         {
-            Logger.BroadcastMessage(this, "Starting work: " + WorkAgent.GetWorkItem(workItemId, WorkAgent.started).TaskName);
+            Veis.Unity.Logging.UnityLogger.BroadcastMesage(this, "Starting work: " + WorkAgent.GetWorkItem(workItemId, WorkAgent.started).TaskName);
             StartWork(WorkAgent.GetWorkItem(workItemId, WorkAgent.started));
         }
 

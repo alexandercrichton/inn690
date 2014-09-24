@@ -4,12 +4,15 @@ using System.Linq;
 using System.Text;
 using Veis.Bots;
 using Veis.Unity.Scene;
+using UnityEngine;
+using Veis.Unity.Simulation;
 
 namespace Veis.Unity.Bots
 {
     public class UnityBotAvatar : BotAvatar
     {
 
+		public navAgent botAgentMovement;
         //public UUID UUID { get; set; }
         //public string Id { get; set; }
         //public string FirstName { get; set; }
@@ -84,7 +87,10 @@ namespace Veis.Unity.Bots
 
         public override void WalkTo(string areaName)
         {
-            throw new NotImplementedException();
+			MainThread.QueueAction(()=> {
+			Veis.Unity.Logging.UnityLogger.BroadcastMesage(this, "Current object: " + this.ToString());
+			botAgentMovement.SetTarget(GameObject.Find(areaName));
+			});
         }
 
         public override void WalkToLocation(Common.Math.Vector3 position)

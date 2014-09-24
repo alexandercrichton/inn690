@@ -145,7 +145,7 @@ namespace Veis.Planning
             //if (location == null) return tasks;
 
             // MOVE to object (if exists)
-            //tasks.Add(AvailableActions.WALKTO + ":" + location.ToString());
+            tasks.Add(AvailableActions.WALKTO + ":" + asset);
 
             // FIND SITTABLE OBJECT (named <asset> chair)
             //var chairName = asset + " chair";
