@@ -87,8 +87,6 @@ public class ClientHandler implements Runnable {
 			replyMessages = YAWLInterface.LaunchCase(inputLine);
 		} else if (command.equalsIgnoreCase("SyncAll")) {
 			replyMessages = YAWLInterface.SyncAll();
-		} else if (command.equalsIgnoreCase("GetCases")) {
-			replyMessages = YAWLInterface.GetCases();
 		} else if (command.equalsIgnoreCase("GetAllSpecifications")) {
 			replyMessages = YAWLInterface.GetAllSpecifications();
 		} else if (command.equalsIgnoreCase("GetAllWorkItems")) {

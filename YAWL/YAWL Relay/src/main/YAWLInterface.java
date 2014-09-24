@@ -77,33 +77,55 @@ public class YAWLInterface {
 		return messageList;
 	}
 
-	public static synchronized List<String> GetCases() {
-		return null;
-
-	}
-
 	public static synchronized List<String> LaunchCase(String inputLine) {
 		List<String> messageList = new ArrayList<String>();
-		System.out.println("1");
 		String identifier = inputLine.split(" ")[1];
 		String version = inputLine.split(" ")[2];
 		String uri = inputLine.split(" ")[3];
 		YSpecificationID ySpec = new YSpecificationID(identifier, version, uri);
 		String response = "";
 		try {
-			System.out.println("2");
+			stopAllRunningCases();
 			response = interfaceB.launchCase(ySpec, null, new YLogDataItemList(), handleInterfaceB);
-			System.out.println("3");
 			if (interfaceB.successful(response)) {
 				messageList.add("CASE " + uri + " " + identifier);
-				System.out.println("4");
+			} else {
+				messageList.add("Could not start case: " + uri + " " + identifier);
 			}
-			messageList.add("CASE " + uri + " " + identifier);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}		
 		
 		return messageList;
+	}
+	
+	protected static synchronized void stopAllRunningCases() {
+		List<String> caseIDs = getAllRunningCasesByID();
+		for (String id : caseIDs) {
+			cancelCase(id);
+		}
+	}
+
+	protected static synchronized List<String> getAllRunningCasesByID() {
+		List<String> caseIDs = new ArrayList<String>();
+		try {
+			String xmlString = interfaceB.getAllRunningCases(handleInterfaceB);
+			XNode xml = parser.parse(xmlString);
+			try {
+				List<XNode> ids = xml.getChild("AllRunningCases")
+						.getChild("specificationID").getChildren("caseID");
+				System.out.println(ids);
+				for(XNode id : ids) {
+					caseIDs.add(id.getText());
+				}
+			} catch (Exception e) {
+				System.out.println("Malformed task info. " + e);
+			}
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return caseIDs;
 	}
 	
 	private static Boolean isCaseCompleted(String caseIdentifier) {
@@ -123,8 +145,20 @@ public class YAWLInterface {
 	}
 
 	public static synchronized List<String> CancelCase(String inputLine) {
+		String caseID = inputLine.split(" ")[1];
+		cancelCase(caseID);		
 		return null;
 
+	}
+	
+	protected static synchronized List<String> cancelCase(String caseID) {
+		try {
+			System.out.println(interfaceB.cancelCase(caseID, handleInterfaceB));
+		} catch (IOException e) {
+			System.err.println("Failed to cancel case: " + caseID);
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	public static synchronized List<String> CancelAllCases(String inputLine) {

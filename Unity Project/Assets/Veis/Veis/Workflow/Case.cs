@@ -11,5 +11,6 @@ namespace Veis.Workflow
         public string Version { get; set; }
         public string SpecificationID { get; set; }
         public string SpecificationName { get; set; }
+        public string CaseID { get; set; }
     }
 }

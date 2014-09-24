@@ -166,7 +166,7 @@ namespace Veis.Workflow.YAWL
         {
             foreach (var startedCase in StartedCases)
             {
-                Send("CancelCase " + startedCase.SpecificationName);
+                Send("CancelCase " + startedCase.CaseID);
             }
             StartedCases.Clear();
         }
@@ -409,22 +409,23 @@ namespace Veis.Workflow.YAWL
                                 else if (action == "CASE")
                                 {
                                     string identifier = x.Split(sep)[1];
-                                    string caseId = x.Split(sep)[1];
+                                    string caseID = x.Split(sep)[1];
                                     string specificationID = x.Split(sep)[2];
                                     string specificationName = string.Empty;
 
-                                    if (!StartedCases.Any(c => c.SpecificationName.Equals(caseId)))
+                                    if (!StartedCases.Any(c => c.CaseID.Equals(caseID)))
                                     {
                                         // Add it to the list of started cases and "begin" the simulation
                                         // with a SyncAll() call
                                         CurrentCase = AllCases.FirstOrDefault(c => c.SpecificationID == specificationID);
+                                        CurrentCase.CaseID = caseID;
                                         StartedCases.Add(CurrentCase);
-                                        OnCaseStateChanged(new CaseStateEventArgs
-                                        {
-                                            State = CaseState.STARTED,
-                                            CaseID = caseId,
-                                            SpecificationID = specificationID
-                                        });
+                                        //OnCaseStateChanged(new CaseStateEventArgs
+                                        //{
+                                        //    State = CaseState.STARTED,
+                                        //    CaseID = caseID,
+                                        //    SpecificationID = specificationID
+                                        //});
                                         //SyncAll(); // TODO: do this in the event handler listener
                                         WorkEnactors.ForEach(w => GetTaskQueuesForWorkEnactor(w));
                                     }
@@ -434,10 +435,9 @@ namespace Veis.Workflow.YAWL
                                 {
                                     string caseId = x.Split(sep)[1];
                                     string specificationId = x.Split(sep)[2];
-
-                                    if (StartedCases.Any(c => c.SpecificationName.Equals(caseId)))
+                                    if (StartedCases.Any(c => c.SpecificationID == specificationId))
                                     {
-                                        StartedCases.Remove(StartedCases.FirstOrDefault(c => c.SpecificationName.Equals(caseId)));
+                                        StartedCases.Remove(StartedCases.FirstOrDefault(c => c.SpecificationID == specificationId));
                                         OnCaseStateChanged(new CaseStateEventArgs
                                         {
                                             State = CaseState.COMPLETED,
