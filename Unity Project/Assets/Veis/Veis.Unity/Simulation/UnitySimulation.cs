@@ -414,6 +414,7 @@ namespace Veis.Unity.Simulation
             {
                 UnityBotAvatar bot = new UnityBotAvatar(e.ID, e.Name, e.Role, _sceneService);
 
+
                 string agentID = _workflowProvider.GetAgentIdByFullName(e.Name);
                 WorkAgent workAgent = _workflowProvider.AllWorkAgents.FirstOrDefault(a => a.AgentID == agentID);
                 BotWorkEnactor workEnactor = new BotWorkEnactor(bot, _workflowProvider, workAgent, _npcWorkPlanner);
@@ -426,7 +427,9 @@ namespace Veis.Unity.Simulation
 				                       {
 				//TODO: instantiate bot stuff
 				GameObject botAvatar = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/nursePrefab"), new Vector3(-4.0f, 0.0f, -10.0f), Quaternion.identity);
+
 					bot.botAgentMovement = botAvatar.GetComponent<navAgent>();
+					bot.SendBotValues();
 				});
             }
             else

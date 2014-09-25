@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using Veis.Unity.Bots;
-
+using System.Collections.Generic;
 
 public class navAgent : MonoBehaviour {
 
@@ -9,6 +9,17 @@ public class navAgent : MonoBehaviour {
 
 	public GameObject pinPoint;
 	public NavMeshAgent agent;
+
+	public List<string> taskQueue;
+	public string botTask;
+
+
+	//Bot Information
+
+	public string ID;
+	public string name;
+	public string role;
+
 
 
 	protected Animator animator;
@@ -28,6 +39,8 @@ public class navAgent : MonoBehaviour {
 		animator = GetComponent<Animator>();
 		locomotion = new Locomotion(animator);
 		pointClone = null;
+
+		taskQueue = new List<string>();
 
 	}
 
@@ -75,8 +88,21 @@ public class navAgent : MonoBehaviour {
 		transform.rotation = animator.rootRotation;
 	}
 
+	//Moves the Agent to the target location
 	public void SetTarget(GameObject location ) {
+		pinPoint = location;
 		agent.destination = location.transform.position;
+	}
+
+	//Exposes the current task the bot needs to do
+	public void SetTask(string currentTask) {
+		taskQueue.Add(currentTask);
+	}
+
+	public void SetBotInfo(UnityBotAvatar botAvatar) {
+		name = botAvatar.Name;
+		role = botAvatar.Role;
+		ID = botAvatar.ID;
 	}
 
 	protected bool AgentDone() {

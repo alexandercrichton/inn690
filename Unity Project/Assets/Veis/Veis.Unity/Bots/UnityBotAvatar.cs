@@ -58,6 +58,7 @@ namespace Veis.Unity.Bots
         public override void Say(string message)
         {
             Logging.UnityLogger.BroadcastMesage(this, "Bot[" + Name + "] says: " + message);
+			botAgentMovement.SetTask(message);
         }
 
         //public override void SendTextBox(string message, int chatChannel, string objectname, UUID ownerID, string ownerFirstName, string ownerLastName, UUID objectId)
@@ -90,6 +91,7 @@ namespace Veis.Unity.Bots
 			MainThread.QueueAction(()=> {
 			Veis.Unity.Logging.UnityLogger.BroadcastMesage(this, "Current object: " + this.ToString());
 			botAgentMovement.SetTarget(GameObject.Find(areaName));
+		
 			});
         }
 
@@ -98,6 +100,9 @@ namespace Veis.Unity.Bots
             throw new NotImplementedException();
         }
 
+		public void SendBotValues() {
+			botAgentMovement.SetBotInfo(this);
+		}
         #endregion
     }
 }
