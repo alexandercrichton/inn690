@@ -66,12 +66,16 @@ namespace Veis.Workflow
 
         public WorkItem GetWorkItem(string id, List<WorkItem> queue)
         {
-            foreach (WorkItem ifC in queue)
+            lock (queue)
             {
-                if (ifC.TaskID == id)
+                foreach (WorkItem ifC in queue)
                 {
-                    return ifC;
+                    if (ifC.TaskID == id)
+                    {
+                        return ifC;
+                    }
                 }
+
             }
 
             return null;

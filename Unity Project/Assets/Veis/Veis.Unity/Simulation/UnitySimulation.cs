@@ -106,7 +106,8 @@ namespace Veis.Unity.Simulation
         {
             _sceneService.HandleAssetServiceRoutines();
 			foreach (UnityBotAvatar avatar in _avatarManager.Bots) {
-				Logging.UnityLogger.BroadcastMesage(this, avatar.taskQueue.Count.ToString());
+                //Logging.UnityLogger.BroadcastMesage(this, avatar.taskQueue.Count.ToString());
+                avatar.Update();
 			}
 
             MainThread.DoActions();

@@ -271,8 +271,8 @@ public class UserInteraction : MonoBehaviour
                             .ForEach(w => GUILayout.Label("Allocated: " + w.TaskName));
                         bot.WorkEnactor.GetWorkAgent().started
                             .ForEach(w => GUILayout.Label("Started: " + w.TaskName));
-                        bot.WorkEnactor.GetWorkAgent().processing
-                            .ForEach(w => GUILayout.Label("Processing: " + w.TaskName));
+                        //bot.WorkEnactor.GetWorkAgent().processing
+                        //    .ForEach(w => GUILayout.Label("Processing: " + w.TaskName));
                     }
                 }
                 else
