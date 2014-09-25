@@ -6,20 +6,10 @@ using System;
 public static class MainThread
 {
     static readonly Queue<Action> _actions = new Queue<Action>();
-    private static bool _isInitialised = false;
     private static readonly object _lock = new object();
-
-    public static void Initialise()
-    {
-        _isInitialised = true;
-    }
 
     public static void QueueAction(Action a)
     {
-        if (!_isInitialised)
-        {
-            return;
-        }
         lock (_lock)
         {
             _actions.Enqueue(a);
@@ -28,10 +18,6 @@ public static class MainThread
 
     public static void DoActions()
     {
-        if (!_isInitialised)
-        {
-            return;
-        }
         lock (_lock)
         {
             while (_actions.Count > 0)

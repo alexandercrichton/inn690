@@ -33,29 +33,13 @@ namespace Veis.Bots
 
         public abstract void Say(string message);
 
-        //public abstract void SendTextBox(string message, int chatChannel, string objectname, UUID ownerID, string ownerFirstName, string ownerLastName, UUID objectId);
-
-        public abstract void FlyToLocation(Vector3 position);
-
-        public abstract void WalkToLocation(Vector3 position);
-
         public abstract void Despawn();
 
-        public abstract void WalkTo(string areaName);
-
-        public abstract void PickUp(string objectName);
-
-        public abstract void Drop();
+        public abstract void WalkTo(string location);
 
         public abstract void Touch(String objectName);
 
-        public abstract void SitOn(String objectName);
-
-        public abstract void StandUp();
-
-        public abstract void PlayAnimation(string animationName);
-
-        public abstract void StopAnimation();
+        public abstract bool IsAt(string location);
 
         public void ExecuteAction(string asset, string methodName, string parameterString)
         {
@@ -80,28 +64,18 @@ namespace Veis.Bots
             return action;
         }
 
-        public void TaskWait(double seconds)
-        {
-            System.Timers.Timer t = new System.Timers.Timer();
-            t.Interval = seconds * 1000;
-            t.AutoReset = false;
-            t.Elapsed += new ElapsedEventHandler(OnTimedEvent);
-            t.Enabled = true;
-        }
-
-        private void OnTimedEvent(object sender, ElapsedEventArgs e)
-        {
-            currentTask = "";
-            ProcessNextTask();
-        }
-
         #endregion
 
         #region Agent Task Queue
 
         public LinkedList<String> taskQueue = new LinkedList<string>();
         private String currentTask = "";
-        private int taskLoopIndex = 0;
+        protected bool isDoingTask = false;
+
+        public void Update()
+        {
+            processTasks();
+        }
 
         public void AddTaskToQueue(string task)
         {
@@ -109,104 +83,42 @@ namespace Veis.Bots
             {
                 taskQueue.AddLast(task);
             }
-
-            ProcessNextTask();
+            //processTasks();
         }
 
-        private void ProcessNextTask()
+        private void processTasks()
 		{
-
-            if (currentTask != "") return;
-
-            lock (taskQueue)
+            if (currentTask == "")
             {
-                if (taskQueue.Count > 0)
+                lock (taskQueue)
                 {
-                    currentTask = taskQueue.First.Value;
-                    taskQueue.RemoveFirst();
-
-                    if (taskLoopIndex > 0)
+                    if (taskQueue.Count > 0)
                     {
-                        taskQueue.AddLast(currentTask);
+                        currentTask = taskQueue.First.Value;
+                        taskQueue.RemoveFirst();
                     }
                 }
             }
 
-            if (currentTask != "")
-            {
                 Say(currentTask); // TODO: Remove this because it is a debugging message
 
                 string action = currentTask.Split(':')[0];
 
                 switch (action.ToUpper())
                 {
-                    case AvailableActions.WAIT:
-                        TaskWait(double.Parse(currentTask.Split(':')[1]));
-                        break;
                     case AvailableActions.DESPAWN:
                         Despawn();
                         currentTask = "";
                         break;
-                    case AvailableActions.ANIMATE:
-                        PlayAnimation(currentTask.Split(':')[1]);
-                        currentTask = "";
-                        break;
-                    case AvailableActions.STOP:
-                        StopAnimation();
-                        currentTask = "";
-                        break;
                     case AvailableActions.WALKTO:
                         WalkTo(currentTask.Split(':')[1]);
-                        currentTask = "";
-                        break;
-                    case AvailableActions.FLYTO:
-                        FlyToLocation(Vector3.Parse(currentTask.Split(':')[1]));
-                        currentTask = "";
-                        break;
-                    case AvailableActions.SAY:
-                        Say(currentTask.Split(':')[1]);
-                        currentTask = "";
-                        break;
-                    case AvailableActions.SIT:
-                    case AvailableActions.SITON:
-                        SitOn(currentTask.Split(':')[1]);
-                        currentTask = "";
-                        break;
-                    case AvailableActions.STAND:
-                    case AvailableActions.STANDUP:
-                        StandUp();
-                        currentTask = "";
+                        if (IsAt(currentTask.Split(':')[1]))
+                        {
+                            currentTask = "";
+                        }
                         break;
                     case AvailableActions.TOUCH:
                         Touch(currentTask.Split(':')[1]);
-                        currentTask = "";
-                        break;
-                    case AvailableActions.STARTLOOP:
-                        taskLoopIndex++;
-
-                        if (currentTask.Split(':').Length > 1)
-                        {
-                            int loopIndex = int.Parse(currentTask.Split(':')[1]);
-
-                            if (loopIndex != 0)
-                            {
-                                lock (taskQueue)
-                                {
-                                    if (taskQueue.Count > 0)
-                                    {
-                                        taskQueue.AddLast(AvailableActions.STARTLOOP + ":" + (loopIndex - 1));
-                                    }
-                                }
-                            }
-                        }
-                        else
-                        {
-                            taskQueue.AddLast(AvailableActions.STARTLOOP);
-                        }
-                        currentTask = "";
-                        break;
-                    case AvailableActions.ENDLOOP:
-                        taskLoopIndex--;
                         currentTask = "";
                         break;
                     case AvailableActions.STARTWORK:
@@ -222,55 +134,27 @@ namespace Veis.Bots
                         ExecuteAction(parts[1], parts[2], parts[3]);
                         currentTask = "";
                         break;
+					case AvailableActions.SAY:
+						 Say (currentTask.Split (':')[1]);
+					     currentTask = "";
+					     break;
                     default:
                         Say("{ERROR:TASK:UNKNOWN:" + action.ToUpper() + "}");
                         currentTask = "";
                         break;
                 }
 
-                if (currentTask == "")
-                    ProcessNextTask();
-            }
+                //if (currentTask == "")
+                //    processTasks();
+            
         }
 
-        #endregion
 
-        #region Chat Handling
 
-        public string RecieveChat(ChatMessage message)
+        protected void completeCurrentTask()
         {
-            String reply = String.Empty;
-
-            if (message.Message[0] == '@') // '@' indicates a direct command
-            {
-                if (message.Message.Split(' ')[0].ToLower() == "@here")
-                {
-                    reply = "Okay, I'll come to you";
-                    FlyToLocation(message.Position);
-                }
-                else
-                {
-                    if(message.Message.Trim().Length > 1)
-                    {
-                        reply = "I'll get right onto it: " + message.Message.Substring(1);
-                        AddTaskToQueue(message.Message.Substring(1));
-                    }
-                    else
-                    {
-                        //Only @ received
-                        //May add a list of posible command here for ease of use
-                        reply = "Hi there, I'm waiting for your command.";
-                    }
-                }
-            }
-            else
-            {
-                // This one will let NPC chat by AIML
-                reply = ChatHandle.ProcessChat(message.Message, message.SenderName,
-                        message.SenderId);
-            }
-
-            return reply;
+            currentTask = "";
+            processTasks();
         }
 
         #endregion

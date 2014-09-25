@@ -35,50 +35,9 @@ namespace Veis.Unity.Bots
             throw new NotImplementedException();
         }
 
-        public override void Drop()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void FlyToLocation(Common.Math.Vector3 position)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void PickUp(string objectName)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void PlayAnimation(string animationName)
-        {
-            throw new NotImplementedException();
-        }
-
         public override void Say(string message)
         {
             Logging.UnityLogger.BroadcastMesage(this, "Bot[" + Name + "] says: " + message);
-			botAgentMovement.SetTask(message);
-        }
-
-        //public override void SendTextBox(string message, int chatChannel, string objectname, UUID ownerID, string ownerFirstName, string ownerLastName, UUID objectId)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        public override void SitOn(string objectName)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void StandUp()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void StopAnimation()
-        {
-            throw new NotImplementedException();
         }
 
         public override void Touch(string objectName)
@@ -86,23 +45,25 @@ namespace Veis.Unity.Bots
             throw new NotImplementedException();
         }
 
-        public override void WalkTo(string areaName)
+        public override void WalkTo(string assetName)
         {
-			MainThread.QueueAction(()=> {
+            //MainThread.QueueAction(()=> {
 			Veis.Unity.Logging.UnityLogger.BroadcastMesage(this, "Current object: " + this.ToString());
-			botAgentMovement.SetTarget(GameObject.Find(areaName));
-		
-			});
-        }
-
-        public override void WalkToLocation(Common.Math.Vector3 position)
-        {
-            throw new NotImplementedException();
+			botAgentMovement.SetTarget(GameObject.Find(assetName));
+			
+            //});
         }
 
 		public void SendBotValues() {
-			botAgentMovement.SetBotInfo(this);
+			botAgentMovement.SetBotInfo (this);
 		}
+
         #endregion
+
+        public override bool IsAt(string assetName)
+        {
+            Vector3 location = GameObject.Find(assetName).transform.position;
+            return (Vector3.Distance(botAgentMovement.transform.position, location) < 2f);
+        }
     }
 }

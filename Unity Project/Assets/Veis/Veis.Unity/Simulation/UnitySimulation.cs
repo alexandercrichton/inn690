@@ -43,7 +43,6 @@ namespace Veis.Unity.Simulation
 
         public UnitySimulation()
         {
-            MainThread.Initialise();
             _avatarManager = new AvatarManager();
             _workflowProvider = new YAWLWorkflowProvider();
             //_humans = new List<UnityHumanAvatar>();
@@ -52,76 +51,36 @@ namespace Veis.Unity.Simulation
             _npcWorkPlanner = new SmartWorkItemPlanner(
                 new BasicWorkItemPlanner(_sceneService),
                 new GoalBasedWorkItemPlanner(_workItemDecomp, _activityMethodService, _worldStateRepos, _sceneService));
-            _serviceRoutineService.AddServiceInvocationHandler(new MoveObjectHandler(_sceneService));
+            _serviceRoutineService.AddServiceInvocationHandler(new MoveObjectHandler(_sceneService)); 
+            _polledWorldState = new PolledDatabaseStateSource(2000, _worldStateRepos, _accessRecordRepos);
+			_worldStateService.AddStateSource(_polledWorldState);
+			_workflowProvider.Start();
+            _workflowProvider.SyncAll();
 
-            Reset();
+            _workflowProvider.AgentCreated += CreateBotAvatar;
+            _workflowProvider.CaseCompleted += CompleteCase;
+            _workflowProvider.CaseStarted += StartCase;
+            _worldStateService.WorldStateUpdated += OnWorldStateUpdated;
         }
 
         #region Simulation Actions
 
         public override void Reset()
         {
-            RequestCancelAllCases();
-
             Log("Resetting simulation state");
+            _isRunningCase = false;
             _avatarManager.Clear();
-            if (_workflowProvider != null && _workflowProvider.IsConnected)
-            {
-                _workflowProvider.ResetAll();
-                _workflowProvider.AllWorkItems.Clear();
-                _workflowProvider.AllWorkAgents.Clear();
-            }
-            if (_polledWorldState != null)
-            {
-                _polledWorldState.Stop();
-                _polledWorldState = null;
-                _worldStateService.ClearStateSources();
-                _goalService.ClearGoals();
-            }
-
-            Initialise();
+            _workflowProvider.ResetAll();
+            _polledWorldState.Stop();
+            _goalService.ClearGoals();
             _sceneService.ResetAllAssetPositions();
             _worldStateRepos.ResetAssetWorldStates();
-        }
-
-        public override void Initialise()
-        {
-            if (!_workflowProvider.IsConnected)
-            {
-                Log("Trying to connect to workflow provider");
-                bool connected = _workflowProvider.Connect();
-                if (connected) // Hook up events
-                {
-                    Log("Connected to workflow provider");
-                    _workflowProvider.AgentCreated += CreateBotAvatar;
-                    _workflowProvider.CaseCompleted += CompleteCase;
-                    _workflowProvider.CaseStarted += StartCase;
-                    //_webInterfaceModule.Initialise(_workflowProvider);
-                }
-                else // Mark as un-initialised
-                {
-                    // _workflowProvider = null;
-                    Log("[YAWLSimulation]: Cannot connect to YAWL Service");
-                }
-            }
-
-            if (_polledWorldState == null)
-            {
-                _polledWorldState = new PolledDatabaseStateSource(2000, _worldStateRepos, _accessRecordRepos);
-                _worldStateService.AddStateSource(_polledWorldState);
-                _polledWorldState.Start(); // TODO: put this back in StartCase
-                _worldStateService.WorldStateUpdated += OnWorldStateUpdated;
-            }
-
-            if (_workflowProvider != null && _workflowProvider.IsConnected)
-            {
-                _workflowProvider.SyncAll();
-            }
         }
 
         public override void Start() 
         {
             RequestLaunchCase(_workflowProvider.AllCases[0].SpecificationName);
+            _polledWorldState.Start();
         }
 
         public override void End() 
@@ -130,7 +89,7 @@ namespace Veis.Unity.Simulation
             _avatarManager.Clear();
 
             Log("\nClosing connection to YAWL...");
-            _workflowProvider.Close();
+            _workflowProvider.End();
             _polledWorldState.Stop();
         }
 
@@ -147,10 +106,16 @@ namespace Veis.Unity.Simulation
         {
             _sceneService.HandleAssetServiceRoutines();
 			foreach (UnityBotAvatar avatar in _avatarManager.Bots) {
-				Logging.UnityLogger.BroadcastMesage(this, avatar.taskQueue.Count.ToString());
+                //Logging.UnityLogger.BroadcastMesage(this, avatar.taskQueue.Count.ToString());
+                avatar.Update();
 			}
 
             MainThread.DoActions();
+        }
+
+        public void OnUnityApplicationClose()
+        {
+
         }
 
         #endregion
@@ -248,7 +213,7 @@ namespace Veis.Unity.Simulation
             // A case has been successfully launched
             _isRunningCase = true;
             Log("Running case.");
-            _workflowProvider.SyncAll();
+            //_workflowProvider.SyncAll();
             //_polledWorldState.Start();
             //_sceneService.ShowResponse("Make sense 123!", true);
         }
@@ -414,7 +379,6 @@ namespace Veis.Unity.Simulation
             {
                 UnityBotAvatar bot = new UnityBotAvatar(e.ID, e.Name, e.Role, _sceneService);
 
-
                 string agentID = _workflowProvider.GetAgentIdByFullName(e.Name);
                 WorkAgent workAgent = _workflowProvider.AllWorkAgents.FirstOrDefault(a => a.AgentID == agentID);
                 BotWorkEnactor workEnactor = new BotWorkEnactor(bot, _workflowProvider, workAgent, _npcWorkPlanner);
@@ -427,7 +391,6 @@ namespace Veis.Unity.Simulation
 				                       {
 				//TODO: instantiate bot stuff
 				GameObject botAvatar = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/nursePrefab"), new Vector3(-4.0f, 0.0f, -10.0f), Quaternion.identity);
-
 					bot.botAgentMovement = botAvatar.GetComponent<navAgent>();
 					bot.SendBotValues();
 				});

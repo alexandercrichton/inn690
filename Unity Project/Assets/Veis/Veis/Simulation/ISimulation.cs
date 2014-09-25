@@ -13,7 +13,6 @@ namespace Veis.Simulation
     {
         void Start();
         void End();
-        void Initialise();
         void Reset();
         void PerformSimulationAction(SimulationActions action);
     }

@@ -35,6 +35,7 @@ public class navAgent : MonoBehaviour {
 	
 		agent = GetComponent<NavMeshAgent>();
 		agent.updateRotation = false;
+		agent.speed = 1.0f;
 
 		animator = GetComponent<Animator>();
 		locomotion = new Locomotion(animator);
@@ -96,7 +97,7 @@ public class navAgent : MonoBehaviour {
 
 	//Exposes the current task the bot needs to do
 	public void SetTask(string currentTask) {
-		taskQueue.Add(currentTask);
+		botTask = currentTask;
 	}
 
 	public void SetBotInfo(UnityBotAvatar botAvatar) {
@@ -114,10 +115,6 @@ public class navAgent : MonoBehaviour {
 	}
 
 	void Update() {
-
-		/*if (Input.GetButtonDown ("Fire1")) {
-			SetDestination();
-		}*/
 
 		SetupAgentLocomotion();
 

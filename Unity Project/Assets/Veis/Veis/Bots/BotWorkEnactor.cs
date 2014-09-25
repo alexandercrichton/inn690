@@ -40,21 +40,28 @@ namespace Veis.Bots
 
         public void StartWork(string workItemId)
         {
-            Veis.Unity.Logging.UnityLogger.BroadcastMesage(this, "Starting work: " + WorkAgent.GetWorkItem(workItemId, WorkAgent.started).TaskName);
-            StartWork(WorkAgent.GetWorkItem(workItemId, WorkAgent.started));
+            //Veis.Unity.Logging.UnityLogger.BroadcastMesage(this, "Starting work: " + WorkAgent.GetWorkItem(workItemId, WorkAgent.started).TaskName);
+            lock (WorkAgent.started)
+            {
+                StartWork(WorkAgent.GetWorkItem(workItemId, WorkAgent.started));
+            }
         }
 
         public override void CompleteWork(WorkItem workItem)
         {
-            if (/*_workAgent.started.Contains(workItem) &&*/ WorkAgent.processing.Contains(workItem))
-            {
+            //if (/*_workAgent.started.Contains(workItem) &&*/ WorkAgent.processing.Contains(workItem))
+            //{
                 WorkAgent.Complete(workItem, WorkflowProvider);
-            }
+            //}
         }
 
         public void CompleteWork(string workItemId)
         {
-            CompleteWork(WorkAgent.GetWorkItem(workItemId, WorkAgent.processing));
+            lock (WorkAgent.processing)
+            {
+                CompleteWork(WorkAgent.processing.FirstOrDefault(w => w.TaskID == workItemId));
+
+            }
         }
 
         public void AddWorkTasks(WorkItem workItem)
