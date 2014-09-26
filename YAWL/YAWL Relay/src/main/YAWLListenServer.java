@@ -67,10 +67,10 @@ public class YAWLListenServer implements Runnable {
 			System.out.println("YAWL RECV: " + inputLine);
 			
 			if (inputLine != null && inputLine.length() > 0) {
-				List<String> replyMessages = null;
-				if (replyMessages != null) {
-					ClientHandler.SendToAll(replyMessages);
-				}
+//				List<String> replyMessages = null;
+//				if (replyMessages != null) {
+////					ClientHandler.SendToAll(replyMessages);
+//				}
 			}
 			in.close();
 			socket.close();
