@@ -38,7 +38,12 @@ namespace Veis.Unity.Bots
         public override void Say(string message)
         {
             Logging.UnityLogger.BroadcastMesage(this, "Bot[" + Name + "] says: " + message);
+
         }
+
+		public override void DefineTask (string task) {
+			botAgentMovement.SetTask(task);
+		}
 
         public override void Touch(string objectName)
         {

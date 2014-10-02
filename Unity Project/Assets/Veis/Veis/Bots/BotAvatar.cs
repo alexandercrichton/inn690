@@ -41,6 +41,8 @@ namespace Veis.Bots
 
         public abstract bool IsAt(string location);
 
+		public abstract void DefineTask(string task);
+
         public void ExecuteAction(string asset, string methodName, string parameterString)
         {
             ExecutableActions.Add(new ExecutableAction 
@@ -94,6 +96,8 @@ namespace Veis.Bots
                 {
                     if (taskQueue.Count > 0)
                     {
+						
+						DefineTask(taskQueue.First.Value);
                         currentTask = taskQueue.First.Value;
                         taskQueue.RemoveFirst();
                     }
@@ -138,6 +142,11 @@ namespace Veis.Bots
 						 Say (currentTask.Split (':')[1]);
 					     currentTask = "";
 					     break;
+				/*
+					case AvailableActions.ANIMATE:
+						 Animate(parts[1],part[2],parts[3]);
+						 break;
+						 */
                     default:
                         Say("{ERROR:TASK:UNKNOWN:" + action.ToUpper() + "}");
                         currentTask = "";
