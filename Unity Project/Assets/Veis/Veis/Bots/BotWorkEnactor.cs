@@ -12,6 +12,7 @@ namespace Veis.Bots
     {
         new private readonly BotAvatar Avatar;
         private readonly Planner<WorkItem> _planner;
+        private WorkItem currentWorkItem;
 
         public BotWorkEnactor(BotAvatar avatar, WorkflowProvider provider, WorkAgent workAgent, Planner<WorkItem> planner)
         {
@@ -21,102 +22,96 @@ namespace Veis.Bots
             _planner = planner;
         }
         
-        public override void AddWork(WorkItem workItem)
+        public override void AddWorkItem(WorkItem workItem)
         {
-            lock (WorkAgent.started)
+            if (workItem.TaskQueue == WorkAgent.STARTED
+                && !WorkAgent.completed.Any(i => i.TaskID == workItem.TaskID))
             {
-                Avatar.AddTaskToQueue("STARTWORK:" + workItem.TaskID);
+                WorkAgent.started.Add(workItem);
             }
+            //Avatar.AddTaskToQueue("STARTWORK:" + workItem.TaskID);
         }
 
-        public override void StartWork(WorkItem workItem)
+        public bool WorkReady()
         {
-            lock (WorkAgent.processing)
+            if (WorkAgent.processing.Count <= 0 && WorkAgent.started.Count > 0)
+            {
+                StartWorkItem(WorkAgent.started.FirstOrDefault());
+                return true;
+            }
+            return false;
+        }
+
+        public override void StartWorkItem(WorkItem workItem)
+        {
+            if (WorkAgent.started.Contains(workItem))
             {
                 WorkAgent.processing.Add(workItem);
             }
-            AddWorkTasks(workItem);
         }
 
-        public void StartWork(string workItemId)
+        public Queue<string> GetNextTasks()
         {
-            //Veis.Unity.Logging.UnityLogger.BroadcastMesage(this, "Starting work: " + WorkAgent.GetWorkItem(workItemId, WorkAgent.started).TaskName);
-            lock (WorkAgent.started)
+            WorkItem workItem = WorkAgent.processing[0];
+            IList<string> tasks = _planner.MakePlan(workItem).Tasks; // HERE is where the workitem tasks are EXTRACTED
+            Queue<string> queue = new Queue<string>(tasks);
+            queue.Enqueue("COMPLETEWORK:" + workItem.TaskID);
+            return queue;
+        }
+
+        public void StartWork(string taskID)
+        {
+            StartWorkItem(WorkAgent.GetWorkItem(taskID, WorkAgent.started));
+        }
+
+        public override void CompleteWorkItem(WorkItem workItem)
+        {
+            if (WorkAgent.processing.Contains(workItem))
             {
-                StartWork(WorkAgent.GetWorkItem(workItemId, WorkAgent.started));
-            }
-        }
-
-        public override void CompleteWork(WorkItem workItem)
-        {
-            //if (/*_workAgent.started.Contains(workItem) &&*/ WorkAgent.processing.Contains(workItem))
-            //{
                 WorkAgent.Complete(workItem, WorkflowProvider);
+            }
+        }
+
+        public void CompleteWork(string taskID)
+        {
+            CompleteWorkItem(WorkAgent.processing.FirstOrDefault(w => w.TaskID == taskID));
+        }
+
+        public override void StopWorkItem(WorkItem workItem)
+        {
+            //if (WorkAgent.started.Contains(workItem))
+            //{
+            //    lock (Avatar.taskQueue)
+            //    {
+            //        if (WorkAgent.processing.Contains(workItem))
+            //        {
+            //            //We have a slight problem?
+            //            while (Avatar.taskQueue.First.Value != "COMPLETEWORK:" + workItem.TaskID && Avatar.taskQueue.Count > 0)
+            //            {
+            //                Avatar.taskQueue.RemoveFirst();
+            //            }
+            //            Avatar.taskQueue.RemoveFirst();
+            //        }
+            //        else
+            //        {
+            //            //remove the start item thingo
+            //            Stack<String> reverseTasks = new Stack<string>();
+            //            while (Avatar.taskQueue.First.Value != "STARTWORK:" + workItem.TaskID && Avatar.taskQueue.Count > 0)
+            //            {
+            //                reverseTasks.Push(Avatar.taskQueue.First.Value);
+            //                Avatar.taskQueue.RemoveFirst();
+            //            }
+            //            if (Avatar.taskQueue.Count > 0)
+            //            {
+            //                Avatar.taskQueue.RemoveFirst();
+            //            }
+            //            while (reverseTasks.Count > 0)
+            //            {
+            //                Avatar.taskQueue.AddFirst(reverseTasks.Pop());
+            //            }
+            //        }
+            //    }
             //}
-        }
-
-        public void CompleteWork(string workItemId)
-        {
-            lock (WorkAgent.processing)
-            {
-                CompleteWork(WorkAgent.processing.FirstOrDefault(w => w.TaskID == workItemId));
-
-            }
-        }
-
-        public void AddWorkTasks(WorkItem workItem)
-        {
-            if (WorkAgent.started.Contains(workItem))
-            {
-                IList<String> tasklist = _planner.MakePlan(workItem).Tasks; // HERE is where the workitem tasks are EXTRACTED
-
-                lock (Avatar.taskQueue)
-                {
-                    Avatar.taskQueue.AddFirst("COMPLETEWORK:" + workItem.TaskID);
-
-                    for (int i = tasklist.Count - 1; i >= 0; i--)
-                    {
-                        Avatar.taskQueue.AddFirst(tasklist[i]);
-                    }
-                }
-            }
-        }
-
-        public override void StopTaskIfStarted(WorkItem workItem)
-        {
-            if (WorkAgent.started.Contains(workItem))
-            {
-                lock (Avatar.taskQueue)
-                {
-                    if (WorkAgent.processing.Contains(workItem))
-                    {
-                        //We have a slight problem?
-                        while (Avatar.taskQueue.First.Value != "COMPLETEWORK:" + workItem.TaskID && Avatar.taskQueue.Count > 0)
-                        {
-                            Avatar.taskQueue.RemoveFirst();
-                        }
-                        Avatar.taskQueue.RemoveFirst();
-                    }
-                    else
-                    {
-                        //remove the start item thingo
-                        Stack<String> reverseTasks = new Stack<string>();
-                        while (Avatar.taskQueue.First.Value != "STARTWORK:" + workItem.TaskID && Avatar.taskQueue.Count > 0)
-                        {
-                            reverseTasks.Push(Avatar.taskQueue.First.Value);
-                            Avatar.taskQueue.RemoveFirst();
-                        }
-                        if (Avatar.taskQueue.Count > 0)
-                        {
-                            Avatar.taskQueue.RemoveFirst();
-                        }
-                        while (reverseTasks.Count > 0)
-                        {
-                            Avatar.taskQueue.AddFirst(reverseTasks.Pop());
-                        }
-                    }
-                }
-            }
         }
 
         public WorkAgent GetWorkAgent()

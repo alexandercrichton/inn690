@@ -336,20 +336,11 @@ namespace Veis.Workflow.YAWL
                             workItem.tasksAndGoals.Add("Tasks", x.Split(sep)[8]);
                             workItem.tasksAndGoals.Add("Goals", x.Split(sep)[9]);
 
-                            // Add work to queue if work item doesnt exist in the queue already
-                            WorkAgent agent = AllWorkAgents.FirstOrDefault(a => a.AgentID == agentID);
-                            if (agent != null && !agent.GetQueueById(taskQueue).Any(w => w.TaskID == taskID))
+                            WorkEnactor workEnactor = WorkEnactors.FirstOrDefault(w => w.WorkAgent.AgentID == agentID);
+                            if (workEnactor != null)
                             {
-                                Logger.BroadcastMessage(this, "Adding to queue");
-                                agent.AddToQueue(taskQueue, workItem);
-
-                                // Add the work if it has not been completed already
-                                if (workItem.TaskQueue == WorkAgent.STARTED
-                                    && !agent.GetQueueById(WorkAgent.COMPLETED).Any(w => w.TaskID == taskID))
-                                {
-                                    Logger.BroadcastMessage(this, "Starting item");
-                                    WorkEnactors.FirstOrDefault(w => w.WorkAgent.AgentID == workItem.AgentID).AddWork(workItem);
-                                }
+                                Logger.BroadcastMessage(this, "Adding work item");
+                                workEnactor.AddWorkItem(workItem);
                             }
 
 
@@ -384,7 +375,7 @@ namespace Veis.Workflow.YAWL
                                 workAgent.GetQueueById(workItem.TaskQueue).Remove(workItem);
                                 if (workItem.TaskQueue == WorkAgent.STARTED)
                                 {
-                                    WorkEnactors.FirstOrDefault(w => w.WorkAgent.AgentID == agentID).StopTaskIfStarted(workItem);
+                                    WorkEnactors.FirstOrDefault(w => w.WorkAgent.AgentID == agentID).StopWorkItem(workItem);
                                 }
                                 AllWorkItems.Remove(workItem);
                             }

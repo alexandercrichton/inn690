@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Veis.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,21 +18,21 @@ namespace Veis.Workflow
         public const string PROCESSING = "6";   // non-standard workflow
 
         // WorkQueues, to match above
-        public List<WorkItem> offered;      //Tasks offered to potentially a variety of agents
-        public List<WorkItem> allocated;    //Tasks this agent has been assigned to complete
-        public List<WorkItem> started;      //Tasks this agent has started but have not yet completed
-        public List<WorkItem> suspended;    //Tasks this agent is assigned to; started; but have suspended them for the time being
-
-        public List<WorkItem> completed;    //Tasks this agent has completed
-        public List<WorkItem> delegated;    //Tasks this agent were assigned to; but delegated to others
-        public List<WorkItem> processing;   //Tasks this agent is running right this second in the task queue
+        public ThreadSafeList<WorkItem> offered;      //Tasks offered to potentially a variety of agents
+        public ThreadSafeList<WorkItem> allocated;    //Tasks this agent has been assigned to complete
+        public ThreadSafeList<WorkItem> started;      //Tasks this agent has started but have not yet completed
+        public ThreadSafeList<WorkItem> suspended;    //Tasks this agent is assigned to; started; but have suspended them for the time being
+               
+        public ThreadSafeList<WorkItem> completed;    //Tasks this agent has completed
+        public ThreadSafeList<WorkItem> delegated;    //Tasks this agent were assigned to; but delegated to others
+        public ThreadSafeList<WorkItem> processing;   //Tasks this agent is running right this second in the task queue
 
         public string AgentID { get; set; }   // TODO: Sort out the descrepancy between agentid and yawlid
         public string FirstName { get; set; }   // Workers have an identifying name
         public string LastName { get; set; }    
         public string Appearance { get; set; }  // Workers have an appearance which usually correspond with their role
-        public List<String> Roles { get; set; } // Workers have a set of roles they are in
-        public List<String> Capabilities { get; set; }  // Workers have a set of things they are capable of
+        public List<string> Roles { get; set; } // Workers have a set of roles they are in
+        public List<string> Capabilities { get; set; }  // Workers have a set of things they are capable of
 
         protected WorkAgent()
         {
@@ -39,13 +40,13 @@ namespace Veis.Workflow
             Capabilities = new List<string>();
             FirstName = string.Empty;
             LastName = string.Empty;
-            offered = new List<WorkItem>();
-            allocated = new List<WorkItem>();
-            started = new List<WorkItem>();
-            suspended = new List<WorkItem>();
-            completed = new List<WorkItem>();
-            delegated = new List<WorkItem>();
-            processing = new List<WorkItem>();
+            offered = new ThreadSafeList<WorkItem>();
+            allocated = new ThreadSafeList<WorkItem>();
+            started = new ThreadSafeList<WorkItem>();
+            suspended = new ThreadSafeList<WorkItem>();
+            completed = new ThreadSafeList<WorkItem>();
+            delegated = new ThreadSafeList<WorkItem>();
+            processing = new ThreadSafeList<WorkItem>();
         }
 
         public void AddRole(String potentialNewRole)
@@ -64,20 +65,15 @@ namespace Veis.Workflow
             }
         }
 
-        public WorkItem GetWorkItem(string id, List<WorkItem> queue)
+        public WorkItem GetWorkItem(string taskID, IList<WorkItem> queue)
         {
-            lock (queue)
+            foreach (WorkItem workItem in queue)
             {
-                foreach (WorkItem ifC in queue)
+                if (workItem.TaskID == taskID)
                 {
-                    if (ifC.TaskID == id)
-                    {
-                        return ifC;
-                    }
+                    return workItem;
                 }
-
             }
-
             return null;
         }
 
@@ -86,7 +82,7 @@ namespace Veis.Workflow
             return FirstName + " " + LastName;
         }
 
-        public List<WorkItem> GetQueueById(string id)
+        public IList<WorkItem> GetQueueById(string id)
         {
             id = int.Parse(id).ToString();
 
@@ -122,19 +118,14 @@ namespace Veis.Workflow
             throw new Exception("No queue exists for that id.");
         }
 
-        public void AddToQueue(string queueID, WorkItem potentialNewAllocatedItem)
+        public void AddToQueue(string queueID, WorkItem item)
         {
-            AddToQueue(GetQueueById(queueID), potentialNewAllocatedItem);
+            AddToQueue(GetQueueById(queueID), item);
         }
 
-        public void AddToQueue(List<WorkItem> queue, WorkItem potentialNewAllocatedItem)
+        public void AddToQueue(IList<WorkItem> queue, WorkItem item)
         {
-            IComparer<WorkItem> kkk = new WorkItemComparer();
-            if (queue.BinarySearch(potentialNewAllocatedItem, kkk) < 0)
-            {
-                queue.Add(potentialNewAllocatedItem);
-                queue.Sort(kkk);
-            }
+            queue.Add(item);
         }
 
         public abstract void Complete(WorkItem workItem, WorkflowProvider provider);

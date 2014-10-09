@@ -33,7 +33,7 @@ public class navAgent : MonoBehaviour {
 
 		agent = GetComponent<NavMeshAgent>();
 		agent.updateRotation = false;
-		agent.speed = 1.0f;
+        //agent.speed = 1.0f;
 
 		animator = GetComponent<Animator>();
 		locomotion = new Locomotion(animator);

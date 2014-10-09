@@ -25,10 +25,10 @@ namespace Veis.Bots
             //{
             //    worker.AddWork(workItem);
             //}
-            List<WorkItem> workItems = npc.WorkEnactor.GetWorkAgent().started;
+            List<WorkItem> workItems = new List<WorkItem>(npc.WorkEnactor.GetWorkAgent().started);
             for (int i = 0; i < workItems.Count; i++)
             {
-                worker.AddWork(workItems[i]);
+                worker.AddWorkItem(workItems[i]);
             }
                 Veis.Data.Logging.Logger.BroadcastMessage(new object(), "here2");
 

@@ -12,9 +12,9 @@ namespace Veis.Workflow
         public WorkflowProvider WorkflowProvider;
         public WorkAgent WorkAgent;
 
-        public abstract void AddWork(WorkItem workItem);
-        public abstract void StopTaskIfStarted(WorkItem work);
-        public abstract void CompleteWork(WorkItem workItem);
-        public abstract void StartWork(WorkItem workItem);
+        public abstract void AddWorkItem(WorkItem workItem);
+        public abstract void StopWorkItem(WorkItem work);
+        public abstract void CompleteWorkItem(WorkItem workItem);
+        public abstract void StartWorkItem(WorkItem workItem);
     }
 }

@@ -35,7 +35,7 @@ namespace Veis.Bots
         }
 
         // 1. Work item is added
-        public override void AddWork(WorkItem workItem)
+        public override void AddWorkItem(WorkItem workItem)
         {           
             // 2. Work task is decomposed
             List<Goal> newGoals = _decompService.Decompose(workItem);
@@ -52,7 +52,7 @@ namespace Veis.Bots
             // 4. The goals are added to this enactor's list against the workitem
             //    and also the list of workitems being processed
             _workitemGoals.Add(workItem, newGoals);
-            StartWork(workItem);
+            StartWorkItem(workItem);
 
             // 5. Goals are registered with the world state service
             newGoals.ForEach(_goalService.RegisterGoal);
@@ -74,12 +74,12 @@ namespace Veis.Bots
                 // 9. If all goals are satisfied, check out (complete) the work item
                 if (_workitemGoals[workitem].Count(g => !g.IsSatisfied()) == 0)
                 {
-                    CompleteWork(workitem);
+                    CompleteWorkItem(workitem);
                 }
             }
         }
 
-        public override void StopTaskIfStarted(WorkItem workItem)
+        public override void StopWorkItem(WorkItem workItem)
         {
             if (WorkAgent.started.Contains(workItem))
             {
@@ -90,7 +90,7 @@ namespace Veis.Bots
             }
         }
 
-        public override void StartWork(WorkItem workItem)
+        public override void StartWorkItem(WorkItem workItem)
         {
             lock (WorkAgent.processing)
             {
@@ -102,7 +102,7 @@ namespace Veis.Bots
             }
         }
 
-        public override void CompleteWork(WorkItem workItem)
+        public override void CompleteWorkItem(WorkItem workItem)
         {
             if (/*_workAgent.started.Contains(workItem) &&*/ WorkAgent.processing.Contains(workItem))
             {

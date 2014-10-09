@@ -53,7 +53,7 @@ namespace Veis.Unity.Bots
         public override void WalkTo(string assetName)
         {
             //MainThread.QueueAction(()=> {
-			Veis.Unity.Logging.UnityLogger.BroadcastMesage(this, "Current object: " + this.ToString());
+            //Veis.Unity.Logging.UnityLogger.BroadcastMesage(this, "Current object: " + this.ToString());
 			botAgentMovement.SetTarget(GameObject.Find(assetName));
 			
             //});

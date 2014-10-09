@@ -12,11 +12,11 @@ namespace Veis.Planning
     public class PlanResult
     {
         // Steps to complete said plan
-        public List<String> Tasks { get; set; }
+        public List<string> Tasks { get; set; }
 
         public PlanResult()
         {
-            Tasks = new List<String>();
+            Tasks = new List<string>();
         }        
     }
 }

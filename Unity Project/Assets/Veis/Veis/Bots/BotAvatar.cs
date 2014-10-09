@@ -41,13 +41,13 @@ namespace Veis.Bots
 
         public abstract bool IsAt(string location);
 
-		public abstract void DefineTask(string task);
+        public abstract void DefineTask(string task);
 
         public void ExecuteAction(string asset, string methodName, string parameterString)
         {
-            ExecutableActions.Add(new ExecutableAction 
-            { 
-                AssetName = asset, 
+            ExecutableActions.Add(new ExecutableAction
+            {
+                AssetName = asset,
                 MethodName = methodName,
                 Parameters = StringFormattingExtensions.DecodeParameterString(parameterString)
             });
@@ -70,100 +70,72 @@ namespace Veis.Bots
 
         #region Agent Task Queue
 
-        public LinkedList<String> taskQueue = new LinkedList<string>();
-        private String currentTask = "";
-        protected bool isDoingTask = false;
+        public Queue<string> taskQueue = new Queue<string>();
+        private string currentTask = "";
+        private bool doNextTask = true;
 
         public void Update()
         {
-            processTasks();
-        }
-
-        public void AddTaskToQueue(string task)
-        {
-            lock (taskQueue)
+            if (taskQueue.Count > 0)
             {
-                taskQueue.AddLast(task);
+                processTasks();
             }
-            //processTasks();
+            else if (WorkEnactor.WorkReady())
+            {
+                taskQueue = WorkEnactor.GetNextTasks();
+            }
         }
 
         private void processTasks()
-		{
-            if (currentTask == "")
+        {
+            if (doNextTask)
             {
-                lock (taskQueue)
+                currentTask = taskQueue.Dequeue();
+                DefineTask(currentTask);
+                if (currentTask != "")
                 {
-                    if (taskQueue.Count > 0)
-                    {
-						
-						DefineTask(taskQueue.First.Value);
-                        currentTask = taskQueue.First.Value;
-                        taskQueue.RemoveFirst();
-                    }
+                    Say(currentTask); 
                 }
             }
 
-                Say(currentTask); // TODO: Remove this because it is a debugging message
+            string action = currentTask.Split(':')[0];
 
-                string action = currentTask.Split(':')[0];
-
-                switch (action.ToUpper())
-                {
-                    case AvailableActions.DESPAWN:
-                        Despawn();
-                        currentTask = "";
-                        break;
-                    case AvailableActions.WALKTO:
-                        WalkTo(currentTask.Split(':')[1]);
-                        if (IsAt(currentTask.Split(':')[1]))
-                        {
-                            currentTask = "";
-                        }
-                        break;
-                    case AvailableActions.TOUCH:
-                        Touch(currentTask.Split(':')[1]);
-                        currentTask = "";
-                        break;
-                    case AvailableActions.STARTWORK:
-                        WorkEnactor.StartWork(currentTask.Split(':')[1]);
-                        currentTask = "";
-                        break;
-                    case AvailableActions.COMPLETEWORK:
-                        WorkEnactor.CompleteWork(currentTask.Split(':')[1]);
-                        currentTask = "";
-                        break;
-                    case AvailableActions.EXECUTEACTION:
-                        var parts = currentTask.Split(':');
-                        ExecuteAction(parts[1], parts[2], parts[3]);
-                        currentTask = "";
-                        break;
-					case AvailableActions.SAY:
-						 Say (currentTask.Split (':')[1]);
-					     currentTask = "";
-					     break;
-				/*
-					case AvailableActions.ANIMATE:
-						 Animate(parts[1],part[2],parts[3]);
-						 break;
-						 */
-                    default:
+            switch (action.ToUpper())
+            {
+                case AvailableActions.DESPAWN:
+                    Despawn();
+                    break;
+                case AvailableActions.WALKTO:
+                    WalkTo(currentTask.Split(':')[1]);
+                    doNextTask = false;
+                    if (IsAt(currentTask.Split(':')[1]))
+                    {
+                        doNextTask = true;
+                    }
+                    break;
+                case AvailableActions.TOUCH:
+                    Touch(currentTask.Split(':')[1]);
+                    break;
+                //case AvailableActions.STARTWORK:
+                //    WorkEnactor.StartWork(currentTask.Split(':')[1]);
+                //    break;
+                case AvailableActions.COMPLETEWORK:
+                    WorkEnactor.CompleteWork(currentTask.Split(':')[1]);
+                    break;
+                case AvailableActions.EXECUTEACTION:
+                    var parts = currentTask.Split(':');
+                    ExecuteAction(parts[1], parts[2], parts[3]);
+                    break;
+                case AvailableActions.SAY:
+                    Say(currentTask.Split(':')[1]);
+                    break;
+                default:
+                    if (currentTask != "")
+                    {
                         Say("{ERROR:TASK:UNKNOWN:" + action.ToUpper() + "}");
-                        currentTask = "";
-                        break;
-                }
-
-                //if (currentTask == "")
-                //    processTasks();
-            
-        }
-
-
-
-        protected void completeCurrentTask()
-        {
-            currentTask = "";
-            processTasks();
+                    }
+                    break;
+            }
         }
 
         #endregion

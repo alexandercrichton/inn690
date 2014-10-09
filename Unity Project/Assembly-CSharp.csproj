@@ -106,6 +106,8 @@
      <Compile Include="Assets\Veis\Veis\Common\ILoggable.cs" />
      <Compile Include="Assets\Veis\Veis\Common\Math\Vector3.cs" />
      <Compile Include="Assets\Veis\Veis\Common\StringFormattingExtensions.cs" />
+     <Compile Include="Assets\Veis\Veis\Common\ThreadSafeEnumerator.cs" />
+     <Compile Include="Assets\Veis\Veis\Common\ThreadSafeList.cs" />
      <Compile Include="Assets\Veis\Veis\Planning\BasicWorkItemPlanner.cs" />
      <Compile Include="Assets\Veis\Veis\Planning\GoalBasedWorkItemPlanner.cs" />
      <Compile Include="Assets\Veis\Veis\Planning\HTN\ComplexHTNPlanner.cs" />
