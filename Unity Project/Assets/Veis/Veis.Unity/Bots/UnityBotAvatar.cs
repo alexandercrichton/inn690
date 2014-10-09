@@ -38,7 +38,12 @@ namespace Veis.Unity.Bots
         public override void Say(string message)
         {
             Logging.UnityLogger.BroadcastMesage(this, "Bot[" + Name + "] says: " + message);
+
         }
+
+		public override void DefineTask (string task) {
+			botAgentMovement.SetTask(task);
+		}
 
         public override void Touch(string objectName)
         {
@@ -50,8 +55,13 @@ namespace Veis.Unity.Bots
             //MainThread.QueueAction(()=> {
 			Veis.Unity.Logging.UnityLogger.BroadcastMesage(this, "Current object: " + this.ToString());
 			botAgentMovement.SetTarget(GameObject.Find(assetName));
+			
             //});
         }
+
+		public void SendBotValues() {
+			botAgentMovement.SetBotInfo (this);
+		}
 
         #endregion
 

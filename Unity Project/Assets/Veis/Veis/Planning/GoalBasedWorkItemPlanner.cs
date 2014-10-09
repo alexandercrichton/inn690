@@ -163,7 +163,7 @@ namespace Veis.Planning
 
             // EXECUTE METHOD on OBJECT
             tasks.Add(AvailableActions.EXECUTEACTION + ":" + asset + ":" + method.Name + ":" + StringFormattingExtensions.EncodeParameterString(methodParameters));
-
+			tasks.Add(AvailableActions.ANIMATE + ":" + method.Name);
             // TOUCH OBJECT (which should  be scripted)
             // NOTE: In OpenSim, the object will be scripted to exectute the action via php
             // Other implemenations may do something different when the "EXECUTEACTION" occurs.
