@@ -1,17 +1,14 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Veis\Veis.Unity\Simulation\UnitySimulation.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\navAgent.cs">
     <Files>
-      <File FileName="Assets\Veis\Veis.Unity\Simulation\UnitySimulation.cs" Line="82" Column="1" />
-      <File FileName="Assets\Scripts\navAgent.cs" Line="107" Column="3" />
-      <File FileName="Assets\Veis\Veis.Unity\Bots\UnityBotAvatar.cs" Line="1" Column="1" />
-      <File FileName="Assets\Veis\Veis\Bots\BotAvatar.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\UserInteraction.cs" Line="1" Column="1" />
-      <File FileName="Assets\Veis\Veis\Planning\GoalBasedWorkItemPlanner.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\navAgent.cs" Line="140" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches>
+    <Watch file="Assets\Veis\Veis.Unity\Bots\UnityBotAvatar.cs" line="41" offsetX="429" offsetY="680" expression="message" liveUpdate="False" />
+  </MonoDevelop.Ide.DebuggingService.PinnedWatches>
 </Properties>
