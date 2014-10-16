@@ -1,0 +1,1428 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<specificationSet xmlns="http://www.yawlfoundation.org/yawlschema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3.0" xsi:schemaLocation="http://www.yawlfoundation.org/yawlschema http://www.yawlfoundation.org/yawlschema/YAWL_Schema3.0.xsd">
+  <specification uri="TraumaCentre">
+    <name>TraumaCarAccident</name>
+    <documentation>This workflow describes the examination of a car accident victim to a trauma centre.</documentation>
+    <metaData>
+      <title>TraumaCarAccident</title>
+      <creator>Admin</creator>
+      <description>This workflow describes the examination of a car accident victim to a trauma centre.</description>
+      <version>0.1</version>
+      <persistent>false</persistent>
+      <identifier>UID_52128d44-8847-4dd3-9d82-698bd4756c9d</identifier>
+    </metaData>
+    <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+    <decomposition id="Trauma_Centre_Patient_Examination" isRootNet="true" xsi:type="NetFactsType">
+      <processControlElements>
+        <inputCondition id="InputCondition_1">
+          <flowsInto>
+            <nextElementRef id="Receive_Patient" />
+          </flowsInto>
+        </inputCondition>
+        <task id="Receive_Patient">
+          <name>Receive Patient</name>
+          <flowsInto>
+            <nextElementRef id="Check_Breathing" />
+          </flowsInto>
+          <flowsInto>
+            <nextElementRef id="Visual_Examination" />
+          </flowsInto>
+          <join code="xor" />
+          <split code="and" />
+          <resourcing>
+            <offer initiator="system">
+              <distributionSet>
+                <initialSet>
+                  <role>RO-3e82eebb-39a3-40a8-a2a5-edc094d97ac7</role>
+                </initialSet>
+              </distributionSet>
+            </offer>
+            <allocate initiator="system">
+              <allocator>
+                <name>ShortestQueue</name>
+              </allocator>
+            </allocate>
+            <start initiator="system" />
+          </resourcing>
+          <decomposesTo id="Receive_Patient" />
+        </task>
+        <task id="Check_Breathing">
+          <name>Check Breathing</name>
+          <flowsInto>
+            <nextElementRef id="Check_Pulse" />
+          </flowsInto>
+          <join code="xor" />
+          <split code="and" />
+          <resourcing>
+            <offer initiator="system">
+              <distributionSet>
+                <initialSet>
+                  <role>RO-3e82eebb-39a3-40a8-a2a5-edc094d97ac7</role>
+                </initialSet>
+              </distributionSet>
+            </offer>
+            <allocate initiator="system">
+              <allocator>
+                <name>ShortestQueue</name>
+              </allocator>
+            </allocate>
+            <start initiator="system" />
+          </resourcing>
+          <decomposesTo id="Check_Breathing" />
+        </task>
+        <task id="Visual_Examination">
+          <name>Visual Examination</name>
+          <flowsInto>
+            <nextElementRef id="Auditory_Inspection" />
+          </flowsInto>
+          <join code="xor" />
+          <split code="and" />
+          <resourcing>
+            <offer initiator="system">
+              <distributionSet>
+                <initialSet>
+                  <role>RO-ba11b9cb-df75-487c-975c-1e304b9aeadd</role>
+                </initialSet>
+              </distributionSet>
+            </offer>
+            <allocate initiator="system">
+              <allocator>
+                <name>ShortestQueue</name>
+              </allocator>
+            </allocate>
+            <start initiator="system" />
+            <privileges>
+              <privilege>
+                <name>canPile</name>
+                <allowall>true</allowall>
+              </privilege>
+            </privileges>
+          </resourcing>
+          <decomposesTo id="Visual_Examination" />
+        </task>
+        <task id="Auditory_Inspection">
+          <name>Auditory Inspection</name>
+          <flowsInto>
+            <nextElementRef id="Doctor_to_Nurse_Hand_Over" />
+          </flowsInto>
+          <join code="xor" />
+          <split code="and" />
+          <resourcing>
+            <offer initiator="system">
+              <distributionSet>
+                <initialSet>
+                  <role>RO-ba11b9cb-df75-487c-975c-1e304b9aeadd</role>
+                </initialSet>
+                <filters>
+                  <filter>
+                    <name>OrgFilter</name>
+                    <params>
+                      <param>
+                        <key>Position</key>
+                        <value>EM Chief Resident</value>
+                      </param>
+                    </params>
+                  </filter>
+                </filters>
+              </distributionSet>
+              <familiarParticipant taskID="Visual_Examination" />
+            </offer>
+            <allocate initiator="system">
+              <allocator>
+                <name>ShortestQueue</name>
+              </allocator>
+            </allocate>
+            <start initiator="system" />
+            <privileges>
+              <privilege>
+                <name>canPile</name>
+                <allowall>true</allowall>
+              </privilege>
+            </privileges>
+          </resourcing>
+          <decomposesTo id="Auditory_Inspection" />
+        </task>
+        <task id="Check_Pulse">
+          <name>Check Pulse</name>
+          <flowsInto>
+            <nextElementRef id="Check_Blood_Pressure" />
+          </flowsInto>
+          <join code="xor" />
+          <split code="and" />
+          <resourcing>
+            <offer initiator="system">
+              <distributionSet>
+                <initialSet>
+                  <role>RO-3e82eebb-39a3-40a8-a2a5-edc094d97ac7</role>
+                </initialSet>
+              </distributionSet>
+            </offer>
+            <allocate initiator="system">
+              <allocator>
+                <name>ShortestQueue</name>
+              </allocator>
+            </allocate>
+            <start initiator="system" />
+          </resourcing>
+          <decomposesTo id="Check_Pulse" />
+        </task>
+        <task id="Check_Blood_Pressure">
+          <name>Check Blood Pressure</name>
+          <flowsInto>
+            <nextElementRef id="Update_Examination_Report" />
+          </flowsInto>
+          <join code="xor" />
+          <split code="and" />
+          <resourcing>
+            <offer initiator="system">
+              <distributionSet>
+                <initialSet>
+                  <role>RO-3e82eebb-39a3-40a8-a2a5-edc094d97ac7</role>
+                </initialSet>
+              </distributionSet>
+            </offer>
+            <allocate initiator="system">
+              <allocator>
+                <name>ShortestQueue</name>
+              </allocator>
+            </allocate>
+            <start initiator="system" />
+          </resourcing>
+          <decomposesTo id="Check_Blood_Pressure" />
+        </task>
+        <task id="Doctor_to_Nurse_Hand_Over">
+          <name>Doctor to Nurse Hand Over</name>
+          <flowsInto>
+            <nextElementRef id="Attach_Vital_Stats_Monitor" />
+          </flowsInto>
+          <flowsInto>
+            <nextElementRef id="Request_Pathology" />
+          </flowsInto>
+          <flowsInto>
+            <nextElementRef id="Request_X-Ray" />
+          </flowsInto>
+          <flowsInto>
+            <nextElementRef id="Take_Blood_Samples" />
+          </flowsInto>
+          <join code="and" />
+          <split code="and" />
+          <resourcing>
+            <offer initiator="system">
+              <distributionSet>
+                <initialSet>
+                  <role>RO-3e82eebb-39a3-40a8-a2a5-edc094d97ac7</role>
+                </initialSet>
+              </distributionSet>
+            </offer>
+            <allocate initiator="system">
+              <allocator>
+                <name>ShortestQueue</name>
+              </allocator>
+            </allocate>
+            <start initiator="system" />
+            <privileges>
+              <privilege>
+                <name>canPile</name>
+                <allowall>true</allowall>
+              </privilege>
+            </privileges>
+          </resourcing>
+          <decomposesTo id="Doctor_to_Nurse_Hand_Over" />
+        </task>
+        <task id="Attach_Vital_Stats_Monitor">
+          <name>Attach Vital Stats Monitor</name>
+          <flowsInto>
+            <nextElementRef id="Admit_Patient_to_Intensive_Care" />
+          </flowsInto>
+          <join code="xor" />
+          <split code="and" />
+          <resourcing>
+            <offer initiator="system">
+              <distributionSet>
+                <initialSet>
+                  <role>RO-ba11b9cb-df75-487c-975c-1e304b9aeadd</role>
+                  <role>RO-3e82eebb-39a3-40a8-a2a5-edc094d97ac7</role>
+                </initialSet>
+              </distributionSet>
+            </offer>
+            <allocate initiator="system">
+              <allocator>
+                <name>ShortestQueue</name>
+              </allocator>
+            </allocate>
+            <start initiator="system" />
+            <privileges>
+              <privilege>
+                <name>canPile</name>
+                <allowall>true</allowall>
+              </privilege>
+            </privileges>
+          </resourcing>
+          <decomposesTo id="Attach_Vital_Stats_Monitor" />
+        </task>
+        <task id="Request_Pathology">
+          <name>Request Pathology</name>
+          <flowsInto>
+            <nextElementRef id="Admit_Patient_to_Intensive_Care" />
+          </flowsInto>
+          <join code="xor" />
+          <split code="and" />
+          <resourcing>
+            <offer initiator="system">
+              <distributionSet>
+                <initialSet>
+                  <role>RO-ba11b9cb-df75-487c-975c-1e304b9aeadd</role>
+                  <role>RO-3e82eebb-39a3-40a8-a2a5-edc094d97ac7</role>
+                </initialSet>
+              </distributionSet>
+            </offer>
+            <allocate initiator="system">
+              <allocator>
+                <name>ShortestQueue</name>
+              </allocator>
+            </allocate>
+            <start initiator="system" />
+            <privileges>
+              <privilege>
+                <name>canPile</name>
+                <allowall>true</allowall>
+              </privilege>
+            </privileges>
+          </resourcing>
+          <decomposesTo id="Request_Pathology" />
+        </task>
+        <task id="Request_X-Ray">
+          <name>Request X-Ray</name>
+          <flowsInto>
+            <nextElementRef id="Admit_Patient_to_Intensive_Care" />
+          </flowsInto>
+          <join code="xor" />
+          <split code="and" />
+          <resourcing>
+            <offer initiator="system">
+              <distributionSet>
+                <initialSet>
+                  <role>RO-ba11b9cb-df75-487c-975c-1e304b9aeadd</role>
+                  <role>RO-3e82eebb-39a3-40a8-a2a5-edc094d97ac7</role>
+                </initialSet>
+              </distributionSet>
+            </offer>
+            <allocate initiator="system">
+              <allocator>
+                <name>ShortestQueue</name>
+              </allocator>
+            </allocate>
+            <start initiator="system" />
+            <privileges>
+              <privilege>
+                <name>canPile</name>
+                <allowall>true</allowall>
+              </privilege>
+            </privileges>
+          </resourcing>
+          <decomposesTo id="Request_X-Ray" />
+        </task>
+        <task id="Take_Blood_Samples">
+          <name>Take Blood Samples</name>
+          <flowsInto>
+            <nextElementRef id="Admit_Patient_to_Intensive_Care" />
+          </flowsInto>
+          <join code="xor" />
+          <split code="and" />
+          <resourcing>
+            <offer initiator="system">
+              <distributionSet>
+                <initialSet>
+                  <role>RO-ba11b9cb-df75-487c-975c-1e304b9aeadd</role>
+                  <role>RO-3e82eebb-39a3-40a8-a2a5-edc094d97ac7</role>
+                </initialSet>
+              </distributionSet>
+            </offer>
+            <allocate initiator="system">
+              <allocator>
+                <name>ShortestQueue</name>
+              </allocator>
+            </allocate>
+            <start initiator="system" />
+            <privileges>
+              <privilege>
+                <name>canPile</name>
+                <allowall>true</allowall>
+              </privilege>
+            </privileges>
+          </resourcing>
+          <decomposesTo id="Take_Blood_Samples" />
+        </task>
+        <task id="Update_Examination_Report">
+          <name>Update Examination Report</name>
+          <flowsInto>
+            <nextElementRef id="Doctor_to_Nurse_Hand_Over" />
+          </flowsInto>
+          <join code="xor" />
+          <split code="and" />
+          <resourcing>
+            <offer initiator="system">
+              <distributionSet>
+                <initialSet>
+                  <role>RO-3e82eebb-39a3-40a8-a2a5-edc094d97ac7</role>
+                </initialSet>
+              </distributionSet>
+            </offer>
+            <allocate initiator="system">
+              <allocator>
+                <name>ShortestQueue</name>
+              </allocator>
+            </allocate>
+            <start initiator="system" />
+          </resourcing>
+          <decomposesTo id="Update_Examination_Report" />
+        </task>
+        <task id="Admit_Patient_to_Intensive_Care">
+          <name>Admit Patient to Intensive Care</name>
+          <flowsInto>
+            <nextElementRef id="Patient_X-Ray" />
+          </flowsInto>
+          <join code="and" />
+          <split code="and" />
+          <resourcing>
+            <offer initiator="system">
+              <distributionSet>
+                <initialSet>
+                  <role>RO-3e82eebb-39a3-40a8-a2a5-edc094d97ac7</role>
+                </initialSet>
+              </distributionSet>
+            </offer>
+            <allocate initiator="system">
+              <allocator>
+                <name>ShortestQueue</name>
+              </allocator>
+            </allocate>
+            <start initiator="system" />
+            <privileges>
+              <privilege>
+                <name>canPile</name>
+                <allowall>true</allowall>
+              </privilege>
+            </privileges>
+          </resourcing>
+          <decomposesTo id="Admit_Patient_to_Intensive_Care" />
+        </task>
+        <task id="Patient_X-Ray">
+          <name>Patient X-Ray</name>
+          <flowsInto>
+            <nextElementRef id="OutputCondition_1" />
+          </flowsInto>
+          <join code="xor" />
+          <split code="and" />
+          <decomposesTo id="Trauma_Centre_Patient_X-Ray" />
+        </task>
+        <outputCondition id="OutputCondition_1" />
+      </processControlElements>
+    </decomposition>
+    <decomposition id="Trauma_Centre_Patient_X-Ray" xsi:type="NetFactsType">
+      <processControlElements>
+        <inputCondition id="InputCondition">
+          <flowsInto>
+            <nextElementRef id="Collect_X-Ray_Requests" />
+          </flowsInto>
+        </inputCondition>
+        <task id="Collect_X-Ray_Requests">
+          <name>Collect X-Ray Requests</name>
+          <flowsInto>
+            <nextElementRef id="Collect_Patient_from_Intensive_Care" />
+          </flowsInto>
+          <join code="xor" />
+          <split code="and" />
+          <resourcing>
+            <offer initiator="system">
+              <distributionSet>
+                <initialSet>
+                  <role>RO-ba11b9cb-df75-487c-975c-1e304b9aeadd</role>
+                </initialSet>
+              </distributionSet>
+            </offer>
+            <allocate initiator="system">
+              <allocator>
+                <name>ShortestQueue</name>
+              </allocator>
+            </allocate>
+            <start initiator="system" />
+          </resourcing>
+          <decomposesTo id="Collect_X-Ray_Requests" />
+        </task>
+        <task id="Collect_Patient_from_Intensive_Care">
+          <name>Collect Patient from Intensive Care</name>
+          <flowsInto>
+            <nextElementRef id="X-Ray_Head" />
+          </flowsInto>
+          <join code="xor" />
+          <split code="and" />
+          <resourcing>
+            <offer initiator="system">
+              <distributionSet>
+                <initialSet>
+                  <role>RO-ba11b9cb-df75-487c-975c-1e304b9aeadd</role>
+                </initialSet>
+              </distributionSet>
+            </offer>
+            <allocate initiator="system">
+              <allocator>
+                <name>ShortestQueue</name>
+              </allocator>
+            </allocate>
+            <start initiator="system" />
+          </resourcing>
+          <decomposesTo id="Collect_Patient_from_Intensive_Care" />
+        </task>
+        <task id="X-Ray_Head">
+          <name>X-Ray Head</name>
+          <flowsInto>
+            <nextElementRef id="X-Ray_Torso" />
+          </flowsInto>
+          <join code="xor" />
+          <split code="and" />
+          <resourcing>
+            <offer initiator="system">
+              <distributionSet>
+                <initialSet>
+                  <role>RO-ba11b9cb-df75-487c-975c-1e304b9aeadd</role>
+                </initialSet>
+              </distributionSet>
+            </offer>
+            <allocate initiator="system">
+              <allocator>
+                <name>ShortestQueue</name>
+              </allocator>
+            </allocate>
+            <start initiator="system" />
+          </resourcing>
+          <decomposesTo id="X-Ray_Head" />
+        </task>
+        <task id="X-Ray_Torso">
+          <name>X-Ray Torso</name>
+          <flowsInto>
+            <nextElementRef id="Report_X-Ray_Results_to_Doctor" />
+          </flowsInto>
+          <join code="xor" />
+          <split code="and" />
+          <resourcing>
+            <offer initiator="system">
+              <distributionSet>
+                <initialSet>
+                  <role>RO-ba11b9cb-df75-487c-975c-1e304b9aeadd</role>
+                </initialSet>
+              </distributionSet>
+            </offer>
+            <allocate initiator="system">
+              <allocator>
+                <name>ShortestQueue</name>
+              </allocator>
+            </allocate>
+            <start initiator="system" />
+          </resourcing>
+          <decomposesTo id="X-Ray_Torso" />
+        </task>
+        <task id="Report_X-Ray_Results_to_Doctor">
+          <name>Report X-Ray Results to Doctor</name>
+          <flowsInto>
+            <nextElementRef id="Complete_XRay_Duties" />
+          </flowsInto>
+          <join code="xor" />
+          <split code="and" />
+          <resourcing>
+            <offer initiator="system">
+              <distributionSet>
+                <initialSet>
+                  <role>RO-ba11b9cb-df75-487c-975c-1e304b9aeadd</role>
+                </initialSet>
+              </distributionSet>
+            </offer>
+            <allocate initiator="system">
+              <allocator>
+                <name>ShortestQueue</name>
+              </allocator>
+            </allocate>
+            <start initiator="system" />
+          </resourcing>
+          <decomposesTo id="Report_X-Ray_Results_to_Doctor" />
+        </task>
+        <task id="Complete_XRay_Duties">
+          <name>Complete XRay Duties</name>
+          <flowsInto>
+            <nextElementRef id="OutputCondition" />
+          </flowsInto>
+          <join code="xor" />
+          <split code="and" />
+          <resourcing>
+            <offer initiator="system">
+              <distributionSet>
+                <initialSet>
+                  <role>RO-ba11b9cb-df75-487c-975c-1e304b9aeadd</role>
+                </initialSet>
+              </distributionSet>
+            </offer>
+            <allocate initiator="system">
+              <allocator>
+                <name>ShortestQueue</name>
+              </allocator>
+            </allocate>
+            <start initiator="system" />
+          </resourcing>
+          <decomposesTo id="Complete_XRay_Duties" />
+        </task>
+        <outputCondition id="OutputCondition" />
+      </processControlElements>
+    </decomposition>
+    <decomposition id="Admit_Patient_to_Intensive_Care" xsi:type="WebServiceGatewayFactsType">
+      <outputParam>
+        <index>0</index>
+        <name>Tasks</name>
+        <type>string</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+        <defaultValue>Admit_Patient_to_Intensive_Care</defaultValue>
+      </outputParam>
+      <outputParam>
+        <index>1</index>
+        <name>Goal</name>
+        <type>string</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+        <defaultValue>RequestXRay:requestApproved;Head</defaultValue>
+      </outputParam>
+      <externalInteraction>manual</externalInteraction>
+    </decomposition>
+    <decomposition id="Attach_Vital_Stats_Monitor" xsi:type="WebServiceGatewayFactsType">
+      <outputParam>
+        <index>0</index>
+        <name>Tasks</name>
+        <type>string</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+        <defaultValue>Attach_Vital_Stats_Monitor</defaultValue>
+      </outputParam>
+      <outputParam>
+        <index>1</index>
+        <name>Goal</name>
+        <type>string</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+        <defaultValue>VitalSignsMonitor:mouthpieceAt;PatientHead</defaultValue>
+      </outputParam>
+      <externalInteraction>manual</externalInteraction>
+    </decomposition>
+    <decomposition id="Auditory_Inspection" xsi:type="WebServiceGatewayFactsType">
+      <outputParam>
+        <index>0</index>
+        <name>Tasks</name>
+        <type>string</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+        <defaultValue>Auditory_Inspection</defaultValue>
+      </outputParam>
+      <outputParam>
+        <index>1</index>
+        <name>Goal</name>
+        <type>string</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+        <defaultValue>PatientBill:isHearingTested;True</defaultValue>
+      </outputParam>
+      <externalInteraction>manual</externalInteraction>
+    </decomposition>
+    <decomposition id="Check_Blood_Pressure" xsi:type="WebServiceGatewayFactsType">
+      <outputParam>
+        <index>0</index>
+        <name>Tasks</name>
+        <type>string</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+        <defaultValue>Check_Blood_Pressure</defaultValue>
+      </outputParam>
+      <outputParam>
+        <index>1</index>
+        <name>Goal</name>
+        <type>string</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+        <defaultValue>VitalSignsMonitor:bandAt;VitalSignsMonitor</defaultValue>
+      </outputParam>
+      <externalInteraction>manual</externalInteraction>
+    </decomposition>
+    <decomposition id="Check_Breathing" xsi:type="WebServiceGatewayFactsType">
+      <outputParam>
+        <index>0</index>
+        <name>Tasks</name>
+        <type>string</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+        <defaultValue>Cheeck_Breathing</defaultValue>
+      </outputParam>
+      <outputParam>
+        <index>1</index>
+        <name>Goal</name>
+        <type>string</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+        <defaultValue>VitalSignsMonitor:mouthpieceAt;VitalSignsMonitor</defaultValue>
+      </outputParam>
+      <externalInteraction>manual</externalInteraction>
+    </decomposition>
+    <decomposition id="Check_Pulse" xsi:type="WebServiceGatewayFactsType">
+      <outputParam>
+        <index>0</index>
+        <name>Tasks</name>
+        <type>string</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+        <defaultValue>Check_Pulse</defaultValue>
+      </outputParam>
+      <outputParam>
+        <index>1</index>
+        <name>Goal</name>
+        <type>string</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+        <defaultValue>VitalSignsMonitor:sensorAt;VitalSignsMonitor</defaultValue>
+      </outputParam>
+      <externalInteraction>manual</externalInteraction>
+    </decomposition>
+    <decomposition id="Collect_Patient_from_Intensive_Care" xsi:type="WebServiceGatewayFactsType">
+      <outputParam>
+        <index>0</index>
+        <name>Tasks</name>
+        <type>string</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+        <defaultValue>Collect_Patient_from_Intensive_Care</defaultValue>
+      </outputParam>
+      <outputParam>
+        <index>1</index>
+        <name>Goal</name>
+        <type>string</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+        <defaultValue>PatientBill:bedAt;RadiologyRoom</defaultValue>
+      </outputParam>
+      <externalInteraction>manual</externalInteraction>
+    </decomposition>
+    <decomposition id="Collect_X-Ray_Requests" xsi:type="WebServiceGatewayFactsType">
+      <outputParam>
+        <index>0</index>
+        <name>Tasks</name>
+        <type>string</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+        <defaultValue>Collect_X-Ray_Requests</defaultValue>
+      </outputParam>
+      <outputParam>
+        <index>1</index>
+        <name>Goal</name>
+        <type>string</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+        <defaultValue>RequestXRay:requestAt;Radiology</defaultValue>
+      </outputParam>
+      <externalInteraction>manual</externalInteraction>
+    </decomposition>
+    <decomposition id="Complete_XRay_Duties" xsi:type="WebServiceGatewayFactsType">
+      <outputParam>
+        <index>0</index>
+        <name>Tasks</name>
+        <type>string</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+        <defaultValue>Complete_XRay_Duties</defaultValue>
+      </outputParam>
+      <outputParam>
+        <index>1</index>
+        <name>Goal</name>
+        <type>string</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+        <defaultValue>PatientBill:bedAt;ICUBed02</defaultValue>
+      </outputParam>
+      <externalInteraction>manual</externalInteraction>
+    </decomposition>
+    <decomposition id="Doctor_to_Nurse_Hand_Over" xsi:type="WebServiceGatewayFactsType">
+      <outputParam>
+        <index>0</index>
+        <name>Tasks</name>
+        <type>string</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+        <defaultValue>Doctor_to_Nurse_Hand_Over</defaultValue>
+      </outputParam>
+      <outputParam>
+        <index>1</index>
+        <name>Goal</name>
+        <type>string</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+        <defaultValue>PatientBill:bedAt;IntensiveCare</defaultValue>
+      </outputParam>
+      <externalInteraction>manual</externalInteraction>
+    </decomposition>
+    <decomposition id="Receive_Patient" xsi:type="WebServiceGatewayFactsType">
+      <outputParam>
+        <index>0</index>
+        <name>Tasks</name>
+        <type>string</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+        <defaultValue>Receive_Patient</defaultValue>
+      </outputParam>
+      <outputParam>
+        <index>1</index>
+        <name>Goal</name>
+        <type>string</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+        <defaultValue>PatientBill:bedAt;ExaminationRoom</defaultValue>
+      </outputParam>
+      <externalInteraction>manual</externalInteraction>
+    </decomposition>
+    <decomposition id="Report_X-Ray_Results_to_Doctor" xsi:type="WebServiceGatewayFactsType">
+      <outputParam>
+        <index>0</index>
+        <name>Tasks</name>
+        <type>string</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+        <defaultValue>Report_X-Ray_Results_to_Doctor</defaultValue>
+      </outputParam>
+      <outputParam>
+        <index>1</index>
+        <name>Goal</name>
+        <type>string</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+        <defaultValue>ReportXRay:xrayReportTo;Doctor</defaultValue>
+      </outputParam>
+      <externalInteraction>manual</externalInteraction>
+    </decomposition>
+    <decomposition id="Request_Pathology" xsi:type="WebServiceGatewayFactsType">
+      <outputParam>
+        <index>0</index>
+        <name>Tasks</name>
+        <type>string</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+        <defaultValue>Request_Pathology</defaultValue>
+      </outputParam>
+      <outputParam>
+        <index>1</index>
+        <name>Goal</name>
+        <type>string</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+        <defaultValue>RequestPathology:forPatient;BillGate</defaultValue>
+      </outputParam>
+      <externalInteraction>manual</externalInteraction>
+    </decomposition>
+    <decomposition id="Request_X-Ray" xsi:type="WebServiceGatewayFactsType">
+      <outputParam>
+        <index>0</index>
+        <name>Tasks</name>
+        <type>string</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+        <defaultValue>Request_X-Ray</defaultValue>
+      </outputParam>
+      <outputParam>
+        <index>1</index>
+        <name>Goal</name>
+        <type>string</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+        <defaultValue>RequestXRay:requestForBodyPart;Head</defaultValue>
+      </outputParam>
+      <externalInteraction>manual</externalInteraction>
+    </decomposition>
+    <decomposition id="Take_Blood_Samples" xsi:type="WebServiceGatewayFactsType">
+      <outputParam>
+        <index>0</index>
+        <name>Tasks</name>
+        <type>string</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+        <defaultValue>Take_Blood_Samples</defaultValue>
+      </outputParam>
+      <outputParam>
+        <index>1</index>
+        <name>Goal</name>
+        <type>string</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+        <defaultValue>BloodSampleVials:Has;PatientArm</defaultValue>
+      </outputParam>
+      <externalInteraction>manual</externalInteraction>
+    </decomposition>
+    <decomposition id="Update_Examination_Report" xsi:type="WebServiceGatewayFactsType">
+      <outputParam>
+        <index>0</index>
+        <name>Tasks</name>
+        <type>string</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+        <defaultValue>Update_Examination_Report</defaultValue>
+      </outputParam>
+      <outputParam>
+        <index>1</index>
+        <name>Goal</name>
+        <type>string</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+        <defaultValue>ExamReport:reportTo;Nurse</defaultValue>
+      </outputParam>
+      <externalInteraction>manual</externalInteraction>
+    </decomposition>
+    <decomposition id="Visual_Examination" xsi:type="WebServiceGatewayFactsType">
+      <outputParam>
+        <index>0</index>
+        <name>Tasks</name>
+        <type>string</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+        <defaultValue>Visual_Examination</defaultValue>
+      </outputParam>
+      <outputParam>
+        <index>1</index>
+        <name>Goal</name>
+        <type>string</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+        <defaultValue>PatientBill:isVisuallyExamined;True</defaultValue>
+      </outputParam>
+      <externalInteraction>manual</externalInteraction>
+    </decomposition>
+    <decomposition id="X-Ray_Head" xsi:type="WebServiceGatewayFactsType">
+      <outputParam>
+        <index>0</index>
+        <name>Tasks</name>
+        <type>string</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+        <defaultValue>X-Ray_Head</defaultValue>
+      </outputParam>
+      <outputParam>
+        <index>1</index>
+        <name>Goal</name>
+        <type>string</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+        <defaultValue>MachineXRay:xrayForBodyPart;Head</defaultValue>
+      </outputParam>
+      <externalInteraction>manual</externalInteraction>
+    </decomposition>
+    <decomposition id="X-Ray_Torso" xsi:type="WebServiceGatewayFactsType">
+      <outputParam>
+        <index>0</index>
+        <name>Tasks</name>
+        <type>string</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+        <defaultValue>X-Ray_Torso</defaultValue>
+      </outputParam>
+      <outputParam>
+        <index>1</index>
+        <name>Goal</name>
+        <type>string</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+        <defaultValue>MachineXRay:xrayForBodyPart;Torso</defaultValue>
+      </outputParam>
+      <externalInteraction>manual</externalInteraction>
+    </decomposition>
+  </specification>
+  <layout>
+    <locale language="en" country="AU"/>
+    <specification id="TraumaCentre">
+      <size w="214" h="28"/>
+      <net id="Trauma_Centre_Patient_Examination">
+        <bounds x="0" y="0" w="1295" h="900"/>
+        <frame x="0" y="0" w="1298" h="903"/>
+        <viewport x="0" y="0" w="1298" h="903"/>
+        <vertex id="InputCondition_1">
+          <attributes>
+            <bounds x="88" y="266" w="32" h="32"/>
+          </attributes>
+        </vertex>
+        <vertex id="OutputCondition_1">
+          <attributes>
+            <bounds x="872" y="254" w="32" h="32"/>
+          </attributes>
+        </vertex>
+        <container id="Visual_Examination">
+          <vertex>
+            <attributes>
+              <bounds x="304" y="216" w="32" h="32"/>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="272" y="252" w="96" h="40"/>
+            </attributes>
+          </label>
+        </container>
+        <container id="Admit_Patient_to_Intensive_Care">
+          <vertex>
+            <attributes>
+              <bounds x="732" y="256" w="32" h="32"/>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="696" y="292" w="96" h="60"/>
+            </attributes>
+          </label>
+          <decorator type="AND_join">
+            <position>12</position>
+            <attributes>
+              <bounds x="722" y="256" w="11" h="32"/>
+            </attributes>
+          </decorator>
+        </container>
+        <container id="Take_Blood_Samples">
+          <vertex>
+            <attributes>
+              <bounds x="638" y="198" w="32" h="32"/>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="608" y="232" w="96" h="40"/>
+            </attributes>
+          </label>
+        </container>
+        <container id="Check_Breathing">
+          <vertex>
+            <attributes>
+              <bounds x="225" y="340" w="32" h="32"/>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="192" y="376" w="96" h="40"/>
+            </attributes>
+          </label>
+        </container>
+        <container id="Request_X-Ray">
+          <vertex>
+            <attributes>
+              <bounds x="638" y="430" w="32" h="32"/>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="608" y="464" w="96" h="20"/>
+            </attributes>
+          </label>
+        </container>
+        <container id="Auditory_Inspection">
+          <vertex>
+            <attributes>
+              <bounds x="400" y="216" w="32" h="32"/>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="368" y="252" w="96" h="40"/>
+            </attributes>
+          </label>
+        </container>
+        <container id="Doctor_to_Nurse_Hand_Over">
+          <vertex>
+            <attributes>
+              <bounds x="540" y="258" w="32" h="32"/>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="508" y="292" w="96" h="60"/>
+            </attributes>
+          </label>
+          <decorator type="AND_split">
+            <position>13</position>
+            <attributes>
+              <bounds x="571" y="258" w="11" h="32"/>
+            </attributes>
+          </decorator>
+          <decorator type="AND_join">
+            <position>12</position>
+            <attributes>
+              <bounds x="530" y="258" w="11" h="32"/>
+            </attributes>
+          </decorator>
+        </container>
+        <container id="Patient_X-Ray">
+          <vertex>
+            <attributes>
+              <bounds x="804" y="254" w="32" h="32"/>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="772" y="288" w="96" h="20"/>
+            </attributes>
+          </label>
+        </container>
+        <container id="Request_Pathology">
+          <vertex>
+            <attributes>
+              <bounds x="638" y="318" w="32" h="32"/>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="608" y="352" w="96" h="40"/>
+            </attributes>
+          </label>
+        </container>
+        <container id="Update_Examination_Report">
+          <vertex>
+            <attributes>
+              <bounds x="480" y="340" w="32" h="32"/>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="448" y="372" w="96" h="60"/>
+            </attributes>
+          </label>
+        </container>
+        <container id="Check_Blood_Pressure">
+          <vertex>
+            <attributes>
+              <bounds x="396" y="340" w="32" h="32"/>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="364" y="376" w="96" h="40"/>
+            </attributes>
+          </label>
+        </container>
+        <container id="Check_Pulse">
+          <vertex>
+            <attributes>
+              <bounds x="301" y="340" w="32" h="32"/>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="268" y="376" w="96" h="20"/>
+            </attributes>
+          </label>
+        </container>
+        <container id="Attach_Vital_Stats_Monitor">
+          <vertex>
+            <attributes>
+              <bounds x="638" y="90" w="32" h="32"/>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="608" y="128" w="96" h="40"/>
+            </attributes>
+          </label>
+        </container>
+        <container id="Receive_Patient">
+          <vertex>
+            <attributes>
+              <bounds x="148" y="266" w="32" h="32"/>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="120" y="300" w="96" h="20"/>
+            </attributes>
+          </label>
+          <decorator type="AND_split">
+            <position>13</position>
+            <attributes>
+              <bounds x="179" y="266" w="11" h="32"/>
+            </attributes>
+          </decorator>
+        </container>
+        <flow source="Doctor_to_Nurse_Hand_Over" target="Request_X-Ray">
+          <ports in="4" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="Receive_Patient" target="Visual_Examination">
+          <ports in="1" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+            <points>
+              <value x="189" y="277.8"/>
+              <value x="392" y="211.5"/>
+            </points>
+          </attributes>
+        </flow>
+        <flow source="Auditory_Inspection" target="Doctor_to_Nurse_Hand_Over">
+          <ports in="13" out="2"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+            <points>
+              <value x="563" y="211.5"/>
+              <value x="730" y="281.5"/>
+            </points>
+          </attributes>
+        </flow>
+        <flow source="Check_Breathing" target="Check_Pulse">
+          <ports in="13" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+            <points>
+              <value x="315.5" y="351.5"/>
+              <value x="393" y="351.5"/>
+            </points>
+          </attributes>
+        </flow>
+        <flow source="Take_Blood_Samples" target="Admit_Patient_to_Intensive_Care">
+          <ports in="13" out="1"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="Visual_Examination" target="Auditory_Inspection">
+          <ports in="13" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+            <points>
+              <value x="371" y="219.5"/>
+              <value x="448" y="219.5"/>
+            </points>
+          </attributes>
+        </flow>
+        <flow source="Attach_Vital_Stats_Monitor" target="Admit_Patient_to_Intensive_Care">
+          <ports in="13" out="4"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="Doctor_to_Nurse_Hand_Over" target="Take_Blood_Samples">
+          <ports in="1" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="Doctor_to_Nurse_Hand_Over" target="Request_Pathology">
+          <ports in="3" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="Update_Examination_Report" target="Doctor_to_Nurse_Hand_Over">
+          <ports in="13" out="3"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="Receive_Patient" target="Check_Breathing">
+          <ports in="3" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+            <points>
+              <value x="189" y="293.3"/>
+              <value x="336.5" y="345.5"/>
+            </points>
+          </attributes>
+        </flow>
+        <flow source="Request_X-Ray" target="Admit_Patient_to_Intensive_Care">
+          <ports in="13" out="0"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="InputCondition_1" target="Receive_Patient">
+          <ports in="13" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+            <points>
+              <value x="67" y="272.5"/>
+              <value x="148" y="272.5"/>
+            </points>
+          </attributes>
+        </flow>
+        <flow source="Check_Pulse" target="Check_Blood_Pressure">
+          <ports in="13" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+            <points>
+              <value x="424" y="351.5"/>
+              <value x="500" y="351.5"/>
+            </points>
+          </attributes>
+        </flow>
+        <flow source="Admit_Patient_to_Intensive_Care" target="Patient_X-Ray">
+          <ports in="13" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+            <points>
+              <value x="763" y="271.5"/>
+              <value x="888" y="269.5"/>
+            </points>
+          </attributes>
+        </flow>
+        <flow source="Patient_X-Ray" target="OutputCondition_1">
+          <ports in="13" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+            <points>
+              <value x="919" y="269.5"/>
+              <value x="1,028" y="269.5"/>
+            </points>
+          </attributes>
+        </flow>
+        <flow source="Doctor_to_Nurse_Hand_Over" target="Attach_Vital_Stats_Monitor">
+          <ports in="0" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+            <points>
+              <value x="776" y="270"/>
+              <value x="968" y="105.5"/>
+            </points>
+          </attributes>
+        </flow>
+        <flow source="Check_Blood_Pressure" target="Update_Examination_Report">
+          <ports in="13" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+            <points>
+              <value x="531" y="351.5"/>
+              <value x="608" y="351.5"/>
+            </points>
+          </attributes>
+        </flow>
+        <flow source="Request_Pathology" target="Admit_Patient_to_Intensive_Care">
+          <ports in="13" out="3"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+      </net>
+      <net id="Trauma_Centre_Patient_X-Ray">
+        <bounds x="0" y="0" w="1295" h="900"/>
+        <frame x="0" y="0" w="1298" h="903"/>
+        <viewport x="0" y="0" w="1298" h="903"/>
+        <vertex id="OutputCondition">
+          <attributes>
+            <bounds x="1,008" y="328" w="32" h="32"/>
+          </attributes>
+        </vertex>
+        <vertex id="InputCondition">
+          <attributes>
+            <bounds x="212" y="328" w="32" h="32"/>
+          </attributes>
+        </vertex>
+        <container id="Report_X-Ray_Results_to_Doctor">
+          <vertex>
+            <attributes>
+              <bounds x="772" y="328" w="32" h="32"/>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="740" y="360" w="96" h="60"/>
+            </attributes>
+          </label>
+        </container>
+        <container id="Collect_X-Ray_Requests">
+          <vertex>
+            <attributes>
+              <bounds x="332" y="328" w="32" h="32"/>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="300" y="360" w="96" h="40"/>
+            </attributes>
+          </label>
+        </container>
+        <container id="Complete_XRay_Duties">
+          <vertex>
+            <attributes>
+              <bounds x="900" y="328" w="32" h="32"/>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="868" y="360" w="96" h="40"/>
+            </attributes>
+          </label>
+        </container>
+        <container id="Collect_Patient_from_Intensive_Care">
+          <vertex>
+            <attributes>
+              <bounds x="468" y="328" w="32" h="32"/>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="436" y="360" w="96" h="60"/>
+            </attributes>
+          </label>
+        </container>
+        <container id="X-Ray_Head">
+          <vertex>
+            <attributes>
+              <bounds x="564" y="328" w="32" h="32"/>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="532" y="360" w="96" h="20"/>
+            </attributes>
+          </label>
+        </container>
+        <container id="X-Ray_Torso">
+          <vertex>
+            <attributes>
+              <bounds x="660" y="328" w="32" h="32"/>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="628" y="360" w="96" h="20"/>
+            </attributes>
+          </label>
+        </container>
+        <flow source="InputCondition" target="Collect_X-Ray_Requests">
+          <ports in="13" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+            <points>
+              <value x="243" y="343.5"/>
+              <value x="332" y="343.5"/>
+            </points>
+          </attributes>
+        </flow>
+        <flow source="Complete_XRay_Duties" target="OutputCondition">
+          <ports in="13" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+            <points>
+              <value x="931" y="343.5"/>
+              <value x="1,008" y="343.5"/>
+            </points>
+          </attributes>
+        </flow>
+        <flow source="X-Ray_Head" target="X-Ray_Torso">
+          <ports in="13" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+            <points>
+              <value x="595" y="343.5"/>
+              <value x="660" y="343.5"/>
+            </points>
+          </attributes>
+        </flow>
+        <flow source="X-Ray_Torso" target="Report_X-Ray_Results_to_Doctor">
+          <ports in="13" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+            <points>
+              <value x="691" y="343.5"/>
+              <value x="772" y="343.5"/>
+            </points>
+          </attributes>
+        </flow>
+        <flow source="Collect_Patient_from_Intensive_Care" target="X-Ray_Head">
+          <ports in="13" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+            <points>
+              <value x="499" y="343.5"/>
+              <value x="564" y="343.5"/>
+            </points>
+          </attributes>
+        </flow>
+        <flow source="Report_X-Ray_Results_to_Doctor" target="Complete_XRay_Duties">
+          <ports in="13" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+            <points>
+              <value x="803" y="343.5"/>
+              <value x="900" y="343.5"/>
+            </points>
+          </attributes>
+        </flow>
+        <flow source="Collect_X-Ray_Requests" target="Collect_Patient_from_Intensive_Care">
+          <ports in="13" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+            <points>
+              <value x="363" y="343.5"/>
+              <value x="468" y="343.5"/>
+            </points>
+          </attributes>
+        </flow>
+      </net>
+    </specification>
+  </layout>
+</specificationSet>

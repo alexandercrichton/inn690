@@ -15,7 +15,6 @@ namespace Veis.Common
 
         public ThreadSafeList()
         {
-            Logger.BroadcastMessage(this, "new ThreadSafeList");
             lock (_lock)
             {
                 _innerList = new List<T>();

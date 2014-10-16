@@ -311,39 +311,30 @@ namespace Veis.Workflow.YAWL
                             string taskID = x.Split(sep)[5];
                             string agentID = x.Split(sep)[6];
                             string taskQueue = x.Split(sep)[7];
-                            WorkItem workItem;
+
                             if (!AllWorkItems.Any(w => w.TaskID == taskID))
                             {
-                                workItem = new WorkItem();
+                                WorkItem workItem = new WorkItem();
                                 workItem.TaskID = taskID;
+                                workItem.CaseID = x.Split(sep)[1];
+                                workItem.SpecificationID = x.Split(sep)[2];
+                                workItem.UniqueID = x.Split(sep)[3];
+                                workItem.WorkItemID = x.Split(sep)[4];
+                                workItem.TaskID = taskID;
+                                workItem.TaskName = taskID;
+                                workItem.AgentID = agentID;
+                                workItem.TaskQueue = taskQueue;
+                                workItem.tasksAndGoals.Add("Tasks", x.Split(sep)[8]);
+                                workItem.tasksAndGoals.Add("Goals", x.Split(sep)[9]);
+
                                 AllWorkItems.Add(workItem);
+                                WorkEnactor workEnactor = WorkEnactors.FirstOrDefault(w => w.WorkAgent.AgentID == agentID);
+                                if (workEnactor != null)
+                                {
+                                    Logger.BroadcastMessage(this, "Adding work item");
+                                    workEnactor.AddWorkItem(workItem);
+                                }
                             }
-                            else
-                            {
-                                workItem = AllWorkItems.FirstOrDefault(w => w.TaskID == taskID);
-                                AllWorkAgents.FirstOrDefault(a => a.AgentID == agentID)
-                                    .GetQueueById(taskQueue)
-                                    .Remove(workItem);
-                            }
-                            workItem.CaseID = x.Split(sep)[1];
-                            workItem.SpecificationID = x.Split(sep)[2];
-                            workItem.UniqueID = x.Split(sep)[3];
-                            workItem.WorkItemID = x.Split(sep)[4];
-                            workItem.TaskID = taskID;
-                            workItem.TaskName = taskID;
-                            workItem.AgentID = agentID;
-                            workItem.TaskQueue = taskQueue;
-                            workItem.tasksAndGoals.Add("Tasks", x.Split(sep)[8]);
-                            workItem.tasksAndGoals.Add("Goals", x.Split(sep)[9]);
-
-                            WorkEnactor workEnactor = WorkEnactors.FirstOrDefault(w => w.WorkAgent.AgentID == agentID);
-                            if (workEnactor != null)
-                            {
-                                Logger.BroadcastMessage(this, "Adding work item");
-                                workEnactor.AddWorkItem(workItem);
-                            }
-
-
                         }
 
                         // A work item name is being applied to a work item
