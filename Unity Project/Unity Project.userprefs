@@ -1,8 +1,11 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\navAgent.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\UserInteraction.cs">
     <Files>
-      <File FileName="Assets\Scripts\navAgent.cs" Line="140" Column="1" />
+      <File FileName="Assets\Scripts\ThirdPersonCamera.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\UserInteraction.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\ThirdPersonCamera.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\navAgent.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
