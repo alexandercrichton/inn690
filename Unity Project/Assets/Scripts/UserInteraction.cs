@@ -76,9 +76,8 @@ public class UserInteraction : MonoBehaviour
                 userCamera.AssumeControlOfAgent(clickedObject);
             } else if (clickedObject != null && clickedObject.tag == "Avatar") {
 
-
-				GameObject[] sceneAvatar = GameObject.FindGameObjectsWithTag("Avatar");
-				foreach (GameObject avatarAgent in sceneAvatar) {
+				;
+				foreach (GameObject avatarAgent in AvatarList) {
 					navAgentScript = avatarAgent.GetComponent<navAgent>();
 					if (avatarAgent.name != clickedObject.name) {
 						navAgentScript.controlStatus = navAgent.AgentControl.Bot;
@@ -231,22 +230,28 @@ public class UserInteraction : MonoBehaviour
         drawCaseInfo();
         //drawUserTextInputArea();
         drawSimulationControlButtons();
-
-		// Make a background box
-		GUI.Box(new Rect((Screen.width - 210),10,200,90), "Avatar Cameras");
-
+		
 		int yLocation = 40;
+		// Make a background box
+
+
 		foreach (GameObject avatar in AvatarList) {
 			// Make the first button. If it is pressed, Application.Loadlevel (1) will be executed
 			if(GUI.Button(new Rect((Screen.width - 200),yLocation,160,20), avatar.name)) {
-
 				camLockName = avatar.name;
-
 			}	
-
 			yLocation += 30;
 		}
 
+		if(GUI.Button(new Rect((Screen.width - 200),yLocation,160,20), "Release Bot Control")) {
+			foreach (GameObject avatarAgent in AvatarList) {
+				navAgentScript = avatarAgent.GetComponent<navAgent>();
+					navAgentScript.controlStatus = navAgent.AgentControl.Bot;
+
+			}
+		}	
+
+		GUI.Box(new Rect((Screen.width - 210),10,200,yLocation + 50), "Avatar Cameras");
     }
 
     private void drawClickableObjectLabels()
