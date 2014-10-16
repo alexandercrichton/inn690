@@ -51,15 +51,6 @@ public class ThirdPersonCamera : MonoBehaviour
 		
 	}
 
-	private GameObject getObjectUserClickedOn()
-	{
-		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-		RaycastHit hit;
-		if (Physics.Raycast(ray, out hit))
-		{
-			return hit.collider.gameObject;
-		}
-		return null;
-	}
+
 
 }
