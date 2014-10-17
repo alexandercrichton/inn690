@@ -53,7 +53,6 @@ namespace Veis.Common
 
         public void Add(T item)
         {
-            Logger.BroadcastMessage(this, "Add");
             lock (_lock)
             {
                 _innerList.Add(item);
@@ -157,6 +156,10 @@ namespace Veis.Common
 
         #region LINQ Substitutes
 
+        /// <summary>
+        /// Note that this doesn't appear to actually work.
+        /// </summary>
+        /// <param name="action"></param>
         public void ForEach(Action<T> action)
         {
             lock (_lock)

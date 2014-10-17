@@ -6,6 +6,11 @@ using Veis.Bots;
 using Veis.Unity.Scene;
 using UnityEngine;
 using Veis.Unity.Simulation;
+using Veis.Data.Services;
+using Veis.Data;
+using Veis.Data.Entities;
+using Veis.Data.Repositories;
+using Veis.Simulation.WorldState;
 
 namespace Veis.Unity.Bots
 {
@@ -19,7 +24,10 @@ namespace Veis.Unity.Bots
         //public string LastName { get; set; }
         private UnitySceneService _sceneService;
 
-        public UnityBotAvatar(string id, string name, string role, UnitySceneService sceneService)
+        public UnityBotAvatar(IActivityMethodService methodService, 
+            IRepository<WorldState> worldState, ServiceRoutineService routineService,
+            string id, string name, string role, UnitySceneService sceneService)
+            : base(methodService, worldState, routineService)
         {
             //this.UUID = uuid;
             this.ID = id;
@@ -38,7 +46,6 @@ namespace Veis.Unity.Bots
         public override void Say(string message)
         {
             Logging.UnityLogger.BroadcastMesage(this, "Bot[" + Name + "] says: " + message);
-
         }
 
 		public override void DefineTask (string task) {

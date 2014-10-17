@@ -102,6 +102,11 @@ namespace Veis.Unity.Simulation
             }
         }
 
+        /// <summary>
+        /// This is the entry point for the Unity application's main thread.
+        /// Anything that needs to be handled on the main thread will be
+        /// called starting from here.
+        /// </summary>
         public void UnityMainThreadUpdate()
         {
             _sceneService.HandleAssetServiceRoutines();
@@ -110,7 +115,7 @@ namespace Veis.Unity.Simulation
                 avatar.Update();
 			}
 
-            MainThread.DoActions();
+            ThreadedActionHandler.DoActions();
         }
 
         public void OnUnityApplicationClose()
@@ -377,7 +382,8 @@ namespace Veis.Unity.Simulation
 
             if (!_avatarManager.Bots.Any(b => b.ID == e.ID))
             {
-                UnityBotAvatar bot = new UnityBotAvatar(e.ID, e.Name, e.Role, _sceneService);
+                UnityBotAvatar bot = new UnityBotAvatar(_activityMethodService, _worldStateRepos, _serviceRoutineService,
+                    e.ID, e.Name, e.Role, _sceneService);
 
                 string agentID = _workflowProvider.GetAgentIdByFullName(e.Name);
                 WorkAgent workAgent = _workflowProvider.AllWorkAgents.FirstOrDefault(a => a.AgentID == agentID);
@@ -387,10 +393,10 @@ namespace Veis.Unity.Simulation
                 _workflowProvider.AddWorkEnactor(workEnactor);
                 _avatarManager.Bots.Add(bot);
 
-				MainThread.QueueAction(()=> 
-				                       {
+				ThreadedActionHandler.QueueAction(()=> 
+				{
 				//TODO: instantiate bot stuff
-				GameObject botAvatar = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/nursePrefab"), new Vector3(-4.0f, 0.0f, -10.0f), Quaternion.identity);
+				    GameObject botAvatar = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/nursePrefab"), new Vector3(-4.0f, 0.0f, -10.0f), Quaternion.identity);
 					bot.botAgentMovement = botAvatar.GetComponent<navAgent>();
 					bot.SendBotValues();
 				});
@@ -401,56 +407,6 @@ namespace Veis.Unity.Simulation
             }
 
         }
-
-        #endregion
-
-        #region Data Requests
-
-        //void GetDataRequested(RequestDataEventArgs e)
-        //{
-        //    if (e.DataType.Equals("availablespecs", StringComparison.OrdinalIgnoreCase))
-        //    {
-        //        if (_workflowProvider != null)
-        //        {
-        //            List<string> allSpecs = _workflowProvider.AllSpecifications.Select(s => s.Value).ToList();
-        //            for (int i = 0; i < allSpecs.Count; i++ )
-        //            {
-        //                Log(i + " " + allSpecs[i]);
-        //            }
-        //        }
-        //    }
-        //    if (e.DataType.Equals("availableagents", StringComparison.OrdinalIgnoreCase))
-        //    {
-        //        if (_workflowProvider != null)
-        //        {
-        //            List<string> allAgents = _workflowProvider.AllParticipants
-        //                .Select(p => p.Value.FirstName + " " + p.Value.LastName).ToList();
-        //            foreach (string agent in allAgents)
-        //            {
-        //                Log(agent);
-        //            }
-        //        }
-        //    }
-        //    if (e.DataType.Equals("methodsToExecute", StringComparison.OrdinalIgnoreCase))
-        //    {
-        //        // <Field>:<Value>+<Field>:<Value>+ ..etc
-        //        // npc:<npc UUID>+asset:<asset Name>
-        //        var npcUUID = e.DataFilter["npc"];
-        //        var assetName = e.DataFilter["asset"];
-
-        //        // get the npc
-        //        var npc = _avatarManager.Bots.Where(n => (string)n.UUID.ToString() == (string)npcUUID).FirstOrDefault();
-        //        if (npc == null) return;
-        //        // Get the executable action that the npc wants to run
-        //        var executeAction = npc.PopExecutableAction(assetName.ToString());
-        //        if (executeAction == null) return;
-
-        //        // user_key|<user_key>|method_name|<method_name>|<param name>|<param value|...      
-        //        //_npcModule.SendData(
-        //        //    new List<string> { StringFormattingExtensions.EncodeExecutableActionString(executeAction, npcUUID.ToString()) },
-        //        //    false, UUID.Parse(e.Destination));
-        //    }
-        //}
 
         #endregion
 

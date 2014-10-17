@@ -331,7 +331,6 @@ namespace Veis.Workflow.YAWL
                                 WorkEnactor workEnactor = WorkEnactors.FirstOrDefault(w => w.WorkAgent.AgentID == agentID);
                                 if (workEnactor != null)
                                 {
-                                    Logger.BroadcastMessage(this, "Adding work item");
                                     workEnactor.AddWorkItem(workItem);
                                 }
                             }

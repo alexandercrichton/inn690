@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Veis.Data.Entities;
 using System.Data;
+
 namespace Veis.Data.Repositories
 {
     public class AssetServiceRoutineRepository : Repository<AssetServiceRoutine>
@@ -27,6 +28,25 @@ namespace Veis.Data.Repositories
                 AssetKey = reader.GetString(2),
                 ServiceRoutine = reader.GetString(3)
             };
+        }
+
+        public const string InsertQuery = "INSERT INTO 'asset_service_routines' "
+            + "('priority', 'asset_key', 'service_routine', 'world_key') "
+            + "VALUES ('@PRIORITY', '@ASSET_KEY', '@SERVICE_ROUTINE', '@ID')";
+
+        public override int Insert(AssetServiceRoutine item)
+        {
+            return Insert(InsertQuery, null, (new InsertSpecification(item)).Parameters);
+        }
+
+        public override int Insert(IEnumerable<AssetServiceRoutine> items)
+        {
+            int total = 0;
+            foreach (var item in items)
+            {
+                total += Insert(item);
+            }
+            return total;
         }
 
         public const string DeleteQuery = "DELETE FROM asset_service_routines";
@@ -88,20 +108,46 @@ namespace Veis.Data.Repositories
             }
 
         }
+
+        public class InsertSpecification : Specification<AssetServiceRoutine>
+        {
+            private int _id;
+            private int _priority;
+            private string _assetKey;
+            private string _serviceRoutine;
+
+            public InsertSpecification(AssetServiceRoutine serviceRoutine)
+            {
+                _id = serviceRoutine.Id;
+                _priority = serviceRoutine.Priority;
+                _assetKey = serviceRoutine.AssetKey;
+                _serviceRoutine = serviceRoutine.ServiceRoutine;
+            }
+
+            public override string Condition
+            {
+                get { return string.Empty; }
+            }
+
+            public override IDictionary<string, object> Parameters
+            {
+                get 
+                {
+                    return new Dictionary<string, object>()
+                    {
+                        { "@ID", _id },
+                        { "@PRIORITY", _priority },
+                        { "@ASSET_KEY", _assetKey },
+                        { "@SERVICE_ROUTINE", _serviceRoutine }
+                    };
+                }
+            }
+
+        }
         
         #endregion
 
         #region Unused
-
-        public override int Insert(AssetServiceRoutine item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override int Insert(IEnumerable<AssetServiceRoutine> items)
-        {
-            throw new NotImplementedException();
-        }
 
         public override int Update(AssetServiceRoutine oldItem, AssetServiceRoutine newItem, params Specification<AssetServiceRoutine>[] specifications)
         {

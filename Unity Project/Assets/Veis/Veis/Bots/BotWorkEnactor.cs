@@ -32,31 +32,23 @@ namespace Veis.Bots
             //Avatar.AddTaskToQueue("STARTWORK:" + workItem.TaskID);
         }
 
-        public bool WorkReady()
+        public bool IsWorkAvailable()
         {
-            if (WorkAgent.processing.Count <= 0 && WorkAgent.started.Count > 0)
-            {
-                StartWorkItem(WorkAgent.started.FirstOrDefault());
-                return true;
-            }
-            return false;
-        }
-
-        public override void StartWorkItem(WorkItem workItem)
-        {
-            if (WorkAgent.started.Contains(workItem))
-            {
-                WorkAgent.processing.Add(workItem);
-            }
+            return (WorkAgent.processing.Count <= 0 && WorkAgent.started.Count > 0);
         }
 
         public Queue<string> GetNextTasks()
         {
+            StartWorkItem(WorkAgent.started.FirstOrDefault());
+
             WorkItem workItem = WorkAgent.processing[0];
             IList<string> tasks = _planner.MakePlan(workItem).Tasks; // HERE is where the workitem tasks are EXTRACTED
-            Queue<string> queue = new Queue<string>(tasks);
-            queue.Enqueue("COMPLETEWORK:" + workItem.TaskID);
-            return queue;
+            return new Queue<string>(tasks);
+        }
+
+        public override void StartWorkItem(WorkItem workItem)
+        {
+            WorkAgent.processing.Add(workItem);
         }
 
         public void StartWork(string taskID)

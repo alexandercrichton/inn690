@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Veis.Data.Repositories;
+using Veis.Data.Entities;
 
 namespace Veis.Simulation.WorldState
 {
@@ -23,6 +24,11 @@ namespace Veis.Simulation.WorldState
             _assetServiceRoutines = assetServiceRoutines;
             _worldState.WorldStateUpdated += HandleServiceInvocation;
             _serviceHandlers = new List<IServiceInvocationHandler>();
+        }
+
+        public void AddServiceRoutine(AssetServiceRoutine serviceRoutine)
+        {
+            _assetServiceRoutines.Insert(serviceRoutine);
         }
 
         public void HandleServiceInvocation()

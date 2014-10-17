@@ -7,6 +7,11 @@ using Veis.Common.Math;
 using Veis.Chat;
 using Veis.Common;
 using Vector3 = Veis.Common.Math.Vector3;
+using Veis.Data.Services;
+using Veis.Data;
+using Veis.Data.Entities;
+using Veis.Data.Repositories;
+using Veis.Simulation.WorldState;
 
 
 namespace Veis.Bots
@@ -15,6 +20,9 @@ namespace Veis.Bots
     /// This class provides an abstract interface for a Bot avatar.
     /// It has abstract method signatures for the possible actions a
     /// bot avatar can complete. It also manages the task queue enaction.
+    /// 
+    /// Note that this class doesn't support concurrency. It is set up
+    /// to not be accessed from anywhere other than one dedicated thread.
     /// </summary>
     public abstract class BotAvatar : Avatar
     {
@@ -22,11 +30,16 @@ namespace Veis.Bots
 
         public ChatProvider ChatHandle { get; set; } // Chat provider to interpret messages
 
-        public List<ExecutableAction> ExecutableActions { get; set; }
+        private readonly IActivityMethodService _methodService;
+        private readonly IRepository<WorldState> _worldState;
+        private readonly ServiceRoutineService _routineService;
 
-        public BotAvatar()
+        public BotAvatar(IActivityMethodService methodService,
+            IRepository<WorldState> worldState, ServiceRoutineService routineService)
         {
-            ExecutableActions = new List<ExecutableAction>();
+            _methodService = methodService;
+            _worldState = worldState;
+            _routineService = routineService;
         }
 
         #region Bot Avatar Control Functions
@@ -43,27 +56,17 @@ namespace Veis.Bots
 
         public abstract void DefineTask(string task);
 
-        public void ExecuteAction(string asset, string methodName, string parameterString)
+        public void ExecuteAssetMethod(string asset, string methodName, string parameterString)
         {
-            ExecutableActions.Add(new ExecutableAction
+            Veis.Unity.Logging.UnityLogger.BroadcastMesage(this, string.Format("ExecuteAssetMethod() asset: {0}, methodName {1}, parameterString {2}",
+                asset, methodName, parameterString));
+            _routineService.AddServiceRoutine(new AssetServiceRoutine()
             {
-                AssetName = asset,
-                MethodName = methodName,
-                Parameters = StringFormattingExtensions.DecodeParameterString(parameterString)
+                Priority = 1,
+                AssetKey = asset,
+                Id = 1,
+                ServiceRoutine = methodName
             });
-        }
-
-        // Retrieves the executable action, and pops it off the list
-        public ExecutableAction PopExecutableAction(string assetName)
-        {
-            var action = ExecutableActions.Where(a => a.AssetName.Equals(assetName, StringComparison.OrdinalIgnoreCase))
-                .FirstOrDefault();
-            if (action != null)
-            {
-                ExecutableActions.Remove(action);
-            }
-
-            return action;
         }
 
         #endregion
@@ -80,7 +83,7 @@ namespace Veis.Bots
             {
                 processTasks();
             }
-            else if (WorkEnactor.WorkReady())
+            else if (WorkEnactor.IsWorkAvailable())
             {
                 taskQueue = WorkEnactor.GetNextTasks();
             }
@@ -106,8 +109,11 @@ namespace Veis.Bots
                     Despawn();
                     break;
                 case AvailableActions.WALKTO:
-                    WalkTo(currentTask.Split(':')[1]);
-                    doNextTask = false;
+                    if (doNextTask)
+                    {
+                        WalkTo(currentTask.Split(':')[1]);
+                        doNextTask = false;
+                    }
                     if (IsAt(currentTask.Split(':')[1]))
                     {
                         doNextTask = true;
@@ -122,9 +128,9 @@ namespace Veis.Bots
                 case AvailableActions.COMPLETEWORK:
                     WorkEnactor.CompleteWork(currentTask.Split(':')[1]);
                     break;
-                case AvailableActions.EXECUTEACTION:
+                case AvailableActions.EXECUTEASSETMETHOD:
                     var parts = currentTask.Split(':');
-                    ExecuteAction(parts[1], parts[2], parts[3]);
+                    ExecuteAssetMethod(parts[1], parts[2], parts[3]);
                     break;
                 case AvailableActions.SAY:
                     Say(currentTask.Split(':')[1]);

@@ -62,6 +62,7 @@ namespace Veis.Planning
                     plan.Tasks.AddRange(FormulateNPCTasks(goalState.Asset, method, parameters));
                 }
             }
+            plan.Tasks.Add("COMPLETEWORK:" + input.TaskID);
             return plan;
         }
 
@@ -73,8 +74,8 @@ namespace Veis.Planning
             var assetMethods = _methodService.GetMethodsByAsset(goalState.Asset); // Other asset's methods may apply to this goal state. TODO
              
             // find method that has postcondition with the given predicate
-            var applicable = assetMethods.Where(
-                m => m.Postconditions
+            var applicable = assetMethods
+                .Where(m => m.Postconditions
                     .Any(post => post.Predicate.Equals(goalState.Predicate, StringComparison.OrdinalIgnoreCase)));
             
             // TODO: Check for preconditions
@@ -103,10 +104,15 @@ namespace Veis.Planning
             allVariables.ForEach(v =>
             {
                 // Find the matching predicate
-                var predicate = activityMethod.Preconditions.Where(p => p.Variable.Equals(v, StringComparison.OrdinalIgnoreCase)).Select(p => p.Predicate).FirstOrDefault();
+                var predicate = activityMethod.Preconditions
+                    .Where(p => p.Variable.Equals(v, StringComparison.OrdinalIgnoreCase))
+                    .Select(p => p.Predicate)
+                    .FirstOrDefault();
                 if (predicate == null) return;
                 // If there is a world state that matches the predicate, then use it as a hidden variable
-                var potentionalValue = assetStates.Where(s => s.PredicateLabel.Equals(predicate, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
+                var potentionalValue = assetStates
+                    .Where(s => s.PredicateLabel.Equals(predicate, StringComparison.OrdinalIgnoreCase))
+                    .FirstOrDefault();
                 if (potentionalValue != null)
                 {
                     hiddenVariableValuePairs.Add(v, potentionalValue.Value);
@@ -162,7 +168,7 @@ namespace Veis.Planning
             //tasks.Add(AvailableActions.WAIT + ":" + PAUSE_TIME);
 
             // EXECUTE METHOD on OBJECT
-            tasks.Add(AvailableActions.EXECUTEACTION + ":" + asset + ":" + method.Name + ":" + StringFormattingExtensions.EncodeParameterString(methodParameters));
+            tasks.Add(AvailableActions.EXECUTEASSETMETHOD + ":" + asset + ":" + method.Name + ":" + StringFormattingExtensions.EncodeParameterString(methodParameters));
 			tasks.Add(AvailableActions.ANIMATE + ":" + method.Name);
             // TOUCH OBJECT (which should  be scripted)
             // NOTE: In OpenSim, the object will be scripted to exectute the action via php
@@ -171,6 +177,5 @@ namespace Veis.Planning
 
             return tasks;
         }
-
     }
 }
