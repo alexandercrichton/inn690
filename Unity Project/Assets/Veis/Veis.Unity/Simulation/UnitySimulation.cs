@@ -398,6 +398,7 @@ namespace Veis.Unity.Simulation
 				//TODO: instantiate bot stuff
 				    GameObject botAvatar = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/nursePrefab"), new Vector3(-4.0f, 0.0f, -10.0f), Quaternion.identity);
 					bot.botAgentMovement = botAvatar.GetComponent<navAgent>();
+					botAvatar.name = "Avatar " + e.Name;
 					bot.SendBotValues();
 				});
             }

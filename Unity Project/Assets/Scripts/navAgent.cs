@@ -5,6 +5,13 @@ using System.Collections.Generic;
 
 public class navAgent : MonoBehaviour {
 
+	public enum AgentControl {
+		Bot,
+		Human,
+		Idle
+	}
+
+
 	public GameObject targetPoint;
 	public GUIText textObject;
 
@@ -28,6 +35,9 @@ public class navAgent : MonoBehaviour {
 	UnityBotAvatar botAvatar;
 	GUIStyle labelStyle;
 
+
+	public AgentControl controlStatus;
+
 	// Use this for initialization
 	void Start () {
 
@@ -48,7 +58,9 @@ public class navAgent : MonoBehaviour {
 
 		
 	}
-	
+
+
+	//
 	protected void SetDestination () {
 
 		//agent.destination = targetPoint.transform.position;
@@ -107,11 +119,13 @@ public class navAgent : MonoBehaviour {
 		}
 	}
 
+	//Initialises the Bot specifications when instantiated 
+	//See: UnitySimulation CreateBotAvatar() and UnityBotAvatar SendBotValues()
 	public void SetBotInfo(UnityBotAvatar botAvatar) {
 		name = botAvatar.Name;
 		role = botAvatar.Role;
 		ID = botAvatar.ID;
-
+		controlStatus = AgentControl.Bot;
 
 
 	}
@@ -138,6 +152,10 @@ public class navAgent : MonoBehaviour {
 	
 	void Update() {
 
+		if (controlStatus == AgentControl.Human) {
+			if (Input.GetMouseButtonDown(0))
+				SetDestination();
+		}
 		SetupAgentLocomotion();
 		
 	}
@@ -145,4 +163,5 @@ public class navAgent : MonoBehaviour {
 	void OnGUI () {
 		SetUpGUI();
 	}
+	
 }
