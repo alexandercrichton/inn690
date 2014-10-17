@@ -39,7 +39,7 @@ public class UserInteraction : MonoBehaviour
         UnityLogger.LogMessage += OnLogMessage;
         _simulation = new UnitySimulation();
         clickableObjects = new List<GameObject>(GameObject.FindGameObjectsWithTag("Asset"));
-
+		camLockName = "";
     }
 
     private void Update()
@@ -49,8 +49,11 @@ public class UserInteraction : MonoBehaviour
 		}
 
 		GameObject avatar = GameObject.Find(camLockName);
+
 		if (avatar != null) {
+			
 			camTransform = avatar.transform.FindChild("CamPos").transform;
+			//camTransform = avatar.transform.FindChild("CamPos").transform;
 		}
 
 
@@ -124,7 +127,10 @@ public class UserInteraction : MonoBehaviour
     private void resetSimulationAndCase()
     {
         _simulation.PerformSimulationAction(Veis.Simulation.SimulationActions.Reset);
-
+		foreach (GameObject avatars in AvatarList) {
+			Destroy(avatars);
+		}
+		AvatarList.Clear();
     }
 
     private void startSimulationAndCase()
