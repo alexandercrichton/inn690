@@ -1,5 +1,0 @@
-C:\Users\nardellk\Documents\Temp\Veis\Veis.Data\bin\Release\Veis.Data.dll
-C:\Users\nardellk\Documents\Temp\Veis\Veis.Data\bin\Release\Veis.Data.pdb
-C:\Users\nardellk\Documents\Temp\Veis\Veis.Data\obj\Release\ResolveAssemblyReference.cache
-C:\Users\nardellk\Documents\Temp\Veis\Veis.Data\obj\Release\Veis.Data.dll
-C:\Users\nardellk\Documents\Temp\Veis\Veis.Data\obj\Release\Veis.Data.pdb
