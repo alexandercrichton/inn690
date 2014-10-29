@@ -396,10 +396,17 @@ namespace Veis.Unity.Simulation
 				ThreadedActionHandler.QueueAction(()=> 
 				{
 				//TODO: instantiate bot stuff
-				    GameObject botAvatar = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/nursePrefab"), new Vector3(-4.0f, 0.0f, -10.0f), Quaternion.identity);
-					bot.botAgentMovement = botAvatar.GetComponent<navAgent>();
-					botAvatar.name = "Avatar " + e.Name;
-					bot.SendBotValues();
+					if (e.Name == "Edwin Fahel") {
+					    GameObject botAvatar = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/docPrefab"), new Vector3(-2.0f, 0.0f, -10.0f), Quaternion.identity);
+						bot.botAgentMovement = botAvatar.GetComponent<navAgent>();
+						botAvatar.name = "Avatar " + e.Name;
+						bot.SendBotValues();
+					} else if (e.Name == "Janie May") {
+						GameObject botAvatar = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/nursePrefab"), new Vector3(-4.0f, 0.0f, -10.0f), Quaternion.identity);
+						bot.botAgentMovement = botAvatar.GetComponent<navAgent>();
+						botAvatar.name = "Avatar " + e.Name;
+						bot.SendBotValues();
+					}
 				});
             }
             else
