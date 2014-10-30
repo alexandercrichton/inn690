@@ -56,17 +56,25 @@ namespace Veis.Bots
 
         public abstract void DefineTask(string task);
 
-        public void ExecuteAssetMethod(string asset, string methodName, string parameterString)
+        protected void doAssetInteraction(string assetName, string methodName, string parameterString)
         {
-            Veis.Unity.Logging.UnityLogger.BroadcastMesage(this, string.Format("ExecuteAssetMethod() asset: {0}, methodName {1}, parameterString {2}",
-                asset, methodName, parameterString));
-            _routineService.AddServiceRoutine(new AssetServiceRoutine()
+            Veis.Unity.Logging.UnityLogger.BroadcastMesage(this,
+                string.Format("DoAssetInteraction() asset: {0}, methodName {1}, parameterString {2}",
+                assetName, methodName, parameterString));
+
+
+
+            if (methodName.Length >= "Move".Length 
+                && string.Equals(methodName.Substring(0, "Move".Length), "Move", StringComparison.OrdinalIgnoreCase))
             {
-                Priority = 1,
-                AssetKey = asset,
-                Id = 1,
-                ServiceRoutine = methodName
-            });
+                _routineService.AddServiceRoutine(new AssetServiceRoutine()
+                {
+                    Priority = 1,
+                    AssetKey = assetName,
+                    Id = 1,
+                    ServiceRoutine = "Move " + assetName + ":" + parameterString
+                });
+            }            
         }
 
         #endregion
@@ -128,9 +136,9 @@ namespace Veis.Bots
                 case AvailableActions.COMPLETEWORK:
                     WorkEnactor.CompleteWork(currentTask.Split(':')[1]);
                     break;
-                case AvailableActions.EXECUTEASSETMETHOD:
+                case AvailableActions.ASSETINTERACTION:
                     var parts = currentTask.Split(':');
-                    ExecuteAssetMethod(parts[1], parts[2], parts[3]);
+                    doAssetInteraction(parts[1], parts[2], parts[3]);
                     break;
                 case AvailableActions.SAY:
                     Say(currentTask.Split(':')[1]);

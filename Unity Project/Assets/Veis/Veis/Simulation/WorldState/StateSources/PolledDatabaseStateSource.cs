@@ -39,7 +39,7 @@ namespace Veis.Simulation.WorldState.StateSources
         }
 
         private void CheckForUpdates(object sender, ElapsedEventArgs e)
-        {/*
+        {
             try
             {
                 AccessRecord lastAccess = _accessRecordRepository.Find().FirstOrDefault();
@@ -56,7 +56,6 @@ namespace Veis.Simulation.WorldState.StateSources
             {
                 Veis.Data.Logging.Logger.BroadcastMessage(this, exception.Message);
             }
-            */
         }
 
         public List<State> GetAll()

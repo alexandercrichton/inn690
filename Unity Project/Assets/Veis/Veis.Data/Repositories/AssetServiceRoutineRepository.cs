@@ -30,9 +30,9 @@ namespace Veis.Data.Repositories
             };
         }
 
-        public const string InsertQuery = "INSERT INTO 'asset_service_routines' "
-            + "('priority', 'asset_key', 'service_routine', 'world_key') "
-            + "VALUES ('@PRIORITY', '@ASSET_KEY', '@SERVICE_ROUTINE', '@ID')";
+        public const string InsertQuery = "INSERT INTO asset_service_routines "
+            + "(priority, asset_key, service_routine, world_key) "
+            + "VALUES (@PRIORITY, @ASSET_KEY, @SERVICE_ROUTINE, @ID)";
 
         public override int Insert(AssetServiceRoutine item)
         {

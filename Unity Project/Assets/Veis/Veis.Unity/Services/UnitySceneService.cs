@@ -38,6 +38,8 @@ namespace Veis.Unity.Scene
         protected bool HandleMoveAsset(AssetServiceRoutine assetServiceRoutine)
         {
             // first check if its something other than the asset that needs to be moved. Will be after "Move", before ":", eg. Move goods:Truck to=Bay 05
+
+            Veis.Data.Logging.Logger.BroadcastMessage(this, "assetServiceRoutine.ServiceRoutine: " + assetServiceRoutine.ServiceRoutine);
             var movepart = assetServiceRoutine.ServiceRoutine.Split(':')[0];
             var assetKey = string.Empty;
             var assetName = string.Empty;
@@ -52,11 +54,14 @@ namespace Veis.Unity.Scene
                 assetName = GetAssetName(assetKey);
             }
 
+
             // Now process the location, including sub-location based on name. no underscores
 
             // Move:Bed to=Bay 1
             // Get the basic location. We want everything after the = sign
-            var locationName = assetServiceRoutine.ServiceRoutine.Split('=').Last();
+            var parameters = assetServiceRoutine.ServiceRoutine.Split(':')[1].Split('&').ToList();
+            var destinationParamater = parameters.Where(p => p.Contains("to=")).FirstOrDefault();
+            var locationName = destinationParamater.Split('=').Last();
 
             // Check for the location in this order: 
             // "Location <asset name> <location name>"

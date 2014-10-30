@@ -61,6 +61,7 @@ namespace Veis.Unity.Simulation
             _workflowProvider.CaseCompleted += CompleteCase;
             _workflowProvider.CaseStarted += StartCase;
             _worldStateService.WorldStateUpdated += OnWorldStateUpdated;
+            _worldStateRepos.ResetAssetWorldStates();
         }
 
         #region Simulation Actions
@@ -77,7 +78,7 @@ namespace Veis.Unity.Simulation
             _worldStateRepos.ResetAssetWorldStates();
         }
 
-        public override void Start() 
+        public override void Start()
         {
             RequestLaunchCase(_workflowProvider.AllCases[0].SpecificationName);
             _polledWorldState.Start();

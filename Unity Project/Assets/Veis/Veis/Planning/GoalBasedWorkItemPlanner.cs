@@ -72,7 +72,7 @@ namespace Veis.Planning
         public ActivityMethod FindMethodToSatisfyPredicate(State goalState)
         {
             var assetMethods = _methodService.GetMethodsByAsset(goalState.Asset); // Other asset's methods may apply to this goal state. TODO
-             
+            
             // find method that has postcondition with the given predicate
             var applicable = assetMethods
                 .Where(m => m.Postconditions
@@ -81,6 +81,7 @@ namespace Veis.Planning
             // TODO: Check for preconditions
             // OR choose the first method
             var chosenMethod = applicable.FirstOrDefault();
+
             return chosenMethod;
         }
 
@@ -108,7 +109,7 @@ namespace Veis.Planning
                     .Where(p => p.Variable.Equals(v, StringComparison.OrdinalIgnoreCase))
                     .Select(p => p.Predicate)
                     .FirstOrDefault();
-                if (predicate == null) return;
+                //if (predicate == null) return;
                 // If there is a world state that matches the predicate, then use it as a hidden variable
                 var potentionalValue = assetStates
                     .Where(s => s.PredicateLabel.Equals(predicate, StringComparison.OrdinalIgnoreCase))
@@ -133,7 +134,6 @@ namespace Veis.Planning
             {
                 parameters.Add(hiddenVariable.Key, hiddenVariable.Value);
             }
-
             return parameters;
         }
 
@@ -168,7 +168,7 @@ namespace Veis.Planning
             //tasks.Add(AvailableActions.WAIT + ":" + PAUSE_TIME);
 
             // EXECUTE METHOD on OBJECT
-            tasks.Add(AvailableActions.EXECUTEASSETMETHOD + ":" + asset + ":" + method.Name + ":" + StringFormattingExtensions.EncodeParameterString(methodParameters));
+            tasks.Add(AvailableActions.ASSETINTERACTION + ":" + asset + ":" + method.Name + ":" + StringFormattingExtensions.EncodeParameterString(methodParameters));
 			tasks.Add(AvailableActions.ANIMATE + ":" + method.Name);
             // TOUCH OBJECT (which should  be scripted)
             // NOTE: In OpenSim, the object will be scripted to exectute the action via php

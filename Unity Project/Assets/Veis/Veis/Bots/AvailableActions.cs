@@ -27,6 +27,6 @@ namespace Veis.Bots
         public const string ENDLOOP = "ENDLOOP";
         public const string STARTWORK = "STARTWORK";
         public const string COMPLETEWORK = "COMPLETEWORK";
-        public const string EXECUTEASSETMETHOD = "EXECUTEACTION";
+        public const string ASSETINTERACTION = "ASSETINTERACTION";
     }
 }
