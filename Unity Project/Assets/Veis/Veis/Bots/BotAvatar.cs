@@ -56,15 +56,38 @@ namespace Veis.Bots
 
         public abstract void DefineTask(string task);
 
-        protected void doAssetInteraction(string assetName, string methodName, string parameterString)
+        protected void doAssetInteraction(string assetName, string predicate, string value)
         {
             Veis.Unity.Logging.UnityLogger.BroadcastMesage(this,
-                string.Format("DoAssetInteraction() asset: {0}, methodName {1}, parameterString {2}",
-                assetName, methodName, parameterString));
+                string.Format("doAssetInteraction() assetName: {0}, predicate: {1}, value: {2}",
+                assetName, predicate, value));
 
+            //List<string> parameters = value.Split('&').ToList();
+            //foreach (string parameter in parameters)
+            //{
+            //    string variable = parameter.Split('=')[0];
+            //    string value = parameter.Split('=')[1];
 
+            //    WorldState state = new WorldState()
+            //    {
+            //        WorldKey = 1,
+            //        AssetName = assetName,
+            //        PredicateLabel = variable,
+            //        Value = value
+            //    };
+            //}
 
-            if (methodName.Length >= "Move".Length 
+          
+        }
+
+        protected void doServiceRoutine(string assetName, string methodName, string value)
+        {
+
+            Veis.Unity.Logging.UnityLogger.BroadcastMesage(this,
+                string.Format("doServiceRoutine() assetName: {0}, methodName: {1}, value: {2}",
+                assetName, methodName, value));
+
+            if (methodName.Length >= "Move".Length
                 && string.Equals(methodName.Substring(0, "Move".Length), "Move", StringComparison.OrdinalIgnoreCase))
             {
                 _routineService.AddServiceRoutine(new AssetServiceRoutine()
@@ -72,9 +95,9 @@ namespace Veis.Bots
                     Priority = 1,
                     AssetKey = assetName,
                     Id = 1,
-                    ServiceRoutine = "Move " + assetName + ":" + parameterString
+                    ServiceRoutine = "Move:" + value
                 });
-            }            
+            }  
         }
 
         #endregion
@@ -137,8 +160,12 @@ namespace Veis.Bots
                     WorkEnactor.CompleteWork(currentTask.Split(':')[1]);
                     break;
                 case AvailableActions.ASSETINTERACTION:
-                    var parts = currentTask.Split(':');
-                    doAssetInteraction(parts[1], parts[2], parts[3]);
+                    var iParts = currentTask.Split(':');
+                    doAssetInteraction(iParts[1], iParts[2], iParts[3]);
+                    break;
+                case AvailableActions.ASSETSERVICEROUTINE:
+                    var sParts = currentTask.Split(':');
+                    doServiceRoutine(sParts[1], sParts[2], sParts[3]);
                     break;
                 case AvailableActions.SAY:
                     Say(currentTask.Split(':')[1]);

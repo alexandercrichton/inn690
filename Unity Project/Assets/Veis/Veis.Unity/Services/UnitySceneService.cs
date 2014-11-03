@@ -9,16 +9,17 @@ using Veis.Data.Entities;
 
 using System.ComponentModel;
 using System.Threading;
+using Veis.Common;
 
 namespace Veis.Unity.Scene
 {
     public class UnitySceneService : ISceneService
     {
-        protected List<AssetServiceRoutine> assetServiceRoutinesToHandle;
+        protected ThreadSafeList<AssetServiceRoutine> assetServiceRoutinesToHandle;
 
         public UnitySceneService()
         {
-            assetServiceRoutinesToHandle = new List<AssetServiceRoutine>();
+            assetServiceRoutinesToHandle = new ThreadSafeList<AssetServiceRoutine>();
         }
 
         public void AddAssetServiceRoutineToHandle(AssetServiceRoutine assetServiceRoutine)
@@ -41,13 +42,10 @@ namespace Veis.Unity.Scene
 
             Veis.Data.Logging.Logger.BroadcastMessage(this, "assetServiceRoutine.ServiceRoutine: " + assetServiceRoutine.ServiceRoutine);
             var movepart = assetServiceRoutine.ServiceRoutine.Split(':')[0];
-            var assetKey = string.Empty;
-            var assetName = string.Empty;
-            if (movepart.Length > "Move".Length)
-            {
-                assetName = movepart.Substring("Move".Length + 1);
-                assetKey = GetAssetKey(assetName);
-            }
+            
+            var assetName = assetServiceRoutine.AssetKey;
+            var assetKey = GetAssetKey(assetName);
+            
             if (string.IsNullOrEmpty(assetKey))
             {
                 assetKey = assetServiceRoutine.AssetKey;
@@ -59,9 +57,7 @@ namespace Veis.Unity.Scene
 
             // Move:Bed to=Bay 1
             // Get the basic location. We want everything after the = sign
-            var parameters = assetServiceRoutine.ServiceRoutine.Split(':')[1].Split('&').ToList();
-            var destinationParamater = parameters.Where(p => p.Contains("to=")).FirstOrDefault();
-            var locationName = destinationParamater.Split('=').Last();
+            var locationName = assetServiceRoutine.ServiceRoutine.Split(':')[1];
 
             // Check for the location in this order: 
             // "Location <asset name> <location name>"

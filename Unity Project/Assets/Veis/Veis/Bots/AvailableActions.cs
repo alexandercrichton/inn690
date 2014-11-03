@@ -28,5 +28,6 @@ namespace Veis.Bots
         public const string STARTWORK = "STARTWORK";
         public const string COMPLETEWORK = "COMPLETEWORK";
         public const string ASSETINTERACTION = "ASSETINTERACTION";
+        public const string ASSETSERVICEROUTINE = "ASSETSERVICEROUTINE";
     }
 }
