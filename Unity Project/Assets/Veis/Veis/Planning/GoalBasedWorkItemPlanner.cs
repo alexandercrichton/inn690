@@ -114,7 +114,8 @@ namespace Veis.Planning
 
         #region Unnecessary?
 
-        // These methods seem quite unnecessary to achieve goals. Bots only need to do two key things:
+        // These methods seem quite unnecessary to achieve goals.
+        // Bots only need to do two key things:
         // update the asset world state, and (if applicable) insert an asset service routine.
         // The appropriate world state asset predicate can be selected 
         // using goalState.Asset and goalState.Predicate, and its value can be updated using
@@ -126,7 +127,8 @@ namespace Veis.Planning
         // need to be passed to the bot. There is no need to formulate parameters. Any parameters
         // formed are just decomposed back to their original state at the other end anyway.
         // Based on those thoughts these methods have been retired in favour of a simpler approach
-        // using values already present in goalState.
+        // using values already present in goalState. Perhaps things will need to change when
+        // preconditions actually become important.
 
         /*
 

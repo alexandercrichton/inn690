@@ -31,11 +31,11 @@ namespace Veis.Bots
         public ChatProvider ChatHandle { get; set; } // Chat provider to interpret messages
 
         private readonly IActivityMethodService _methodService;
-        private readonly IRepository<WorldState> _worldState;
+        private readonly WorldStateRepository _worldState;
         private readonly ServiceRoutineService _routineService;
 
         public BotAvatar(IActivityMethodService methodService,
-            IRepository<WorldState> worldState, ServiceRoutineService routineService)
+            WorldStateRepository worldState, ServiceRoutineService routineService)
         {
             _methodService = methodService;
             _worldState = worldState;
@@ -62,20 +62,7 @@ namespace Veis.Bots
                 string.Format("doAssetInteraction() assetName: {0}, predicate: {1}, value: {2}",
                 assetName, predicate, value));
 
-            //List<string> parameters = value.Split('&').ToList();
-            //foreach (string parameter in parameters)
-            //{
-            //    string variable = parameter.Split('=')[0];
-            //    string value = parameter.Split('=')[1];
-
-            //    WorldState state = new WorldState()
-            //    {
-            //        WorldKey = 1,
-            //        AssetName = assetName,
-            //        PredicateLabel = variable,
-            //        Value = value
-            //    };
-            //}
+            _worldState.Update(assetName, predicate, value);
 
           
         }

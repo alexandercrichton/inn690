@@ -24,8 +24,8 @@ namespace Veis.Unity.Bots
         //public string LastName { get; set; }
         private UnitySceneService _sceneService;
 
-        public UnityBotAvatar(IActivityMethodService methodService, 
-            IRepository<WorldState> worldState, ServiceRoutineService routineService,
+        public UnityBotAvatar(IActivityMethodService methodService,
+            WorldStateRepository worldState, ServiceRoutineService routineService,
             string id, string name, string role, UnitySceneService sceneService)
             : base(methodService, worldState, routineService)
         {

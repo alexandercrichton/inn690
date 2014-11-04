@@ -29,6 +29,18 @@ namespace Veis.Data.Repositories
             };
         }
 
+        private const string UpdateQuery
+            = "UPDATE world_states SET value = @VALUE "
+            + "WHERE asset_name = @ASSET_NAME "
+            + "AND predicate_label = @PREDICATE_LABEL";
+
+        public int Update(string assetName, string predicate, string value)
+        {
+            UpdateSpecification spec = new UpdateSpecification(
+                assetName, predicate, value);
+            return Update(UpdateQuery, null, spec);
+        }
+
         public void ResetAssetWorldStates()
         {
             ExecuteProcedure("reset_world_state");
@@ -54,7 +66,38 @@ namespace Veis.Data.Repositories
             {
                 get { return From("@ASSET_NAME", _assetName); }
             }
+        }
 
+        public class UpdateSpecification : Specification<WorldState>
+        {
+            private string _assetName;
+            private string _predicate;
+            private string _value;
+
+            public UpdateSpecification(string assetName, string predicate, string value)
+            {
+                _assetName = assetName;
+                _predicate = predicate;
+                _value = value;
+            }
+
+            public override string Condition
+            {
+                get { return string.Empty; }
+            }
+
+            public override IDictionary<string, object> Parameters
+            {
+                get
+                {
+                    return new Dictionary<string, object>()
+                    {
+                        { "@ASSET_NAME", _assetName },
+                        { "@PREDICATE_LABEL", _predicate },
+                        { "@VALUE", _value }
+                    };
+                }
+            }
         }
 
         #endregion
