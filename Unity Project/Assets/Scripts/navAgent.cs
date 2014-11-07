@@ -56,6 +56,7 @@ public class navAgent : MonoBehaviour {
 		labelStyle.normal.textColor = Color.white;
 		labelStyle.fontSize = 20;
 
+
 		
 	}
 
@@ -69,16 +70,22 @@ public class navAgent : MonoBehaviour {
 		RaycastHit hit = new RaycastHit();
 
 		if (Physics.Raycast(ray, out hit)) {
-			if (pointClone != null) {
-				GameObject.Destroy(pointClone);
-				pointClone = null;
+
+			Debug.Log (hit.ToString());
+			if (hit.transform.gameObject.tag != "floor") {
+			} else {
+
+				if (pointClone != null) {
+					GameObject.Destroy(pointClone);
+					pointClone = null;
+				}
+
+				Quaternion q = new Quaternion();
+				q.SetLookRotation(hit.normal, Vector3.forward);
+				pointClone = Instantiate(targetPoint, hit.point, q);
+				agent.destination = hit.point;
+
 			}
-
-			Quaternion q = new Quaternion();
-			q.SetLookRotation(hit.normal, Vector3.forward);
-			pointClone = Instantiate(pinPoint, hit.point, q);
-			agent.destination = hit.point;
-
 		}
 
 	}
@@ -157,6 +164,7 @@ public class navAgent : MonoBehaviour {
 				SetDestination();
 		}
 		SetupAgentLocomotion();
+
 		
 	}
 
