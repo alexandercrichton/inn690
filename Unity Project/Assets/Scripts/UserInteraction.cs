@@ -78,14 +78,13 @@ public class UserInteraction : MonoBehaviour
             {
                 userCamera.AssumeControlOfAgent(clickedObject);
             } else if (clickedObject != null && clickedObject.tag == "Avatar") {
-
-				;
 				foreach (GameObject avatarAgent in AvatarList) {
 					navAgentScript = avatarAgent.GetComponent<navAgent>();
 					if (avatarAgent.name != clickedObject.name) {
 						navAgentScript.controlStatus = navAgent.AgentControl.Bot;
 					} else if (avatarAgent.name == clickedObject.name) {
 						navAgentScript.controlStatus = navAgent.AgentControl.Human;
+                        _simulation.UserClickedOnAvatar(navAgentScript.GetAvatar());
 					}
 				}
 
@@ -150,7 +149,7 @@ public class UserInteraction : MonoBehaviour
         {
             Name = "Janie May",
             Role = "Janie May",
-            ID = uuid
+            ID = "123456789123456789123456789123456789"
         });
         _userKey = _assetKey = uuid;
         _userName = "Janie May";
@@ -196,20 +195,7 @@ public class UserInteraction : MonoBehaviour
             {
                 _caseInfo += "\nCurrent Case: " + startedCase.SpecificationName + " "
                     + startedCase.SpecificationID;
-                foreach (var human in _simulation._avatarManager.Humans)
-                {
-                    if (human.WorkEnactor.GetGoals().Count > 0)
-                    {
-                        foreach (var workItem in human.WorkEnactor.GetGoals())
-                        {
-                            _caseInfo += "\nCurrent Task: " + workItem.Key.TaskName;
-                            foreach (var goal in workItem.Value)
-                            {
-                                _caseInfo += "\n" + goal.ToString();
-                            }
-                        }
-                    }
-                }
+                
                 //foreach (var human in _simulation._avatarManager.Bots)
                 //{
                 //    if (human.WorkEnactor.GetGoals().Count > 0)
@@ -226,6 +212,46 @@ public class UserInteraction : MonoBehaviour
                 //}  
             }      
 
+        }
+
+        foreach (var human in _simulation._avatarManager.Humans)
+        {
+            _caseInfo += "\nUser Name: " + human.Name + ", WorkAgentID: " + human.WorkEnactor.WorkAgent.AgentID;
+            if (human.WorkEnactor.GetGoals().Count > 0)
+            {
+                foreach (var workItem in human.WorkEnactor.GetGoals())
+                {
+                    _caseInfo += "\nCurrent Task: " + workItem.Key.TaskName;
+                    foreach (var goal in workItem.Value)
+                    {
+                        _caseInfo += "\n" + goal.ToString();
+                    }
+                }
+            }
+        }
+
+        if (_simulation._avatarManager.Bots.Count > 0)
+        {
+            foreach (var bot in _simulation._avatarManager.Bots)
+            {
+                _caseInfo += "\n" + "Available bot: " + bot.Name + ", WorkAgentID: " + bot.WorkEnactor.WorkAgent.AgentID;
+                foreach (string task in bot.taskQueue)
+                {
+                    _caseInfo += "\n" + "Task: " + task;
+                }
+                bot.WorkEnactor.GetWorkAgent().offered
+                    .ForEach(w => _caseInfo += "\n" + "Offered: " + w.TaskName);
+                bot.WorkEnactor.GetWorkAgent().delegated
+                    .ForEach(w => _caseInfo += "\n" + "Delegated: " + w.TaskName);
+                bot.WorkEnactor.GetWorkAgent().allocated
+                    .ForEach(w => _caseInfo += "\n" + "Allocated: " + w.TaskName);
+                bot.WorkEnactor.GetWorkAgent().started
+                    .ForEach(w => _caseInfo += "\n" + "Started: " + w.TaskName);
+                bot.WorkEnactor.GetWorkAgent().processing
+                    .ForEach(w => _caseInfo += "\n" + "Processing: " + w.TaskName);
+                //bot.WorkEnactor.GetWorkAgent().completed
+                //    .ForEach(w => GUILayout.Label("Completed: " + w.TaskName));
+            }
         }
 
     }
@@ -311,34 +337,6 @@ public class UserInteraction : MonoBehaviour
                 GUILayout.Label(_yawlInfo);
                 GUILayout.Label(_simulationInfo);
                 GUILayout.Label(_caseInfo);
-
-                if (_simulation._avatarManager.Bots.Count > 0)
-                {
-                    foreach (var bot in _simulation._avatarManager.Bots)
-                    {
-                        GUILayout.Label("Available bot: " + bot.Name);
-                        foreach (string task in bot.taskQueue)
-                        {
-                            GUILayout.Label("Task: " + task);
-                        }
-                        bot.WorkEnactor.GetWorkAgent().offered
-                            .ForEach(w => GUILayout.Label("Offered: " + w.TaskName));
-                        bot.WorkEnactor.GetWorkAgent().delegated
-                            .ForEach(w => GUILayout.Label("Delegated: " + w.TaskName));
-                        bot.WorkEnactor.GetWorkAgent().allocated
-                            .ForEach(w => GUILayout.Label("Allocated: " + w.TaskName));
-                        bot.WorkEnactor.GetWorkAgent().started
-                            .ForEach(w => GUILayout.Label("Started: " + w.TaskName));
-                        bot.WorkEnactor.GetWorkAgent().processing
-                            .ForEach(w => GUILayout.Label("Processing: " + w.TaskName));
-                        //bot.WorkEnactor.GetWorkAgent().completed
-                        //    .ForEach(w => GUILayout.Label("Completed: " + w.TaskName));
-                    }
-                }
-                else
-                {
-                    GUILayout.Label("No NPCs");
-                }
             }
             GUILayout.EndVertical();
         }

@@ -16,5 +16,6 @@ namespace Veis.Workflow
         public abstract void StopWorkItem(WorkItem work);
         public abstract void CompleteWorkItem(WorkItem workItem);
         public abstract void StartWorkItem(WorkItem workItem);
+        public abstract void ClearAll();
     }
 }

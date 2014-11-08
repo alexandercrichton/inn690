@@ -21,7 +21,7 @@ using Veis.Simulation.WorldState.ServiceInvocationHandlers;
 
 using Veis.Data;
 using Veis.Data.Repositories;
-using Veis.Simulation.AvatarManagement;
+using Veis.Bots.AvatarManagement;
 using Veis.Data.Services;
 using Veis.Data.Entities;
 
@@ -62,6 +62,14 @@ namespace Veis.Unity.Simulation
             _workflowProvider.CaseStarted += StartCase;
             _worldStateService.WorldStateUpdated += OnWorldStateUpdated;
             _worldStateRepos.ResetAssetWorldStates();
+
+            // Test user for development purposes
+            AddUser(new Veis.Simulation.AgentEventArgs
+            {
+                Name = "Ross Brown",
+                Role = "",
+                ID = "123456789123456789123456789123456789"
+            });
         }
 
         #region Simulation Actions
@@ -334,10 +342,10 @@ namespace Veis.Unity.Simulation
         {
             Log("Adding user: " + e.Name);
             
-            UnityHumanAvatar human = new UnityHumanAvatar(e.ID);
+            UnityHumanAvatar human = new UnityHumanAvatar(e.ID, e.Name);
 
-            string agentID = _workflowProvider.GetAgentIdByFullName(e.Name);
-            WorkAgent workAgent = _workflowProvider.AllWorkAgents.FirstOrDefault(a => a.AgentID == agentID);
+            string agentID = WorkAgent.WORKFLOW_IGNORE_ID;
+            WorkAgent workAgent = new YAWLWorkAgent { AgentID = agentID };
             HumanWorkEnactor workEnactor = new HumanWorkEnactor(human, workAgent, _workflowProvider,
                 _workItemDecomp, _goalService);
             human.WorkEnactor = workEnactor;
@@ -400,11 +408,13 @@ namespace Veis.Unity.Simulation
 					if (e.Name == "Edwin Fahel") {
 					    GameObject botAvatar = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/docPrefab"), new Vector3(-2.0f, 0.0f, -10.0f), Quaternion.identity);
 						bot.botAgentMovement = botAvatar.GetComponent<navAgent>();
+                        bot.botAgentMovement.BotAvatar = bot;
 						botAvatar.name = "Avatar " + e.Name;
 						bot.SendBotValues();
 					} else if (e.Name == "Janie May") {
 						GameObject botAvatar = (GameObject)GameObject.Instantiate(Resources.Load("Prefabs/nursePrefab"), new Vector3(-4.0f, 0.0f, -10.0f), Quaternion.identity);
-						bot.botAgentMovement = botAvatar.GetComponent<navAgent>();
+                        bot.botAgentMovement = botAvatar.GetComponent<navAgent>();
+                        bot.botAgentMovement.BotAvatar = bot;
 						botAvatar.name = "Avatar " + e.Name;
 						bot.SendBotValues();
 					}
@@ -414,7 +424,11 @@ namespace Veis.Unity.Simulation
             {
                 Log("That bot ID already exists");
             }
+        }
 
+        public void UserClickedOnAvatar(Veis.Bots.Avatar avatar)
+        {
+            _avatarManager.PossessBot(_avatarManager.Humans[0], (BotAvatar)avatar);
         }
 
         #endregion

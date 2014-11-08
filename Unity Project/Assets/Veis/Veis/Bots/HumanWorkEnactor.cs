@@ -92,14 +92,8 @@ namespace Veis.Bots
 
         public override void StartWorkItem(WorkItem workItem)
         {
-            lock (WorkAgent.processing)
-            {
-                WorkAgent.processing.Add(workItem);
-            }
-            lock (WorkAgent.started)
-            {
-                WorkAgent.started.Add(workItem);
-            }
+            WorkAgent.processing.Add(workItem);
+            WorkAgent.started.Add(workItem);
         }
 
         public override void CompleteWorkItem(WorkItem workItem)
@@ -121,6 +115,16 @@ namespace Veis.Bots
         public void ClearCompletedGoals()
         {
             _completedGoals.Clear();
+        }
+
+        public override void ClearAll()
+        {
+            WorkAgent.started.Clear();
+            WorkAgent.processing.Clear();
+            lock (_workitemGoals)
+            {
+                _workitemGoals.Clear();
+            }
         }
     }
 }
