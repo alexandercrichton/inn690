@@ -22,7 +22,7 @@ using Veis.Simulation.WorldState.ServiceInvocationHandlers;
 
 using Veis.Data;
 using Veis.Data.Repositories;
-using Veis.Simulation.AvatarManagement;
+using Veis.Bots.AvatarManagement;
 using Veis.Data.Services;
 
 

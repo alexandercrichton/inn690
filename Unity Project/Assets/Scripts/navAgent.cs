@@ -32,7 +32,7 @@ public class navAgent : MonoBehaviour {
 	protected Locomotion locomotion;
 	protected Object pointClone;
 
-	UnityBotAvatar botAvatar;
+	public UnityBotAvatar BotAvatar;
 	GUIStyle labelStyle;
 
 
@@ -60,6 +60,10 @@ public class navAgent : MonoBehaviour {
 		
 	}
 
+    public UnityBotAvatar GetAvatar()
+    {
+        return BotAvatar;
+    }
 
 	//
 	protected void SetDestination () {

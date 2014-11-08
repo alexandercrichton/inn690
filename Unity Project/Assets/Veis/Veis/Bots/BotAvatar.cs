@@ -99,6 +99,7 @@ namespace Veis.Bots
         {
             if (taskQueue.Count > 0)
             {
+                Veis.Unity.Logging.UnityLogger.BroadcastMesage(this, "Current Task: " + taskQueue.Peek());
                 processTasks();
             }
             else if (WorkEnactor.IsWorkAvailable())
@@ -127,11 +128,11 @@ namespace Veis.Bots
                     Despawn();
                     break;
                 case AvailableActions.WALKTO:
-                    if (doNextTask)
-                    {
+                    //if (doNextTask)
+                    //{
                         WalkTo(currentTask.Split(':')[1]);
                         doNextTask = false;
-                    }
+                    //}
                     if (IsAt(currentTask.Split(':')[1]))
                     {
                         doNextTask = true;
