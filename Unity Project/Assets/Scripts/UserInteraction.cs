@@ -51,15 +51,26 @@ public class UserInteraction : MonoBehaviour
 		GameObject avatar = GameObject.Find(camLockName);
 
 		if (avatar != null) {
-			
+            setCameraSpectator(false);
 			camTransform = avatar.transform.FindChild("CamPos").transform;
 			//camTransform = avatar.transform.FindChild("CamPos").transform;
 		}
+        else
+        {
+            setCameraSpectator(true);
+        }
 
 
         _simulation.UnityMainThreadUpdate();
         updateGUIText();
         handleUserInput();
+    }
+
+    protected void setCameraSpectator(bool b)
+    {
+        Camera.main.GetComponent<UserCamera>().enabled = b;
+        Camera.main.GetComponent<SpectatorController>().enabled = b;
+        Camera.main.GetComponent<ThirdPersonCamera>().enabled = !b;
     }
 
     #region User Input
@@ -275,15 +286,23 @@ public class UserInteraction : MonoBehaviour
 			yLocation += 30;
 		}
 
-		if(GUI.Button(new Rect((Screen.width - 200),yLocation,160,20), "Release Bot Control")) {
+		if(GUI.Button(new Rect((Screen.width - 200),yLocation,160,20), "Spectator Camera")) {
 			foreach (GameObject avatarAgent in AvatarList) {
 				navAgentScript = avatarAgent.GetComponent<navAgent>();
 					navAgentScript.controlStatus = navAgent.AgentControl.Bot;
 
-			}
-		}	
+			}            
+            camLockName = "";
+        }
+        yLocation += 30;
 
-		GUI.Box(new Rect((Screen.width - 210),10,200,yLocation + 50), "Avatar Cameras");
+        if (GUI.Button(new Rect((Screen.width - 200), yLocation, 160, 20), "Release Bot"))
+        {
+            _simulation.UserRelinquishedCurrentAvatar();
+        }
+        yLocation += 30;
+
+		GUI.Box(new Rect((Screen.width - 210),10,200,yLocation), "Camera Views");
     }
 
     private void drawClickableObjectLabels()

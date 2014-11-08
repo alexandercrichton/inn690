@@ -431,6 +431,11 @@ namespace Veis.Unity.Simulation
             _avatarManager.PossessBot(_avatarManager.Humans[0], (BotAvatar)avatar);
         }
 
+        public void UserRelinquishedCurrentAvatar()
+        {
+            _avatarManager.RelinquishAnyBots(_avatarManager.Humans[0]);
+        }
+
         #endregion
 
         #region Helper Methods
