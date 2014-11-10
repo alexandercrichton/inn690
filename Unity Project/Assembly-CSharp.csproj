@@ -48,10 +48,8 @@
   <ItemGroup>
      <Compile Include="Assets\Locomotion\Scripts\Locomotion.cs" />
      <Compile Include="Assets\Scripts\AgentController.cs" />
-     <Compile Include="Assets\Scripts\AgentScript.cs" />
      <Compile Include="Assets\Scripts\Asset.cs" />
      <Compile Include="Assets\Scripts\PlaceMarker.cs" />
-     <Compile Include="Assets\Scripts\Samoflange.cs" />
      <Compile Include="Assets\Scripts\SpectatorController.cs" />
      <Compile Include="Assets\Scripts\ThirdPersonCamera.cs" />
      <Compile Include="Assets\Scripts\UserCamera.cs" />
@@ -191,12 +189,6 @@
  <Reference Include="System.Security">
  <HintPath>Assets\Plugins\System.Security.dll</HintPath>
  </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
-      <Project>{C65DF7E6-5082-3454-2A7F-EDDBED1731B5}</Project>      <Name>Assembly-CSharp-firstpass</Name>    </ProjectReference>
-    <ProjectReference Include="Assembly-UnityScript-firstpass.unityproj">
-      <Project>{F6940774-7AA7-A4B8-63B4-B9ADCF2F6CB9}</Project>      <Name>Assembly-UnityScript-firstpass</Name>    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
