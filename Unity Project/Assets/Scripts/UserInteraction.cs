@@ -89,14 +89,13 @@ public class UserInteraction : MonoBehaviour
             {
                 userCamera.AssumeControlOfAgent(clickedObject);
             } else if (clickedObject != null && clickedObject.tag == "Avatar") {
-
-				;
 				foreach (GameObject avatarAgent in AvatarList) {
 					navAgentScript = avatarAgent.GetComponent<navAgent>();
 					if (avatarAgent.name != clickedObject.name) {
 						navAgentScript.controlStatus = navAgent.AgentControl.Bot;
 					} else if (avatarAgent.name == clickedObject.name) {
 						navAgentScript.controlStatus = navAgent.AgentControl.Human;
+                        _simulation.UserClickedOnAvatar(navAgentScript.BotAvatar);
 					}
 				}
 
@@ -112,6 +111,7 @@ public class UserInteraction : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             userCamera.RelinquishControlOfAgent();
+            _simulation.UserRelinquishedCurrentAvatar();
         }
     }
 
