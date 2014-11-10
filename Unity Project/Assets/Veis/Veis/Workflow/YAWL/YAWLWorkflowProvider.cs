@@ -177,10 +177,12 @@ namespace Veis.Workflow.YAWL
             {
                 Thread.Sleep(1000);
                 string agentID = workEnactor.WorkAgent.AgentID;
-                Send("GetTaskQueue " + WorkAgent.OFFERED + " " + agentID);
-                Send("GetTaskQueue " + WorkAgent.ALLOCATED + " " + agentID);
-                Send("GetTaskQueue " + WorkAgent.STARTED + " " + agentID);
-                //Send("GetTaskQueue " + WorkAgent.SUSPENDED + " " + agentID);
+                if (agentID != WorkAgent.WORKFLOW_IGNORE_ID)
+                {
+                    Send("GetTaskQueue " + WorkAgent.OFFERED + " " + agentID);
+                    Send("GetTaskQueue " + WorkAgent.ALLOCATED + " " + agentID);
+                    Send("GetTaskQueue " + WorkAgent.STARTED + " " + agentID);
+                }
             }).Start();
 
         }

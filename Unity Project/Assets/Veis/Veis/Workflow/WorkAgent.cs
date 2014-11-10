@@ -8,6 +8,7 @@ namespace Veis.Workflow
 {
     public abstract class WorkAgent
     {
+
         // WorkQueue constants
         public const string OFFERED = "0";
         public const string ALLOCATED = "1";
@@ -27,9 +28,13 @@ namespace Veis.Workflow
         public ThreadSafeList<WorkItem> delegated;    //Tasks this agent were assigned to; but delegated to others
         public ThreadSafeList<WorkItem> processing;   //Tasks this agent is running right this second in the task queue
 
-        public string AgentID { get; set; }   // TODO: Sort out the descrepancy between agentid and yawlid
-        public string FirstName { get; set; }   // Workers have an identifying name
-        public string LastName { get; set; }    
+        // Used to make sure a work agent ISN'T receiving work items etc from YAWL
+        // e.g. when a human has assumed control of a bot and its work agent
+        public static readonly string WORKFLOW_IGNORE_ID = "-1";
+
+        public string AgentID { get; set; }
+        public string FirstName { get; set; }   // Unused?
+        public string LastName { get; set; }    // Unused?
         public string Appearance { get; set; }  // Workers have an appearance which usually correspond with their role
         public List<string> Roles { get; set; } // Workers have a set of roles they are in
         public List<string> Capabilities { get; set; }  // Workers have a set of things they are capable of

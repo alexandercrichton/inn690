@@ -22,10 +22,15 @@ namespace Veis.Unity.Bots
 
         public UnityHumanAvatar(string id, string name, string role)
         {
-            //this.UUID = uuid;
             this.ID = id;
             this.Name = name;
             this.Role = role;
+        }
+
+        public UnityHumanAvatar(string id, string name)
+        {
+            this.ID = id;
+            this.Name = name;
         }
 
         public override void NotifyUser(string message)

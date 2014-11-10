@@ -69,6 +69,16 @@ namespace Veis.Bots
             CompleteWorkItem(WorkAgent.processing.FirstOrDefault(w => w.TaskID == taskID));
         }
 
+        public override void ClearAll()
+        {
+            WorkAgent.started.Clear();
+            WorkAgent.processing.Clear();
+            lock (Avatar.taskQueue)
+            {
+                Avatar.taskQueue.Clear();
+            }
+        }
+
         public override void StopWorkItem(WorkItem workItem)
         {
             //if (WorkAgent.started.Contains(workItem))
