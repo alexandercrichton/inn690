@@ -99,7 +99,7 @@ namespace Veis.Bots
         {
             if (taskQueue.Count > 0)
             {
-                Veis.Unity.Logging.UnityLogger.BroadcastMesage(this, "Current Task: " + taskQueue.Peek());
+                //Veis.Unity.Logging.UnityLogger.BroadcastMesage(this, "Current Task: " + taskQueue.Peek());
                 processTasks();
             }
             else if (WorkEnactor.IsWorkAvailable())

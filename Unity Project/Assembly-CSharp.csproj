@@ -88,6 +88,7 @@
      <Compile Include="Assets\Veis\Veis.Unity\Simulation\UnitySimulation.cs" />
      <Compile Include="Assets\Veis\Veis\Bots\AvailableActions.cs" />
      <Compile Include="Assets\Veis\Veis\Bots\Avatar.cs" />
+     <Compile Include="Assets\Veis\Veis\Bots\AvatarManager.cs" />
      <Compile Include="Assets\Veis\Veis\Bots\BotAvatar.cs" />
      <Compile Include="Assets\Veis\Veis\Bots\BotWorkEnactor.cs" />
      <Compile Include="Assets\Veis\Veis\Bots\ExecutableAction.cs" />
@@ -136,7 +137,6 @@
      <Compile Include="Assets\Veis\Veis\Services\Interfaces\ISceneService.cs" />
      <Compile Include="Assets\Veis\Veis\Services\ParallelisationService.cs" />
      <Compile Include="Assets\Veis\Veis\Simulation\AgentEventArgs.cs" />
-     <Compile Include="Assets\Veis\Veis\Simulation\AvatarManagement\AvatarManager.cs" />
      <Compile Include="Assets\Veis\Veis\Simulation\ISimulation.cs" />
      <Compile Include="Assets\Veis\Veis\Simulation\Simulation.cs" />
      <Compile Include="Assets\Veis\Veis\Simulation\SimulationActions.cs" />
