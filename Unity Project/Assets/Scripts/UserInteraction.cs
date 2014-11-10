@@ -44,9 +44,9 @@ public class UserInteraction : MonoBehaviour
 
     private void Update()
     {
-		if (AvatarList.Count == 0) {
-			AvatarList = new List<GameObject>(GameObject.FindGameObjectsWithTag("Avatar"));
-		}
+
+		AvatarList = new List<GameObject>(GameObject.FindGameObjectsWithTag("Avatar"));
+
 
 		GameObject avatar = GameObject.Find(camLockName);
 
@@ -110,7 +110,9 @@ public class UserInteraction : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit))
         {
-            return hit.collider.gameObject;
+			if (GUIUtility.hotControl==0) {
+            	return hit.collider.gameObject;
+			}
         }
         return null;
     }
@@ -126,10 +128,13 @@ public class UserInteraction : MonoBehaviour
 
     private void resetSimulationAndCase()
     {
-        _simulation.PerformSimulationAction(Veis.Simulation.SimulationActions.Reset);
-		foreach (GameObject avatars in AvatarList) {
-			Destroy(avatars);
+		GameObject[] avatars = GameObject.FindGameObjectsWithTag("Avatar");
+		foreach (GameObject avatar in avatars) {
+			Destroy(avatar);
 		}
+
+        _simulation.PerformSimulationAction(Veis.Simulation.SimulationActions.Reset);
+
 		AvatarList.Clear();
     }
 
@@ -232,32 +237,35 @@ public class UserInteraction : MonoBehaviour
 
     private void OnGUI()
     {
-        drawClickableObjectLabels();
-        drawCaseInfo();
-        //drawUserTextInputArea();
-        drawSimulationControlButtons();
-		
-		int yLocation = 40;
-		// Make a background box
+
+			drawClickableObjectLabels ();
+			drawCaseInfo ();
+			//drawUserTextInputArea();
+			drawSimulationControlButtons ();
+
+			int yLocation = 40;
+			// Make a background box
 
 
-		foreach (GameObject avatar in AvatarList) {
-			// Make the first button. If it is pressed, Application.Loadlevel (1) will be executed
-			if(GUI.Button(new Rect((Screen.width - 200),yLocation,160,20), avatar.name)) {
-				camLockName = avatar.name;
-			}	
-			yLocation += 30;
-		}
-
-		if(GUI.Button(new Rect((Screen.width - 200),yLocation,160,20), "Release Bot Control")) {
-			foreach (GameObject avatarAgent in AvatarList) {
-				navAgentScript = avatarAgent.GetComponent<navAgent>();
-					navAgentScript.controlStatus = navAgent.AgentControl.Bot;
-
+			foreach (GameObject avatar in AvatarList) {
+					// Make the first button. If it is pressed, Application.Loadlevel (1) will be executed
+					if (GUI.Button (new Rect ((Screen.width - 200), yLocation, 160, 20), avatar.name)) {
+							camLockName = avatar.name;
+					}	
+					yLocation += 30;
 			}
-		}	
 
-		GUI.Box(new Rect((Screen.width - 210),10,200,yLocation + 50), "Avatar Cameras");
+			if (GUI.Button (new Rect ((Screen.width - 200), yLocation, 160, 20), "Release Bot Control")) {
+					foreach (GameObject avatarAgent in AvatarList) {
+							navAgentScript = avatarAgent.GetComponent<navAgent> ();
+							navAgentScript.controlStatus = navAgent.AgentControl.Bot;
+
+					}
+			}	
+
+			GUI.Box (new Rect ((Screen.width - 210), 10, 200, yLocation + 50), "Avatar Cameras");
+
+
     }
 
     private void drawClickableObjectLabels()
@@ -373,11 +381,15 @@ public class UserInteraction : MonoBehaviour
             Rect button = new Rect(0f, 0f, buttonContainerRect.width, buttonContainerRect.height / 2);
             if (GUI.Button(new Rect(button.xMin, button.height * 0, button.width, button.height), "Reset Simulation"))
             {
-                resetSimulationAndCase();
+				if (GUIUtility.hotControl==0) {
+               	 	resetSimulationAndCase();
+				}
             }
             if (GUI.Button(new Rect(button.xMin, button.height * 1, button.width, button.height), "Start Simulation"))
             {
-                startSimulationAndCase();
+
+               		startSimulationAndCase();
+
             }
         }
         GUI.EndGroup();

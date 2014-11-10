@@ -19,35 +19,13 @@ public class ThirdPersonCamera : MonoBehaviour
 	
 	void FixedUpdate ()
 	{
-		
-		/*
-		if (Input.GetKeyDown(KeyCode.Mouse0))
-		{
-			avatarObject = getObjectUserClickedOn();
 
 
-			if (avatarObject != null && avatarObject.tag == "Avatar")
-			{
-				standardPos = avatarObject.transform.FindChild("CamPos").transform;
-			}
 
-		}
-			*/
-
-
-		// if we hold Alt
-		if(Input.GetButton("Fire2") && lookAtPos)
-		{
-			// lerp the camera position to the look at position, and lerp its forward direction to match 
-			transform.position = Vector3.Lerp(transform.position, lookAtPos.position, Time.deltaTime * smooth);
-			transform.forward = Vector3.Lerp(transform.forward, lookAtPos.forward, Time.deltaTime * smooth);
-		}
-		else
-		{	
 			// return the camera to standard position and direction
 			transform.position = Vector3.Lerp(transform.position, userInteractionScript.camTransform.position, Time.deltaTime * smooth);	
 			transform.forward = Vector3.Lerp(transform.forward, userInteractionScript.camTransform.forward, Time.deltaTime * smooth);
-		}
+
 		
 	}
 
