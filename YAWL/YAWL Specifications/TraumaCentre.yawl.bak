@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <specificationSet xmlns="http://www.yawlfoundation.org/yawlschema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3.0" xsi:schemaLocation="http://www.yawlfoundation.org/yawlschema http://www.yawlfoundation.org/yawlschema/YAWL_Schema3.0.xsd">
-  <specification uri="TramaCentreA_OLD_3">
+  <specification uri="TraumaCentre">
     <name>TraumaCarAccident</name>
     <documentation>This workflow describes the examination of a car accident victim to a trauma centre.</documentation>
     <metaData>
@@ -199,10 +199,10 @@
             <nextElementRef id="Request_Pathology" />
           </flowsInto>
           <flowsInto>
-            <nextElementRef id="Take_Blood_Samples" />
+            <nextElementRef id="Request_X-Ray" />
           </flowsInto>
           <flowsInto>
-            <nextElementRef id="Request_X-Ray" />
+            <nextElementRef id="Take_Blood_Samples" />
           </flowsInto>
           <join code="and" />
           <split code="and" />
@@ -899,12 +899,12 @@
   </specification>
   <layout>
     <locale language="en" country="AU"/>
-    <specification id="TramaCentreA_OLD_3">
+    <specification id="TraumaCentre">
       <size w="214" h="28"/>
       <net id="Trauma_Centre_Patient_Examination">
-        <bounds x="0" y="0" w="1684" h="900"/>
-        <frame x="0" y="0" w="1687" h="903"/>
-        <viewport x="0" y="0" w="1687" h="903"/>
+        <bounds x="0" y="0" w="1295" h="900"/>
+        <frame x="0" y="0" w="1298" h="903"/>
+        <viewport x="0" y="0" w="1298" h="903"/>
         <vertex id="InputCondition_1">
           <attributes>
             <bounds x="88" y="266" w="32" h="32"/>
@@ -1267,9 +1267,9 @@
         </flow>
       </net>
       <net id="Trauma_Centre_Patient_X-Ray">
-        <bounds x="0" y="0" w="1684" h="900"/>
-        <frame x="0" y="0" w="1687" h="903"/>
-        <viewport x="0" y="0" w="1687" h="903"/>
+        <bounds x="0" y="0" w="1295" h="900"/>
+        <frame x="0" y="0" w="1298" h="903"/>
+        <viewport x="0" y="0" w="1298" h="903"/>
         <vertex id="OutputCondition">
           <attributes>
             <bounds x="1,008" y="328" w="32" h="32"/>
@@ -1382,16 +1382,6 @@
             </points>
           </attributes>
         </flow>
-        <flow source="Report_X-Ray_Results_to_Doctor" target="Complete_XRay_Duties">
-          <ports in="13" out="12"/>
-          <attributes>
-            <lineStyle>11</lineStyle>
-            <points>
-              <value x="803" y="343.5"/>
-              <value x="900" y="343.5"/>
-            </points>
-          </attributes>
-        </flow>
         <flow source="X-Ray_Torso" target="Report_X-Ray_Results_to_Doctor">
           <ports in="13" out="12"/>
           <attributes>
@@ -1409,6 +1399,16 @@
             <points>
               <value x="499" y="343.5"/>
               <value x="564" y="343.5"/>
+            </points>
+          </attributes>
+        </flow>
+        <flow source="Report_X-Ray_Results_to_Doctor" target="Complete_XRay_Duties">
+          <ports in="13" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+            <points>
+              <value x="803" y="343.5"/>
+              <value x="900" y="343.5"/>
             </points>
           </attributes>
         </flow>
