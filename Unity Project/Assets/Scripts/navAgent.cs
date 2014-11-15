@@ -76,7 +76,9 @@ public class navAgent : MonoBehaviour {
 			Debug.Log (hit.ToString());
 			if (hit.transform.gameObject.tag != "floor") {
 			} else {
+				botState = BotState.Walking;
 				if (pointClone != null) {
+
 					GameObject.Destroy(pointClone);
 					pointClone = null;
 				}
@@ -90,7 +92,8 @@ public class navAgent : MonoBehaviour {
 
 	protected void SetupAgentLocomotion() {
 		if (AgentDone ()) {
-			locomotion.Do (0, 0);
+			locomotion.Do (restSpeed, restAngle);
+			botState = BotState.Idle;
 			if (pointClone != null) {
 				GameObject.Destroy (pointClone);
 				pointClone = null;
@@ -117,10 +120,12 @@ public class navAgent : MonoBehaviour {
 		pinPoint = location;
 		agent.destination = location.transform.position;
 	}
+
 	//Exposes the current task the bot needs to do
 	public void SetTask(string currentTask) {
 		taskQueue = currentTask;
 	}
+
 	//Initialises the Bot specifications when instantiated
 	//See: UnitySimulation CreateBotAvatar() and UnityBotAvatar SendBotValues()
 	public void SetBotInfo(UnityBotAvatar botAvatar) {
@@ -151,11 +156,17 @@ public class navAgent : MonoBehaviour {
 	}
 	void Update() {
 		if (controlStatus == AgentControl.Human) {
-		if (Input.GetMouseButtonDown(0))
-		SetDestination();
-	}
-		SetupAgentLocomotion();
-		CheckState ();
+			if (Input.GetMouseButtonDown(0))
+				SetDestination();
+				SetupAgentLocomotion();
+		}
+
+
+		if (controlStatus == AgentControl.Bot) {
+			CheckState ();
+			SetupAgentLocomotion();
+		}
+
 	}
 
 	//TODO: More states dpeending on how much action the bot requires
